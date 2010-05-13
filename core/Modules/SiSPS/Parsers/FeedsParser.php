@@ -8,28 +8,28 @@ class FeedsParser implements IParser {
      */
     public function GetAndParse($source) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Extract the required variables
         $feedUrl = $source->parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
         //Include the Simple Pie Framework to get and parse feeds
         $config = \Swiftriver\Core\Setup::Configuration();
         $simplePiePath = $config->ModulesDirectory."/SimplePie/simplepie.inc";
         include_once($simplePiePath);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
         //Construct a new SimplePie Parsaer
         $feed = new \SimplePie();
@@ -37,17 +37,17 @@ class FeedsParser implements IParser {
         //Get the cach directory
         $cacheDirectory = $config->CachingDirectory;
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Setting the caching directory to $cacheDirectory]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Setting the caching directory to $cacheDirectory]", \PEAR_LOG_DEBUG);
 
         //Set the caching directory
         $feed->set_cache_location($cacheDirectory);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
 
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($feedUrl);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Initilising the feed]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Initilising the feed]", \PEAR_LOG_DEBUG);
 
         //Run the SimplePie
         $feed->init();
@@ -55,12 +55,12 @@ class FeedsParser implements IParser {
         //Create the Content array
         $contentItems = array();
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Parsing feed items]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [START: Parsing feed items]", \PEAR_LOG_DEBUG);
 
         $feeditems = $feed->get_items();
 
         if(!$feeditems || $feeditems == null || !is_array($feeditems) || count($feeditems) < 1) {
-            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
         }
 
         $lastsucess = $source->lastsucess;
@@ -73,12 +73,12 @@ class FeedsParser implements IParser {
                 if($contentdate < $lastsucess) {
                     $textContentDate = date("c", $contentdate);
                     $textLastSucess = date("c", $lastsucess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
+                    $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
 
-            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Adding feed item]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Adding feed item]", \PEAR_LOG_DEBUG);
 
             //Extract all the relevant feedItem info
             $title = $feedItem->get_title();
@@ -101,9 +101,9 @@ class FeedsParser implements IParser {
             $contentItems[] = $item;
         }
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Parsing feed items]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [END: Parsing feed items]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
 
         //return the content array
         return $contentItems;
@@ -112,7 +112,7 @@ class FeedsParser implements IParser {
     /**
      * This method returns a string array with the names of all
      * the source types this parser is designed to parse. For example
-     * the RSSParser may return array("Blogs", "News Feeds");
+     * the FeedsParser may return array("Blogs", "News Feeds");
      *
      * @return string[]
      */
@@ -125,7 +125,7 @@ class FeedsParser implements IParser {
 
     /**
      * This method returns a string describing the type of sources
-     * it can parse. For example, the RSSParser returns "Feeds".
+     * it can parse. For example, the FeedsParser returns "Feeds".
      *
      * @return string type of sources parsed
      */
