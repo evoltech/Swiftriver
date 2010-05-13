@@ -38,5 +38,42 @@ class ParserFactory{
         //Finally, return a new Parser
         return new $type();
     }
+
+    public static function ReturnAllAvailableParsers(){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $parsers = array();
+        
+        $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [START: Directory Itteration]", \PEAR_LOG_DEBUG);
+        
+        $dirItterator = new \RecursiveDirectoryIterator(dirname(__FILE__)."/Parsers/");
+        $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach($iterator as $file) {
+            if($file->isFile()) {
+                $filePath = $file->getPathname();
+                if(strpos($filePath, ".php") && !strpos($filePath, "IParser")) {
+                    try{
+                        $typeString = "\\Swiftriver\\Core\\Modules\\SiSPS\\Parsers\\".$file->getFilename();
+                        $type = str_replace(".php", "", $typeString);
+                        $object = new $type();
+                        if($object instanceof Parsers\IParser) {
+                            $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [Adding type $type]", \PEAR_LOG_DEBUG);
+                            $parsers[] = $object;
+                        }
+                    }
+                    catch(\Exception $e) {
+                        $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [error adding type $type]", \PEAR_LOG_DEBUG);
+                        $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [$e]", \PEAR_LOG_ERR);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        $logger->log("Core::Modules::SiSPS::ParserFactory::ReturnAllAvailableParsers [END: Directory Itteration]", \PEAR_LOG_DEBUG);
+
+        return $parsers;
+    }
 }
 ?>

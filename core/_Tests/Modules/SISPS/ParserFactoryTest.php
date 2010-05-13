@@ -54,8 +54,15 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
      * the TestParser object when given the correct parameters.
      */
     public function testGetParserWithValidTestTypeParam() {
-        $parser = Modules\SiSPS\ParserFactory::GetParser("Test");
+        $parser = Modules\SiSPS\ParserFactory::GetParser("RSS");
         $this->assertEquals(true, isset($parser));
+    }
+
+    public function testReturnAllAvailableParsers() {
+        $parsers = Modules\SiSPS\ParserFactory::ReturnAllAvailableParsers();
+        $this->assertEquals(2, count($parsers));
+        $RSSTypes = $parsers[0]->ListSubTypes();
+        $this->assertEquals("Blogs", $RSSTypes[0]);
     }
 }
 ?>

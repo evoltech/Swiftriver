@@ -19,19 +19,14 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         include_once(dirname(__FILE__)."/../../../Setup.php");
     }
-
-    /**
-     * Tests that, given a channel configured to use the Test parser,
-     * the SiSPS can return a list of content items
-     */
-    public function testFetchContentFromChannelWithTestParser(){
-        $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->type = "Test";
+    
+    public function testReturnAllAvailableParsers() {
         $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
-        $contentItems = $service->FetchContentFromChannel($channel, null);
-        $this->assertEquals(true, is_array($contentItems));
-        $this->assertEquals(1, count($contentItems));
-        $this->assertEquals("testId", $contentItems[0]->id);
+        $parsers = $service->ListAvailableParsers();
+        $this->assertEquals(2, count($parsers));
+        $RSSTypes = $parsers[0]->ListSubTypes();
+        $this->assertEquals("Blogs", $RSSTypes[0]);
     }
+
 }
 ?>

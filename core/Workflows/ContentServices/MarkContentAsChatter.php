@@ -140,7 +140,12 @@ class MarkContentAsChatter extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsChatter::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
 
-        return parent::FormatMessage("OK");
+        $return = json_encode(array(
+                        "sourceId" => $content->source->id,
+                        "sourceScore" => $content->source->score
+                  ));
+
+        return $return;
     }
 }
 ?>

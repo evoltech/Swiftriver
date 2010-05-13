@@ -7,7 +7,8 @@ class Setup {
     private static $eventDistributionConfiguration;
 
     public static function GetLogger() {
-        $logger = &\Log::singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
+        $log = new \Log("this message is ignored, however not supplying one throws an error :o/");
+        $logger = $log->singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
         return $logger;
     }
 
@@ -72,6 +73,8 @@ foreach($iterator as $file) {
 include_once(dirname(__FILE__)."/Workflows/WorkflowBase.php");
 include_once(dirname(__FILE__)."/Workflows/ChannelProcessingJobs/ChannelProcessingJobBase.php");
 include_once(dirname(__FILE__)."/Workflows/ContentServices/ContentServicesBase.php");
+include_once(dirname(__FILE__)."/Workflows/SourceServices/SourceServicesBase.php");
+include_once(Setup::Configuration()->ModulesDirectory."/SiSPS/Parsers/IParser.php");
 
 //include everything else
 $directories = array(

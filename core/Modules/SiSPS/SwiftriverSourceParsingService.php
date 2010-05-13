@@ -10,41 +10,40 @@ namespace Swiftriver\Core\Modules\SiSPS;
 class SwiftriverSourceParsingService {
     /**
      * This method will take the information prvided in the
-     * instance of a Swiftriver\Core\ObjectModel\Channel object
+     * instance of a \Swiftriver\Core\ObjectModel\Source object
      * and will make a call to the channel to fetch and content
      * that can be fetched and then parse the content into an array
      * of Swiftriver\Core\ObjectModel\Content items
      *
-     * @param Swiftriver\Core\ObjectModel\Channel $channel
+     * @param \Swiftriver\Core\ObjectModel\Source $source
      * @return Swiftriver\Core\ObjectModel\Content[] $contentItems
      */
-    public function FetchContentFromChannel($channel) {
+    public function FetchContentFromChannel($source) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method invoked]", \PEAR_LOG_DEBUG);
 
-        if(!isset($channel) || $channel == null) {
+        if(!isset($source) || $source == null) {
             $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [The channel object param is null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method finished]", \PEAR_LOG_DEBUG);
             return;
         }
 
         //get the type of the channel
-        $channelType = $channel->type;
+        $channelType = $source->type;
 
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Channel type is $channelType]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [START: Constructed parser from factory]", \PEAR_LOG_DEBUG);
 
         //Get a Parser from the ParserFactory based on the channel type
         $parser = ParserFactory::GetParser($channelType);
 
-        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Constructed parser from factory]", \PEAR_LOG_DEBUG);
-
-        //Extract the parameters from the channel object
-        $parameters = $channel->parameters;
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [END: Constructed parser from factory]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [START: parser->GetAndParse]", \PEAR_LOG_DEBUG);
 
         //Get and parse all avaliable content items from the parser
-        $contentItems = $parser->GetAndParse($parameters, $channel->lastSucess);
+        $contentItems = $parser->GetAndParse($source);
 
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [END: parser->GetAndParse]", \PEAR_LOG_DEBUG);
 
@@ -52,6 +51,21 @@ class SwiftriverSourceParsingService {
 
         //Return the content items
         return $contentItems;
+    }
+
+    public function ListAvailableParsers(){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::ListAvailableChannels [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::ListAvailableChannels [START: Getting All Parsers from the ParserFactory]", \PEAR_LOG_DEBUG);
+
+        $parsers = ParserFactory::ReturnAllAvailableParsers();
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::ListAvailableChannels [END: Getting All Parsers from the ParserFactory]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::ListAvailableChannels [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $parsers;
     }
 }
 ?>

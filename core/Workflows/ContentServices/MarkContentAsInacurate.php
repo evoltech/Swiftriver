@@ -74,7 +74,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsInacurate::RunWorkflow [START: Setting the state to acurate]", \PEAR_LOG_DEBUG);
 
         //Use the state controller to change the state of the the content to acurate
-        $content = \Swiftriver\Core\StateTransition\StateController::MarkContentAcurate($content);
+        $content = \Swiftriver\Core\StateTransition\StateController::MarkContentInaccurate($content);
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsInacurate::RunWorkflow [END: Setting the state to acurate]", \PEAR_LOG_DEBUG);
 
@@ -147,7 +147,12 @@ class MarkContentAsInacurate extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsInacurate::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
 
-        return parent::FormatMessage("OK");
+        $return = json_encode(array(
+                        "sourceId" => $content->source->id,
+                        "sourceScore" => $content->source->score
+                  ));
+
+        return $return;
     }
 }
 ?>

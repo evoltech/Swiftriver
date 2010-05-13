@@ -13,10 +13,26 @@ interface IParser{
      * to the function to ensure that content that has
      * already been parsed is not duplicated.
      *
-     * @param array $parameters
-     * @param datetime $lastscuess
+     * @param \Swiftriver\Core\ObjectModel\Source $source
      * @return Swiftriver\Core\ObjectModel\Content[] contentItems
      */
-    public function GetAndParse($parameters, $lastsucess);
+    public function GetAndParse($source);
+
+    /**
+     * This method returns a string array with the names of all
+     * the source types this parser is designed to parse. For example
+     * the RSSParser may return array("Blogs", "News Feeds");
+     * 
+     * @return string[]
+     */
+    public function ListSubTypes();
+
+    /**
+     * This method returns a string describing the type of sources
+     * it can parse. For example, the RSSParser returns "Feeds".
+     *
+     * @return string type of sources parsed
+     */
+    public function ReturnType();
 }
 ?>

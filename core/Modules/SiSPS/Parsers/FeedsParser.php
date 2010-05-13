@@ -1,25 +1,19 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 namespace Swiftriver\Core\Modules\SiSPS\Parsers;
-class RSSParser implements IParser {
+class FeedsParser implements IParser {
     /**
      * Implementation of IParser::GetAndParse
-     * @param string[] $parameters
-     * Required Parameter Values =
-     *  'feedUrl' = The url to the RSS feed
+     * @param \Swiftriver\Core\ObjectModel\Source $parameters
      * @param datetime $lassucess
      */
-    public function GetAndParse($parameters, $lastsucess) {
+    public function GetAndParse($source) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Extract the required variables
-        $feedUrl = $parameters["feedUrl"];
+        $feedUrl = $source->parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == "")) {
             $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
@@ -28,19 +22,12 @@ class RSSParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Constructing source object]", \PEAR_LOG_DEBUG);
-
-        //Create the source that will be used by all the content items Passing in the feed uri which can
-        //be used to uniquly identify the source of the content
-        $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromID($feedUrl);
-
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Constructing source object]", \PEAR_LOG_DEBUG);
-
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
         //Include the Simple Pie Framework to get and parse feeds
         $config = \Swiftriver\Core\Setup::Configuration();
-        include_once $config->ModulesDirectory."/SimplePie/simplepie.inc";
+        $simplePiePath = $config->ModulesDirectory."/SimplePie/simplepie.inc";
+        include_once($simplePiePath);
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
@@ -75,6 +62,8 @@ class RSSParser implements IParser {
         if(!$feeditems || $feeditems == null || !is_array($feeditems) || count($feeditems) < 1) {
             $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
         }
+
+        $lastsucess = $source->lastsucess;
 
         //Loop throught the Feed Items
         foreach($feeditems as $feedItem) {
@@ -118,6 +107,30 @@ class RSSParser implements IParser {
 
         //return the content array
         return $contentItems;
+    }
+
+    /**
+     * This method returns a string array with the names of all
+     * the source types this parser is designed to parse. For example
+     * the RSSParser may return array("Blogs", "News Feeds");
+     *
+     * @return string[]
+     */
+    public function ListSubTypes() {
+        return array(
+            "Blogs",
+            "News Feeds"
+        );
+    }
+
+    /**
+     * This method returns a string describing the type of sources
+     * it can parse. For example, the RSSParser returns "Feeds".
+     *
+     * @return string type of sources parsed
+     */
+    public function ReturnType() {
+        return "Feeds";
     }
 }
 ?>

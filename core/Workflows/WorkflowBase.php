@@ -19,6 +19,10 @@ class WorkflowBase {
         return '{"message":"'.str_replace('"', '\'', $message).'"}';
     }
 
+    protected function FormatReturn($json) {
+        return '{"message":"OK","data":'.$json.'}';
+    }
+
     /**
      * Checks to see if the API key provided matches the configured
      * API Keys for this Core install
@@ -29,7 +33,7 @@ class WorkflowBase {
         //$keyRepository = new \Swiftriver\Core\DAL\Repositories\APIKeyRepository();
         //return $keyRepository->IsRegisterdCoreAPIKey($key);
         //TODO: this needs to be properly implemented before release
-        return $key == "swiftriver_apala";
+        return $key == "swiftriver_dev";
     }
 }
 ?>

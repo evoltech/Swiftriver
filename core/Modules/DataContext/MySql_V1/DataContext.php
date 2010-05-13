@@ -56,369 +56,272 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
     }
 
     /**
-     * Given the ID of a channel processing job, this method
-     * gets it from the underlying data store
+     * Given the IDs of Sources, this method
+     * gets them from the underlying data store
      *
-     * @param string $id
-     * @return \Swiftriver\Core\ObjectModel\Channel
+     * @param string[] $ids
+     * @return \Swiftriver\Core\ObjectModel\Source[]
      */
-    public static function GetChannelProcessingJobById($id) {
-        //check the $id is not null
-        if(!isset($id) || $id == null) {
-            throw new \InvalidArgumentException("The id supplied was null");
+    public static function GetSourcesById($ids){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [Method invoked]", \PEAR_LOG_DEBUG);
+
+        if(!isset($ids) || $ids == null || !is_array($ids) || count($ids) < 1) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [No IDs supplied]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [Method finished]", \PEAR_LOG_DEBUG);
+            return array();
         }
 
-        //Get the redbean
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [START: Getting the sources from the data store]", \PEAR_LOG_DEBUG);
+
         $rb = RedBeanController::RedBean();
 
-        //see if the channel already exists
-        $c = reset(RedBeanController::Finder()->where(
-                "channelprocessingjobs",
-                "textId = :id",
-                array(":id" => $id)
-                ));
+        $idsQuery = "(";
+        foreach($ids as $id)
+            $idsQuery .= "'$id',";
+        $idsQuery = rtrim($idsQuery, ",").")";
 
-        //if the channel could not be found then return null
-        if(!$c || $c == null) {
-            return null;
+        $dbResults = RedBeanController::Finder()->where("source", "textId in :id", array(":id" => $idsQuery));
+
+        if(!$dbResults || $dbResults == null || !is_array($dbResults) || count($dbResults) < 1) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [No sourcse found matching any of the IDs supplied]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [Method finished]", \PEAR_LOG_DEBUG);
+            return array();
         }
 
-        //use the channel factory to build a new channel
-        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [END: Getting the sources from the data store]", \PEAR_LOG_DEBUG);
 
-        //return the channel
-        return $channel;
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [START: Parsing the data store objects]", \PEAR_LOG_DEBUG);
+
+        $sources = array();
+
+        foreach($dbResults as $dbResult) {
+
+            $json = $dbResult->json;
+
+            try {
+                $sources[] = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+            }
+            catch (\Exception $e) {
+                $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [An exception was thrown: $e]", \PEAR_LOG_ERR);
+                $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [No source could be constructed from the DB content]", \PEAR_LOG_DEBUG);
+                continue;
+            }
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [END: Parsing the data store objects]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetSourcesById [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $sources;
     }
 
     /**
-     * Adds a new channel processing job to the data store
+     * Adds a list of new Sources to the data store
      *
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     * @param \Swiftriver\Core\ObjectModel\Source[] $sources
      */
-    public static function SaveChannelProgessingJob($channel) {
-        //Check that the channel is not null
-        if(!isset($channel) || $channel == null) {
-            return;
-        }
+    public static function SaveSources($sources){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SaveSources [Method invoked]", \PEAR_LOG_DEBUG);
 
-        //Get the redbean
-        $rb = RedBeanController::RedBean();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SaveSources [START: Looping throught sources]", \PEAR_LOG_DEBUG);
 
-        //see if the channel already exists
-        $c = reset(RedBeanController::Finder()->where(
-                "channelprocessingjobs",
-                "textId = :id",
-                array(":id" => $channel->id)
-                ));
+        foreach($sources as $source) {
 
-        //if the content is not found then create one
-        if(!$c || !isset($c)) {
-            //create the record
-            $c = $rb->dispense("channelprocessingjobs");
-        }
+            //get the source from the db
+            $s = reset(RedBeanController::Finder()->where("source", "textId = :id", array(":id" => $source->id)));
 
-        //add any properties that we want to be searchable in the db
-        $c = DataContext::AddPropertiesToDataSoreItem(
-                    $c,
-                    $channel,
+            //If the source does not exists, create it.
+            if(!$s || $s == null) {
+                //create the new data store object for the source
+                $s = $rb->dispense("source");
+            }
+
+            //Add properties we want specifically in the table
+            $s = DataContext::AddPropertiesToDataSoreItem(
+                    $s,
+                    $source,
                     array(
                         "textId" => "id",
+                        "score" => "score",
+                        "type" => "type",
+                        "subType" => "subType",
                         "active" => "active",
-                        "nextrun" => "nextrun",
                         "inprocess" => "inprocess",
+                        "nextrun" => "nextrun"
                     ));
 
-        //add the json encoded channel
-        $c->json = json_encode($channel);
+            //add the encoded source object to the data sotre object
+            $s->json = json_encode($source);
 
-        $rb->store($c);
-
-        /*
-        if(!isset($channel))
-            return;
-        $id = ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId());
-        $query = "SELECT COUNT(*) FROM channelprocessingjobs WHERE id = '".$id."';";
-        $result = self::RunQuery($query);
-        $result = mysql_result($result, 0);
-        if($result > 0)
-            return;
-        $type = $channel->type;
-        $updatePeriod = $channel->updatePeriod;
-        $nextrun = time() + ($updatePeriod * 60);
-        $nextrun = date("Y-m-d H:i:s", $nextrun);
-        $rawParameters = $channel->parameters;
-        $parameters = "";
-        foreach(array_keys($channel->parameters) as $key) {
-            $encodedKey = urlencode($key);
-            $encodedValue = urlencode($rawParameters[$key]);
-            $parameters .= $encodedKey.",".$encodedValue."|";
+            //save the source
+            $rb->store($s);
         }
-        $parameters = rtrim($parameters, "|");
 
-        $query = "INSERT INTO channelprocessingjobs VALUES(".
-                 "'".$id."',".
-                 "'".$type."',".
-                 "'".$parameters."',".
-                 $updatePeriod.",".
-                 "'".$nextrun."',".
-                 "null,".
-                 "null,".
-                 "0,".
-                 "1);";
-        $result = self::RunQuery($query);
-        */
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SaveSources [START: Looping throught sources]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SaveSources [Method finished]", \PEAR_LOG_DEBUG);
+    }
+
+    /**
+     * Given a list of IDs this method removes the sources from
+     * the data store.
+     *
+     * @param string[] $ids
+     */
+    public static function RemoveSources($ids){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [Method invoked]", \PEAR_LOG_DEBUG);
+
+        if(!isset($ids) || $ids == null || !is_array($ids) || count($ids) < 1) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [No IDs supplied]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [Method finished]", \PEAR_LOG_DEBUG);
+            return array();
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [START: Looping through IDs ]", \PEAR_LOG_DEBUG);
+
+        $rb = RedBeanController::RedBean();
+
+        foreach($ids as $id) {
+            //get the source from the db
+            $s = reset(RedBeanController::Finder()->where("source", "textId = :id", array(":id" => $source->id)));
+
+            //If the source does not exists, skip it.
+            if(!$s || $s == null) {
+                continue;
+            }
+
+            $rb->trash($s);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [END: Looping through IDs ]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RemoveSources [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
      * Given a date time, this function returns the next due
-     * channel processing job.
+     * Source.
      *
      * @param DateTime $time
-     * @return \Swiftriver\Core\ObjectModel\Channel
+     * @return \Swiftriver\Core\ObjectModel\Source
      */
-    public static function SelectNextDueChannelProcessingJob($time){
+    public static function SelectNextDueSource($time){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [Method invoked]", \PEAR_LOG_DEBUG);
+
         //if the time is not set, set it to now
         if(!isset($time) || $time == null || !is_numeric($time)) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [The time variable was not set, setting to now]", \PEAR_LOG_DEBUG);
             $time = time();
         }
 
         //Get the redbean
         $rb = RedBeanController::RedBean();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [START: Selecting data object from the data store]", \PEAR_LOG_DEBUG);
+
         //select the next due processing job
-        $c = reset(RedBeanController::Finder()->where(
-                "channelprocessingjobs",
+        $s = reset(RedBeanController::Finder()->where(
+                "source",
                 "active = 1 and inprocess = 0 order by nextrun asc limit 1"
                 ));
 
         //check if there is anythign to return
-        if(!isset($c) || $c == null) {
+        if(!isset($s) || $s == null) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [Nothing returned from the data store]", \PEAR_LOG_DEBUG);
             return null;
         }
 
-        //Create a channel obejct from the json
-        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [END: Selecting data object from the data store]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [START: Constructing a source object fro mthe data object]", \PEAR_LOG_DEBUG);
+
+        //Get the json from that data object
+        $json = $s->json;
+
+        try {
+            //Build a new source from the json
+            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+        }
+        catch(\Exception $e) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [An exception was thrown: $e]", \PEAR_LOG_ERR);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [The data object could not be converted into a source object]", \PEAR_LOG_DEBUG);
+            return null;
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [END: Constructing a source object fro mthe data object]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [START: Setting properties to identify the source as in progress]", \PEAR_LOG_DEBUG);
 
         //set the nextrun
-        $nextrun = time() + ($channel->updatePeriod * 60);
-        
-        //update the proerties that show the channel has been run 
-        $channel->nextrun = $nextrun;
-        $channel->timesrun = $channel->timesrun + 1;
-        $channel->lastrun = time();
-        $channel->inprocess = true;
-        
-        //Save the channel back to the DB
-        DataContext::SaveChannelProgessingJob($channel);
-        
-        //return the channel
-        return $channel;
+        $nextrun = time() + ($source->updatePeriod * 60);
 
-        /*
-        if(!isset($time))
-            $time = time();
-        $query = "SELECT * FROM channelprocessingjobs WHERE active = 1 ORDER BY nextrun limit 1;";
-        $result = self::RunQuery($query);
-        if(!$result) {
-            return null;
-        }
-        $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $timesrun = null;
-        while($row = mysql_fetch_array($result, \MYSQL_ASSOC)) {
-            $type = $row["type"];
-            $parameters = $row["parameters"];
-            $updatePeriod = $row["updateperiod"];
-            $nextrun = strtotime($row["nextrun"]);
-            $lastrun = strtotime($row["lastrun"]);
-            $lastsucess = strtotime($row["lastsucess"]);
-            $timesrun = $row["timesrun"];
-            $active = $row["active"];
-            $channel->type = $type;
-            $channel->updatePeriod = $updatePeriod;
-            $channel->active = !isset($active) || $active != "0";
-            if(isset($lastsucess) && $lastsucess != 0) {
-                $channel->lastSucess = $lastsucess;
-            }
-            $params = array();
-            foreach(explode("|", $parameters) as $parameter) {
-                $pair = explode(",", $parameter);
-                $key = urldecode($pair[0]);
-                $value = urldecode($pair[1]);
-                $params[$key] = $value;
-            }
-            $channel->parameters = $params;
-        }
+        //update the proerties that show the channel has been run
+        $source->nextrun = $nextrun;
+        $source->timesrun = $source->timesrun + 1;
+        $source->lastrun = time();
+        $source->inprocess = true;
 
-        if(!isset($channel->type) || !isset($channel->parameters))
-            return null;
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [END: Setting properties to identify the source as in progress]", \PEAR_LOG_DEBUG);
 
-        $nextrun = time() + ($channel->updatePeriod * 60);
-        $nextrun = date("Y-m-d H:i:s", $nextrun);
-        $query = "UPDATE channelprocessingjobs SET ".
-                 "nextrun = '".$nextrun."', ".
-                 "timesrun = ".($timesrun+1).", ".
-                 "lastrun = '".date("Y-m-d H:i:s", time())."' ".
-                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
-        $result = self::RunQuery($query);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [START: Saving the source state]", \PEAR_LOG_DEBUG);
 
-        return $channel;
-        */
+        DataContext::SaveSources(array($source));
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [END: Saving the source state]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SelectNextDueSource [Method finished]", \PEAR_LOG_DEBUG);
+
+        //return the source
+        return $source;
     }
 
     /**
-     * Given a Channel processing job, this method upadtes the data store
-     * to reflect that the last run was a sucess.
-     *
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     * Lists all the current Source in the core
+     * @return \Swiftriver\Core\ObjectModel\Source[]
      */
-    public static function MarkChannelProcessingJobAsComplete($channel) {
-        //Check that the channel is not null
-        if(!isset($channel) || $channel == null) {
-            return;
-        }
-
-        //Get the redbean
-        $rb = RedBeanController::RedBean();
-
-        //see if the channel already exists
-        $c = reset(RedBeanController::Finder()->where(
-                "channelprocessingjobs",
-                "textId = :id",
-                array(":id" => $channel->id)
-                ));
-
-        //if the content is not found then return null
-        if(!$c || !isset($c)) {
-            return null;
-        }
-
-        //Create a channel obejct from the json
-        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
-
-        //save the time of this sucess
-        $channel->lastSucess = time();
-
-        $channel->inprocess = false;
-
-        //Save the channel back to the DB
-        DataContext::SaveChannelProgessingJob($channel);
-
-
-        /*
-        if(!isset($channel))
-            return;
-
-        $query = "UPDATE channelprocessingjobs SET ".
-                 "lastsucess = '".date("Y-m-d H:i:s", time())."' ".
-                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
-        $result = self::RunQuery($query);
-        */
-    }
-
-    /**
-     * Given a Channel processing job, this method deletes it from the data store
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     */
-    public static function RemoveChannelProcessingJob($channel) {
-        //Check that the channel is not null
-        if(!isset($channel) || $channel == null) {
-            return;
-        }
-
-        //Get the redbean
-        $rb = RedBeanController::RedBean();
-
-        //see if the channel already exists
-        $c = reset(RedBeanController::Finder()->where(
-                "channelprocessingjobs",
-                "textId = :id",
-                array(":id" => $channel->id)
-                ));
-
-        //if the channel was not found then return
-        if(!isset($c) || $c == null) {
-            return;
-        }
-
-        //trash the record
-        $rb->trash($c);
-
-        /*
-        if(!isset($channel))
-            return;
-
-        $query = "DELETE FROM channelprocessingjobs ".
-                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
-        $result = self::RunQuery($query);
-        */
-    }
-
-    /**
-     * Lists all the current Channel Processing Jobs in the core
-     * @return \Swiftriver\Core\ObjectModel\Channel[]
-     */
-    public static function ListAllChannelProcessingJobs() {
+    public static function ListAllSources(){
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [Method invoked]", \PEAR_LOG_DEBUG);
-        
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Get all channel processing jobs fro the data store.]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [Method invoked]", \PEAR_LOG_DEBUG);
 
-        //get the db objects
-        $cs = RedBeanController::Finder()->where("channelprocessingjobs");
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [START: Querying the data store]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [END: Get all channel processing jobs fro the data store.]", \PEAR_LOG_DEBUG);
-        
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Create Channel object from data store objects.]", \PEAR_LOG_DEBUG);
-        //create the array to return
-        $channels = array();
+        $dbResults = RedBeanController::Finder()->where("source");
 
-        //loop through the DB objects
-        if(isset($cs) && is_array($cs)) {
-            foreach($cs as $c) {
-                $channels[] = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+        if(!$dbResults || $dbResults == null || !is_array($dbResults) || count($dbResults) < 1) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [No sourcse found]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [Method finished]", \PEAR_LOG_DEBUG);
+            return array();
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [END: Querying the data store]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [START: Creating source objects]", \PEAR_LOG_DEBUG);
+
+        $sources = array();
+
+        foreach($dbResults as $dbResult) {
+
+            $json = $dbResult->json;
+
+            try {
+                $sources[] = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+            }
+            catch (\Exception $e) {
+                $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [An exception was thrown: $e]", \PEAR_LOG_ERR);
+                $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [No source could be constructed from the DB content]", \PEAR_LOG_DEBUG);
+                continue;
             }
         }
 
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Create Channel object from data store objects.]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [END: Creating source objects]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [Method finished]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllSources [Method finished]", \PEAR_LOG_DEBUG);
 
-        //return the channels
-        return $channels;
-
-        /*
-        $query = "SELECT * FROM channelprocessingjobs ORDER BY nextrun;";
-        $result = self::RunQuery($query);
-        if(!$result) {
-            return null;
-        }
-        $channels = array();
-        while($row = mysql_fetch_array($result, \MYSQL_ASSOC)) {
-            $type = $row["type"];
-            $parameters = $row["parameters"];
-            $updatePeriod = $row["updateperiod"];
-            $nextrun = strtotime($row["nextrun"]);
-            $lastrun = strtotime($row["lastrun"]);
-            $lastsucess = strtotime($row["lastsucess"]);
-            $timesrun = $row["timesrun"];
-            $active = $row["active"];
-            $channel = new \Swiftriver\Core\ObjectModel\Channel();
-            $channel->type = $type;
-            $channel->updatePeriod = $updatePeriod;
-            $channel->active = !isset($active) || $active != 0;
-            $channel->lastSucess = $lastsucess;
-            $params = array();
-            foreach(explode("|", $parameters) as $parameter) {
-                $pair = explode(",", $parameter);
-                $key = urldecode($pair[0]);
-                $value = urldecode($pair[1]);
-                $params[$key] = $value;
-            }
-            $channel->parameters = $params;
-            $channels[] = $channel;
-        }
-        return $channels;
-        */
+        return $sources;
     }
 
     /**
@@ -478,6 +381,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                     array(
                         "textId" => "id",
                         "score" => "score",
+                        "type" => "type",
+                        "subType" => "subType",
                     ));
 
             //add the encoded source object to the data sotre object
@@ -857,7 +762,6 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RecordSourceScoreChange [Method finished]", \PEAR_LOG_DEBUG);
     }
-
 
     public static function RunQuery($query) {
         //TODO: Logging

@@ -15,24 +15,28 @@ class SourceFactory {
         $source = new \Swiftriver\Core\ObjectModel\Source();
 
         //set the basic properties
-        $source->id = $object->id;
-        $source->score = $object->score;
-        $source->uniqueIdString = $object->uniqueIdString;
-        $source->name = $object->name;
+        $source->id =               isset($object->id) ? $object->id : md5(uniqid(rand(), true));
+        $source->score =            isset($object->score) ? $object->score : null;
+        $source->name =             isset($object->name) ? $object->name : null;
+        $source->type =             isset($object->type) ? $object->type : null;
+        $source->subType =          isset($object->subType) ? $object->subType : null;
+        $source->updatePeriod =     isset($data->updatePeriod) ? $data->updatePeriod : 30;
+        $source->nextrun =          isset($data->nextrun) ? $data->nextrun : strtotime("+ ".$source->updatePeriod." minutes");
+        $source->active =           isset($data->active) ? $data->active : true;
+        $source->lastSucess =       isset($data->lastSucess) ? $data->lastSucess : null;
+        $source->inprocess =        isset($data->inprocess) ? $data->inprocess : false;
+        $source->timesrun =         isset($data->timesrun) ? $data->timesrun : 0;
 
-        //return the source
-        return $source;
-    }
-
-    public static function CreateSourceFromID($uniqueId) {
-        //create a new source
-        $source = new \Swiftriver\Core\ObjectModel\Source();
-
-        //use the uniqueId to generate a new id
-        $source->id = hash("md5", $uniqueId);
-
-        //TEMP: use the url as the name
-        $source->name = $uniqueId;
+        if(isset($data->parameters)) {
+            $params = array();
+            foreach($data->parameters as $key => $value) {
+                $params[$key] = $value;
+            }
+            $source->parameters = $params;
+        }
+        else {
+            $source->parameters = array();
+        }
 
         //return the source
         return $source;
