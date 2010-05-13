@@ -366,30 +366,10 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             //get the source from the content
             $source = $item->source;
 
+            DataContext::SaveSources(array($source));
+
             //get the source from the db
             $s = reset(RedBeanController::Finder()->where("source", "textId = :id", array(":id" => $source->id)));
-
-            //If the source does not exists, create it.
-            if(!$s || $s == null) {
-                //create the new data store object for the source
-                $s = $rb->dispense("source");
-            }
-
-            $s = DataContext::AddPropertiesToDataSoreItem(
-                    $s,
-                    $source,
-                    array(
-                        "textId" => "id",
-                        "score" => "score",
-                        "type" => "type",
-                        "subType" => "subType",
-                    ));
-
-            //add the encoded source object to the data sotre object
-            $s->json = json_encode($source);
-
-            //save the source
-            $rb->store($s);
 
             //create the association between content and source
             RedBeanController::Associate($i, $s);
