@@ -3,17 +3,17 @@ namespace Swiftriver\Core\Modules\SiSPS\Parsers;
 class FeedsParser implements IParser {
     /**
      * Implementation of IParser::GetAndParse
-     * @param \Swiftriver\Core\ObjectModel\Source $parameters
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @param datetime $lassucess
      */
-    public function GetAndParse($source) {
+    public function GetAndParse($channel) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Extract the required variables
-        $feedUrl = $source->parameters["feedUrl"];
+        $feedUrl = $channel->parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == "")) {
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
@@ -63,7 +63,7 @@ class FeedsParser implements IParser {
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
         }
 
-        $lastsucess = $source->lastsucess;
+        $lastsucess = $channel->lastSucess;
 
         //Loop throught the Feed Items
         foreach($feeditems as $feedItem) {
@@ -79,6 +79,16 @@ class FeedsParser implements IParser {
             }
 
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Adding feed item]", \PEAR_LOG_DEBUG);
+
+            //Get source data
+            $source_name = $feedItem->get_author()->name;
+            $source_name = $source_name . " @ " . $feedUrl;
+            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
+            $source->name = $source_name;
+            $source->email = $feedItem->get_author()->email;
+            $source->parent = $channel->id;
+            $source->type = $channel->type;
+            $source->subType = $channel->subType;
 
             //Extract all the relevant feedItem info
             $title = $feedItem->get_title();
@@ -131,6 +141,30 @@ class FeedsParser implements IParser {
      */
     public function ReturnType() {
         return "Feeds";
+    }
+
+    /**
+     * This method returns an array of the required paramters that
+     * are nessesary to run this parser. The Array should be in the
+     * following format:
+     * array(
+     *  "SubType" => array ( ConfigurationElements )
+     * )
+     *
+     * @return array()
+     */
+    public function ReturnRequiredParameters(){
+        $return = array();
+        foreach($this->ListSubTypes() as $subType){
+            $return[$subType] = array(
+                new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                    "feedUrl",
+                    "string",
+                    "The URL of the feed (must include 'http://')"
+                )
+            );
+        }
+        return $return;
     }
 }
 ?>

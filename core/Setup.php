@@ -71,8 +71,8 @@ foreach($iterator as $file) {
 
 //Include some specific files
 include_once(dirname(__FILE__)."/Workflows/WorkflowBase.php");
-include_once(dirname(__FILE__)."/Workflows/ChannelProcessingJobs/ChannelProcessingJobBase.php");
 include_once(dirname(__FILE__)."/Workflows/ContentServices/ContentServicesBase.php");
+include_once(dirname(__FILE__)."/Workflows/ChannelServices/ChannelServicesBase.php");
 include_once(dirname(__FILE__)."/Workflows/SourceServices/SourceServicesBase.php");
 include_once(Setup::Configuration()->ModulesDirectory."/SiSPS/Parsers/IParser.php");
 

@@ -10,7 +10,9 @@ class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
             $sourceType;
             $sourceType->type = $parser->ReturnType();
             $sourceType->subTypes = $parser->ListSubTypes();
+            $sourceType->configurationProperties = $parser->ReturnRequiredParameters();
             $return->sourceTypes[] = $sourceType;
+            unset($sourceType);
         }
 
         return json_encode($return);

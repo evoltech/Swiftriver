@@ -13,10 +13,10 @@ interface IParser{
      * to the function to ensure that content that has
      * already been parsed is not duplicated.
      *
-     * @param \Swiftriver\Core\ObjectModel\Source $source
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @return Swiftriver\Core\ObjectModel\Content[] contentItems
      */
-    public function GetAndParse($source);
+    public function GetAndParse($channel);
 
     /**
      * This method returns a string array with the names of all
@@ -34,5 +34,17 @@ interface IParser{
      * @return string type of sources parsed
      */
     public function ReturnType();
+
+    /**
+     * This method returns an array of the required paramters that
+     * are nessesary to run this parser. The Array should be in the
+     * following format:
+     * array(
+     *  "SubType" => array ( ConfigurationElements )
+     * )
+     *
+     * @return array()
+     */
+    public function ReturnRequiredParameters();
 }
 ?>

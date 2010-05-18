@@ -2,6 +2,7 @@
 namespace Swiftriver\Core\DAL\DataContextInterfaces;
 include_once(dirname(__FILE__)."/IAPIKeyDataContext.php");
 include_once(dirname(__FILE__)."/ISourceDataContext.php");
+include_once(dirname(__FILE__)."/IChannelDataContext.php");
 include_once(dirname(__FILE__)."/IContentDataContext.php");
 include_once(dirname(__FILE__)."/ITrustLogDataContext.php");
 /**
@@ -14,6 +15,7 @@ interface IDataContext extends
     IAPIKeyDataContext,
     IContentDataContext,
     ITrustLogDataContext,
+    IChannelDataContext,
     ISourceDataContext {
 
 }

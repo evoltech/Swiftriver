@@ -60,32 +60,37 @@ class DetectionAndTranslationWorkflow {
 
             $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Selecting the text for language detection]", \PEAR_LOG_DEBUG);
 
-            //extract the text to use for language detection
-            $textForDetection = $this->ExtractTextForLanguageDetection($languageSpecificText);
+            //if the content does not have a language code then try to detect it
+            if(!isset($languageSpecificText->languageCode) || $languageSpecificText->languageCode != null) {
 
-            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Selecting the text for language detection]", \PEAR_LOG_DEBUG);
+                //extract the text to use for language detection
+                $textForDetection = $this->ExtractTextForLanguageDetection($languageSpecificText);
+
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Selecting the text for language detection]", \PEAR_LOG_DEBUG);
 
 
-            //If no text then throw and exception
-            if($textForDetection == null) {
-                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [No text could be selected for language detection]", \PEAR_LOG_DEBUG);
-                throw new \Exception("No text could be extracted for language detection");
+                //If no text then throw and exception
+                if($textForDetection == null) {
+                    $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [No text could be selected for language detection]", \PEAR_LOG_DEBUG);
+                    throw new \Exception("No text could be extracted for language detection");
+                }
+
+                //Get an new instance of the detection interface
+                $interface = new LanguageDetectionInterface(
+                        $textForDetection,
+                        $this->referer);
+
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Calling the language detection service]", \PEAR_LOG_DEBUG);
+
+                //get the detected language code from the interafce
+                $languageCode = $interface->GetLanguageCode();
+
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Calling the language detection service]", \PEAR_LOG_DEBUG);
+
+                //set the language code
+                $languageSpecificText->languageCode = $languageCode;
+
             }
-
-            //Get an new instance of the detection interface
-            $interface = new LanguageDetectionInterface(
-                    $textForDetection,
-                    $this->referer);
-
-            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Calling the language detection service]", \PEAR_LOG_DEBUG);
-
-            //get the detected language code from the interafce
-            $languageCode = $interface->GetLanguageCode();
-
-            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Calling the language detection service]", \PEAR_LOG_DEBUG);
-
-            //set the language code
-            $languageSpecificText->languageCode = $languageCode;
 
             //If the language IS the base language
             if(strtolower($languageCode) == strtolower($this->baseLanguageCode)) {

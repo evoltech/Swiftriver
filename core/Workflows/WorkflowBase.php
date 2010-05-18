@@ -7,7 +7,7 @@ class WorkflowBase {
      * @return string
      */
     protected function FormatErrorMessage($error) {
-        return '{"error":"'.str_replace('"', '\'', $error).'"}';
+        return '{"message":"'.str_replace('"', '\'', $error).'"}';
     }
 
     /**

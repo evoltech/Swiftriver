@@ -1,6 +1,12 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
 class SourceFactory {
+    public static function CreateSourceFromIdentifier($identifier) {
+        $source = new \Swiftriver\Core\ObjectModel\Source();
+        $source->id = md5($identifier);
+        return $source;
+    }
+
     public static function CreateSourceFromJSON($json) {
         //decode the json
         $object = json_decode($json);
@@ -20,23 +26,8 @@ class SourceFactory {
         $source->name =             isset($object->name) ? $object->name : null;
         $source->type =             isset($object->type) ? $object->type : null;
         $source->subType =          isset($object->subType) ? $object->subType : null;
-        $source->updatePeriod =     isset($data->updatePeriod) ? $data->updatePeriod : 30;
-        $source->nextrun =          isset($data->nextrun) ? $data->nextrun : strtotime("+ ".$source->updatePeriod." minutes");
-        $source->active =           isset($data->active) ? $data->active : true;
-        $source->lastSucess =       isset($data->lastSucess) ? $data->lastSucess : null;
-        $source->inprocess =        isset($data->inprocess) ? $data->inprocess : false;
-        $source->timesrun =         isset($data->timesrun) ? $data->timesrun : 0;
-
-        if(isset($data->parameters)) {
-            $params = array();
-            foreach($data->parameters as $key => $value) {
-                $params[$key] = $value;
-            }
-            $source->parameters = $params;
-        }
-        else {
-            $source->parameters = array();
-        }
+        $source->email =            isset($object->email) ?$object->email : null;
+        $source->link =             isset($object->link) ?$object->link : null;
 
         //return the source
         return $source;
