@@ -1,34 +1,46 @@
 <?php ?>
 <script type="text/javascript" language="javascript">
     $(document).ready(function(){
-        //setInterval("UpdateContent()", 5000);
+        setInterval("Update()", 10000);
 
         RepaintChannelTree();
 
         //Show the loading message
         $("div#content-list").append("<div class='loading'>loading</div>");
 
+        //Make the call to the main API function to list the
+        AddContent(20, new Array());
+    });
+
+    function AddContent(count, existingIds){
         //variables used to work out when the loading has finished
         var total = 0; var loaded = 0;
 
-        //Make the call to the main API function to list the
-        $.getJSON("<?php echo(url::base()); ?>api/contentselection/get/<?php echo($state);?>/0/20/0/100", function(data) {
+        $.getJSON("<?php echo(url::base()); ?>api/contentselection/get/<?php echo($state);?>/0/" + count + "/0/100", function(data) {
             if(!data.message) {
                 total = data.totalcount;
                 if(total > 0) {
                     for(var i=0; i<data.contentitems.length; i++) {
-                        $.post("<?php echo(url::base()); ?>parts/content/render",
-                               { content : data.contentitems[i] },
-                               function(contentTemplate) {
-                                   $("div#content-list ul").append(
-                                        "<li>" + contentTemplate + "</li>"
-                                   );
-                                   loaded++;
-                                   if(loaded == total) {
-                                       $("div#content-list div.loading").remove();
-                                   }
-                                }
-                        );
+                        var found = false;
+                        for(var x=0; x<existingIds.length; x++) {
+                            if(existingIds[x] == data.contentitems[i].id) {
+                                found = true;
+                            }
+                        }
+                        if(found == false) {
+                            $.post("<?php echo(url::base()); ?>parts/content/render",
+                                   { content : data.contentitems[i] },
+                                   function(contentTemplate) {
+                                       $("div#content-list ul").append(
+                                            "<li>" + contentTemplate + "</li>"
+                                       );
+                                       loaded++;
+                                       if(loaded == total) {
+                                           $("div#content-list div.loading").remove();
+                                       }
+                                    }
+                            );
+                        }
                     }
                 }else {
                     $("div#content-list div.loading").remove();
@@ -40,7 +52,7 @@
                 }
             }
         });
-    });
+    }
 
     function MarkContentAsAccurate(contentId) {
         $("div#"+contentId).parent().slideUp("normal", function(){
@@ -56,7 +68,6 @@
                 $(this).remove();
         });
         $.getJSON("<?php echo(url::base()); ?>api/contentcuration/markasinaccurate/" + contentId, function(data) {
-            
             UpdateSourceScores(data.sourceId, data.sourceScore);
         });
     }
@@ -113,11 +124,17 @@
         });
     }
 
-    function UpdateContent() {
+    function Update() {
         $.post(
             "<?php echo(str_replace("/web", "", url::base())); ?>core/ServiceAPI/ChannelServices/RunNextChannel.php",
             { key : "swiftriver_dev" }
         );
+        var contentLeft = $("div#content-list ul > li").size();
+        var ids = new Array();
+        $("div#content-list ul li div.content-item").each(function(){
+            ids[ids.length] = $(this).attr('id');
+        });
+        AddContent(20, ids);
     }
 
     function ConfigureTheme() {

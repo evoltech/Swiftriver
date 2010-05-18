@@ -371,11 +371,12 @@ class TwitterParser implements IParser {
         $date = $tweet->get_date();
         
         //Create the source
-        $source_name = $tweet->get_author()->get_name();
+        $author = $tweet->get_author();
+        $source_name = ($author != null) ? $author->get_name() : $channel->name;
         $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
         $source->name = $source_name;
-        $source->email = $tweet->get_author()->get_email();
-        $source->link = $tweet->get_author()->get_link();
+        $source->email = ($author != null) ? $tweet->get_author()->get_email() : null;
+        $source->link = ($author != null) ? $tweet->get_author()->get_link() : null;
         $source->parent = $channel->id;
         $source->type = $channel->type;
         $source->subType = $channel->subType;

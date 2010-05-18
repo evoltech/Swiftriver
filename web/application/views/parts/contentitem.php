@@ -23,11 +23,13 @@
                 <div class="language <?php echo($content->text[$i]->languageCode); ?> <?php if($i>0) { echo ('more'); } ?>">
                     <p class="title"><?php echo($content->text[$i]->title); ?></p>
                     <div class="text">
-                        <?php for($j=0; $j<count($content->text[$i]); $j++): ?>
-                            <p class="<?php if($j>0) { echo ('more'); } ?>">
-                                <?php echo($content->text[$i]->text[$j]); ?>
-                            </p>
-                        <?php endfor; ?>
+                        <?php if(isset($content->text[$i]->text)) : ?>
+                            <?php for($j=0; $j<count($content->text[$i]->text); $j++): ?>
+                                <p class="<?php if($j>0) { echo ('more'); } ?>">
+                                    <?php echo($content->text[$i]->text[$j]); ?>
+                                </p>
+                            <?php endfor; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endfor; ?>
