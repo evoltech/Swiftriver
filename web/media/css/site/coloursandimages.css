@@ -12,8 +12,8 @@ body div#page div#body div#menu div#list-option ul li a:hover { background-color
 
 body div#page div#body div#content div#content-list ul li { border-bottom:2px solid #0183C1; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { color:#015B87; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:1px solid #0183C1; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { border-bottom:1px solid #0183C1; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:1px solid #EBE8FA; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { border-bottom:1px solid #EBE8FA; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group div.tag-list p { background-color:#DDD; }
 
 body div#page div#body div#right-bar div#channel-tree { border:2px solid #0183C1; }

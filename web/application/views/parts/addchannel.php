@@ -35,7 +35,7 @@
     <form action="" id="add-channel-form">
         <fieldset>
             <div class="form-row">
-                <label for="name">The name of the channel:</label>
+                <label for="name">The name of the feed:</label>
                 <input type="text" name="name" class="required" />
             </div>
             <?php foreach($channel->configurationProperties as $key => $properties) : ?>

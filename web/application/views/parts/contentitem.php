@@ -1,4 +1,8 @@
+<!-- Begin Sweeper Panel -->
+
 <div class="content-item clearfix" id="<?php echo($content->id); ?>">
+	
+<!-- Content Item Left -->
     <div class="left-column">
         <a href="javascript:MarkContentAsAccurate('<?php echo($content->id); ?>')" title="Mark this content as acurate" class="logo">
             <?php echo(Html::image("media/images/logo-image-med.png")); ?>
@@ -14,6 +18,8 @@
             </p>
         </div>
     </div>
+
+<!-- Content Item Right -->
     <div class="right-column">
         <div class="system-details">
             <p class="id"><?php echo($content->id); ?></p>
@@ -35,8 +41,7 @@
             <?php endfor; ?>
         </div>
         <div class="meta">
-            <p class="date">Written on <?php echo(date('r', $content->date)); ?></p>
-            <p class="source">From <?php echo($content->source->name); ?></p>
+            <p class="date"><strong>Delivered:</strong> <?php echo(date('r', $content->date)); ?> <strong>Source:</strong> <?php echo($content->source->name); ?></p>
         </div>
         <div class="tags">
             <?php foreach($content->tags as $type => $tags) : ?>
@@ -55,3 +60,4 @@
     </div>
 </div>
 
+<!-- End Sweeper Panel -->

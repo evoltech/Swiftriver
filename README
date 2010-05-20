@@ -1,28 +1,24 @@
 NOTE: This is an Alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
 
 ==========================
-SWIFT RIVER v0.1.0 - Apala
+SWIFT RIVER v0.1.3 - Apala
 ==========================
  
-Swiftriver is a FOSS platform for determining the veracity and accuracy of news related to an event. 
+SwiftRiver is a FOSS platform for determining the veracity and accuracy of news related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://sws.ushahidi.com/ or at http://swift.ushahidi.com/doc/
 
-There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://swift.ushahidi.com/extend/
-
-Find it on Github - http://github.com/ushahidi/Swiftriver
-
+Find us on Github - http://github.com/ushahidi/Swiftriver
 
 ===========================
 RELEASE NOTES
 ===========================
 
-	New Core written in PHP optimized for speed and structuring data
+	New core optimized for speed and structuring data
 	API
 	Plugin Architecture
 	Semantic Tagging (Who, What, Where)
 	Support for noSQL DBs like Cassandra
 	Extensible Source Parsing Service
-	Swiftriver Web Services
-
+	SwiftRiver Web Services
 
 ===========================
 DOCUMENTATION
@@ -32,37 +28,40 @@ Documentation - http://swift.ushahidi.com/doc/
 Installation - http://swift.ushahidi.com/doc/doku.php?id=install
 Roadmap - http://swift.ushahidi.com/doc/doku.php?id=roadmap
 FAQ - http://swift.ushahidi.com/doc/doku.php?id=faq
- 
 
 ======================
 PROJECT CONTRIBUTORS
 ======================
 
-Team Swift Core Developers
+Core Developers
 
-	Jon Gosier (System Architect) 
+	Jon Gosier (Director, UX, System Architect)
+	Matthew Griffiths (Technical Architect) 
 	Ivan Kavuma (Core Developer)
-	Matthew Griffiths (Technical Architect)
 	Josh Bronson (Developer)
 
-Team Swift Volunteers
+Volunteer Contributors
 
 	Moses Mugisha (Swift - SULSa)
 	Victor Miclovich (Swift - SiLCC)
 	Wolfgang Werner (Swift - SiLCC)
 	M. Edward (Ed) Borasky (Swift - SiLCC)
 	Maarten J. van der Veen (Twitter API)
+	Soe
+	Nishith
+	Mang-Git Ng ()
 
-Team Swift Advisors
+SwiftRiver Advisors
 
-	Andrew Turner (Swift - Original Build)
-	Chris Blow (Concept and Strategy)
-	Kaushal Jhalla (Concept)
-	Ed Bice (Strategy)
+	Andrew Turner
+	Chris Blow
+	Kaushal Jhalla
+	Ed Bice 
 
 Contributing Organizations
 
 	The Ushahidi Team
+	OpenCalais
 	Appfrica Labs
 	Geo Commons
 	Meedan
@@ -71,6 +70,8 @@ Contributing Organizations
 ===============
 CHANGE LOG
 ===============
+2010-05-20  Adding Parsers, New Theme Engine, Ajax refresh 
+2010-05-10	Complete Rebuild, Migration to Kohana 3.x.x
 2010-04-30	Merge New Core, New Installer
 2010-04-03	Theming Admin, Auto Logo Styles
 2010-03-26	Rumba v0.0.9 Released
@@ -91,7 +92,7 @@ CHANGE LOG
 2010-02-24	Implemented Rating Algorithm
 2010-02-22	Sweeper Login, Ajax Tagging, Dupe Suppression, Routing Problems, Change to .sql
 2010-02-18	Ajax Tagging
-2010-02-16	Veracity: Tagging and Weighting
+2010-02-16	Veracity (Tagging and Weighting)
 2010-02-14	Sql update
 2010-02-12	Implemented Tagging
 2010-02-11	Update

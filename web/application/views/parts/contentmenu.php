@@ -17,7 +17,7 @@
         </li>
         <li>
             <a class="<?php echo($chatter_class); ?>" href="<?php echo(url::base()); ?>contentlist/get/chatter">
-                Cross talk
+                Cross-talk
             </a>
         </li>
     </ul>

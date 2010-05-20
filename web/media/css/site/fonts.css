@@ -1,16 +1,16 @@
-body {  font-family:'Century Gothic', Calibri, Arial, sans-serif; }
+body { font-family:Arial, sans-serif; }
 
-body div#page div#header div#tag-line h1 { font-size:1.4em; font-family:'Times New Roman'; text-align:justify; }
-body div#page div#header configuration a { text-decoration: none; }
-body div#page div#header configuration a:hover { font-weight: bold; }
+body div#page div#header div#tag-line h1 { font-size:0.9em; font-family:'Arial'; line-height:1.5em; }
+body div#page div#header div#configuration a { font-size:75%; text-decoration: none; font-weight:bold; }
+body div#page div#header div#configuration a:hover { text-decoration: underline; }
 
-body div#page div#body div#menu div#list-option ul li a { font-weight:bold; text-decoration: none; }
+body div#page div#body div#menu div#list-option ul li a { font-weight:bold; text-decoration: none; font-size:80%; text-transform:uppercase; }
 
-body div#page div#body div#content div#content-list ul li div.content-item {font-size:90%; }
+body div#page div#body div#content div#content-list ul li div.content-item {font-size:75%; }
 body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity { text-align:center; }
 body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity p { font-size: 80%; font-weight:bold; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { font-weight:bold; font-size:110%; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-weight:bold; font-size:90%; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { font-weight:bold; font-size:100%; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-size:90%; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p.tag-type { font-weight:bold; }
 
 body div#page div#body div#right-bar { text-align:left !important; }

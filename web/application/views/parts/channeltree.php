@@ -20,7 +20,7 @@
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                         <li>
-                                            No channels of this type yet.
+                                            No feeds of this type yet.
                                         </li>
                                 <?php endif; ?>
                             </ul>
