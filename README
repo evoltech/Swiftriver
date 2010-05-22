@@ -38,7 +38,6 @@ Core Developers
 	Jon Gosier (Director, UX, System Architect)
 	Matthew Griffiths (Technical Architect) 
 	Ivan Kavuma (Core Developer)
-	Josh Bronson (Developer)
 
 Volunteer Contributors
 
@@ -47,29 +46,33 @@ Volunteer Contributors
 	Wolfgang Werner (Swift - SiLCC)
 	M. Edward (Ed) Borasky (Swift - SiLCC)
 	Maarten J. van der Veen (Twitter API)
-	Soe
-	Nishith
-	Mang-Git Ng ()
+	Soe (River ID)
+	Nishith (SiLCC Contributor)
+	Mang-Git Ng (Reverberations)
+	Josh Bronson (SiCDS)
 
 SwiftRiver Advisors
 
 	Andrew Turner
 	Chris Blow
 	Kaushal Jhalla
-	Ed Bice 
+	Ed Bice
+	Patrick Meier
+	Erik Hersman
+	David Kobia 
 
 Contributing Organizations
 
-	The Ushahidi Team
+	Ushahidi
 	OpenCalais
 	Appfrica Labs
 	Geo Commons
 	Meedan
 
-
 ===============
 CHANGE LOG
 ===============
+2010-05-22	Redesigned default theme, logo
 2010-05-20  Adding Parsers, New Theme Engine, Ajax refresh 
 2010-05-10	Complete Rebuild, Migration to Kohana 3.x.x
 2010-04-30	Merge New Core, New Installer

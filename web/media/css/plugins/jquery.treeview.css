@@ -1,12 +1,16 @@
+/* @override http://localhost:8888/loctest_2/web/media/css/plugins/jquery.treeview.css */
+
 .treeview, .treeview ul { 
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	font-size: 0.75em;
 }
 
 .treeview ul {
 	background-color: white;
 	margin-top: 4px;
+	font-size: 100%;	
 }
 
 .treeview .hitarea {
@@ -41,7 +45,7 @@
 
 .treeview .expandable-hitarea { background-position: -80px -3px; }
 
-.treeview li.last { background-position: 0 -1766px }
+.treeview li.last { background-position: 0 -1766px;  }
 .treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(../../images/plugins/jquery.treeview/treeview-default.gif); }
 .treeview li.lastCollapsable { background-position: 0 -111px }
 .treeview li.lastExpandable { background-position: -32px -67px }

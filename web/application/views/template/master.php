@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><?php echo($title); ?></title>
+		<link rel="shortcut icon" href="favicon.ico" />
         <?php echo(Html::script("media/js/jquery.js")); ?>
         <?php echo(Html::script("media/js/jquery.ui.js")); ?>
         <?php echo(Html::script("media/js/jquery.treeview.js")); ?>
@@ -30,6 +31,9 @@
     <body>
         <div id="page">
             <div id="header" class="clearfix">
+					<div id="configuration" class="clearfix">
+						<?php echo($admin); ?>
+					</div>
                 <?php echo($header); ?>
             </div>
             <div id="body" class="clearfix">
