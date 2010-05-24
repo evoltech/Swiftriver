@@ -1,0 +1,50 @@
+/* @override http://localhost:8888/loctest_2/web/media/css/site/layout.css */
+
+body div#page { width:960px; margin-left:auto; margin-right:auto; margin-bottom:50px; }
+body div#page div#header { height:125px; margin-top:30px; }
+body div#page div#header div#logo img { float:left; }
+body div#page div#header div#tag-line { margin-top:10px; float:right; width:50%; }
+body div#page div#header div#configuration { height: 20px; position: absolute; top:0; left:0; width:100%; margin-bottom:0px; padding:5px 0 0 0; border-bottom:1px solid #1A1A1A;}
+body div#page div#header div#configuration ul li { float:right; padding:0 10px 0 10px; }
+
+body div#page div#body div#menu div#list-option ul li a { float:left; padding:10px; margin-right:5px; list-style: none; }
+
+body div#page div#body div#content { width:650px; float:left; }
+body div#page div#body div#content div#content-list { padding-left:10px; margin-bottom: 25px;}
+body div#page div#body div#content div#content-list ul li div.content-item { padding:10px 10px 0 10px; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column { float:left; width:75px; }
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity { padding-top:10px; }
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity p { width:100%; }
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column a.logo img { margin-left:10px; margin-bottom:10px; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column { float:right; width:530px; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.system-details { display:none; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { padding-bottom:5px; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.more { display: none; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p { margin-bottom:2px; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p { float:left; padding:2px; margin:2px; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags { padding-top:5px; padding-bottom:5px; background-color: #f9f9f9;}
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { padding-top:5px; padding-bottom:5px; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta p { padding-bottom: 2px;}
+
+body div#page div#body div#right-bar { float:right; width:270px; }
+body div#page div#body div#right-bar div#channel-tree { width:250px; margin:5px auto 5px auto; }
+body div#page div#body div#right-bar div#channel-tree h2 { padding:10px; }
+body div#page div#body div#right-bar div#channel-tree img { position: relative; top:5px; }
+
+div.modal div.modal-header { height:106px; }
+div.modal div.modal-header h2 { padding:30px; }
+div.modal div.modal-content { padding:20px; }
+div.modal div.modal-content form label { display: block; margin-bottom: 5px; }
+div.modal div.modal-content form label.error { display: block; margin-top: -12px; margin-bottom: 15px; padding:5px; }
+div.modal div.modal-content form input[type=text] { display:block; width:100%; margin-bottom: 15px; }
+div.modal div.modal-content form input[type=submit] { margin-top: 10px; width:50%; float:right; }
+
+div#footer p { padding-left: 10px; padding-bottom: 10px; }
+div#footer ul { padding: 10px; }
+div#footer li { display: inline; font: 0.75em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif; }

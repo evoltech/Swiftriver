@@ -1,0 +1,26 @@
+/* @override http://localhost:8888/loctest_2/web/media/css/site/coloursandimages.css */
+
+body { background: #222 url('../../images/background-page.gif') repeat-x; color:#FFF; }
+
+body div#page div#header div#configuration { color:#fff; background-image: url(../../images/bg_gr.png); }
+body div#page div#header div#configuration a { color:#fff; }
+
+body div#page div#body { border:5px solid #1674a7; background-color:#FFF; color:#000; }
+
+body div#page div#body div#menu div#list-option { background-color:#1674a7; }
+body div#page div#body div#menu div#list-option ul li a { color:#FFF; }
+body div#page div#body div#menu div#list-option ul li a.selected { background-color:#FFF; color:#000; }
+body div#page div#body div#menu div#list-option ul li a:hover { background-color:#FFF; color:#000; }
+
+body div#page div#body div#content div#content-list ul li { border-bottom:1px dotted #cccccc; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { color:#015B87; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:0px solid #EBE8FA; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { border-bottom:0px solid #EBE8FA; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group div.tag-list p { background-color:#DDD; }
+
+body div#page div#body div#right-bar div#channel-tree { border:2px solid #1674a7; }
+body div#page div#body div#right-bar div#channel-tree h2 { background-color:#1674a7; color:#FFF; font-size: 0.95em; font-weight: normal; font-style: normal; }
+
+div#sb-player { background: #222; }
+div.modal { background: #222 url('../../images/background-page.gif') repeat-x 0 -100px; color:#FFF; }
+div.modal div.modal-content form label.error { background-color:#C90; color:#000; border:1px solid #900; }

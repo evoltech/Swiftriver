@@ -1,0 +1,34 @@
+/* @override http://localhost:8888/loctest_2/web/media/css/site/fonts.css */
+
+body { font-family:Arial, sans-serif; }
+span {
+	display: none;
+}
+
+body div#page div#header div#tag-line h1 {
+	font: 0.7em/1.2em "Lucida Grande", Lucida, Verdana, sans-serif; background-image: url(../../images/bg_gr.png); border: 1px solid #0f1a2d; padding: 15px; }
+body div#page div#header div#configuration a { text-decoration: none; font: bold .6em "Lucida Grande", Lucida, Verdana, sans-serif; }
+body div#page div#header div#configuration a:hover { text-decoration: underline; }
+
+body div#page div#body div#menu div#list-option ul li a { text-decoration: none; font: 0.75em "Helvetica Neue", Arial; }
+body div#page div#body div#content div#content-list ul li div.content-item {font-size:75%; }
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity { text-align:center; }
+body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity p { font-size: 80%; font-weight:bold; }
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { font-weight:bold; font-size:1.2em; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p { font-family: Helvetica; font-size: 0.96em; line-height: 1.4em; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p { font-size: 0.95em;}
+
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-size:90%; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p.tag-type { font-weight:bold; }
+
+body div#page div#body div#right-bar { text-align:left !important; }
+
+div#footer { background-color: #1674a7; }
+div#footer p { color: #ffffff; font-size: 0.7em; }
+div#footer a { color: #ffffff; text-decoration: none; }
+div#footer a:hover { color: #ffffff; text-decoration: underline; }
+div#footer li a { color: #ffffff; text-decoration: none; }
+div#footer li a:hover { color: #ffffff; text-decoration: underline; }
+
+div#sb-body div.html h2 { text-align: center; }
