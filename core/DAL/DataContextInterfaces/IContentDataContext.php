@@ -47,6 +47,21 @@ interface IContentDataContext {
     public static function GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby = null);
 
     /**
+     *
+     * @param string $state - The state of the content
+     * @param int $minVeracity - The minimum veracity of the source
+     * @param int $maxVeracity - The maximum veracity of the source
+     * @param string $type - The type of the source
+     * @param string $subType - The subtype of the source
+     * @param string $source - the ID of the source
+     * @param int $pageSize - the number of results to show on the page
+     * @param int $pageStart - the 0 based page start index
+     * @param string $orderBy - the order by clause
+     */
+    public static function GetContentList(
+            $state, $minVeracity, $maxVeracity, $type, $subType, $source,
+            $pageSize, $pageStart, $orderBy);
+    /**
      * Given an array of content items, this method removes them
      * from the data store.
      * @param \Swiftriver\Core\ObjectModel\Content[] $content

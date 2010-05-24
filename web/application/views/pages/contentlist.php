@@ -1,91 +1,31 @@
 <?php ?>
 <script type="text/javascript" language="javascript">
+    var nav_state = '<?php echo(isset($_SESSION["nav_state"]) ? $_SESSION["nav_state"] : "new_content"); ?>';
+    var nav_minVeracity = <?php echo(isset($_SESSION["nav_minVeracity"]) ? $_SESSION["nav_minVeracity"] : "'null'"); ?>;
+    var nav_maxVeracity = <?php echo(isset($_SESSION["nav_maxVeracity"]) ? $_SESSION["nav_maxVeracity"] : "'null'"); ?>;
+    var nav_type = '<?php echo(isset($_SESSION["nav_type"]) ? $_SESSION["nav_type"] : "null"); ?>';
+    var nav_subType = '<?php echo(isset($_SESSION["nav_subType"]) ? $_SESSION["nav_subType"] : "null"); ?>';
+    var nav_source = '<?php echo(isset($_SESSION["nav_source"]) ? $_SESSION["nav_source"] : "null"); ?>';
+    var nav_pageSize = <?php echo(isset($_SESSION["nav_pageSize"]) ? $_SESSION["nav_pageSize"] : "20"); ?>;
+    var nav_pageStart = <?php echo(isset($_SESSION["nav_pageStart"]) ? $_SESSION["nav_pageStart"] : "0"); ?>;
+    var nav_orderBy = '<?php echo(isset($_SESSION["nav_orderBy"]) ? $_SESSION["nav_orderBy"] : "null"); ?>';
+    var nav_baseUrl = "<?php echo(url::base()); ?>";
+    var render_firstload = true;
+
     $(document).ready(function(){
-        setInterval("Update()", 10000);
+        //setInterval("Update()", 10000);
 
         RepaintChannelTree();
 
+        listController = new ListController(nav_baseUrl, "div#content-list ul");
+        listController.NavigationStateChange(new NavigationState(nav_state, nav_minVeracity, nav_maxVeracity, nav_type, nav_subType, nav_source, nav_pageSize, nav_pageStart, nav_orderBy));
+
         //Show the loading message
-        $("div#content-list").append("<div class='loading'>loading</div>");
+        //$("div#content-list").append("<div class='loading'>loading</div>");
 
         //Make the call to the main API function to list the
-        AddContent(20, new Array());
+        //AddContent(20, new Array());
     });
-
-    function AddContent(count, existingIds){
-        //variables used to work out when the loading has finished
-        var total = 0; var loaded = 0;
-
-        $.getJSON("<?php echo(url::base()); ?>api/contentselection/get/<?php echo($state);?>/0/" + count + "/0/100", function(data) {
-            if(!data.message) {
-                total = data.totalcount;
-                if(total > 0) {
-                    for(var i=0; i<data.contentitems.length; i++) {
-                        var found = false;
-                        for(var x=0; x<existingIds.length; x++) {
-                            if(existingIds[x] == data.contentitems[i].id) {
-                                found = true;
-                            }
-                        }
-                        if(found == false) {
-                            $.post("<?php echo(url::base()); ?>parts/content/render",
-                                   { content : data.contentitems[i] },
-                                   function(contentTemplate) {
-                                       $("div#content-list ul").append(
-                                            "<li>" + contentTemplate + "</li>"
-                                       );
-                                       loaded++;
-                                       if(loaded == total) {
-                                           $("div#content-list div.loading").remove();
-                                       }
-                                    }
-                            );
-                        }
-                    }
-                }else {
-                    $("div#content-list div.loading").remove();
-                    $.get("<?php echo(url::base()); ?>parts/nocontent", function(data){
-                        $("div#content-list ul").append(
-                            "<li>" + data + "</li>"
-                        );
-                    });
-                }
-            }
-        });
-    }
-
-    function MarkContentAsAccurate(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
-            $(this).remove();
-        });
-        $.getJSON("<?php echo(url::base()); ?>api/contentcuration/markasaccurate/" + contentId, function(data) {
-            UpdateSourceScores(data.sourceId, data.sourceScore);
-        });
-    }
-
-    function MarkContentAsInaccurate(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
-                $(this).remove();
-        });
-        $.getJSON("<?php echo(url::base()); ?>api/contentcuration/markasinaccurate/" + contentId, function(data) {
-            UpdateSourceScores(data.sourceId, data.sourceScore);
-        });
-    }
-
-    function MarkContentAsCrossTalk(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
-                $(this).remove();
-        });
-        $.getJSON("<?php echo(url::base()); ?>api/contentcuration/markascrosstalk/" + contentId, function(data) {
-            UpdateSourceScores(data.sourceId, data.sourceScore);
-        });
-    }
-
-    function UpdateSourceScores(sourceId, sourceScore) {
-        $("p."+sourceId).each(function(){
-            $(this).html(sourceScore + "&#37;");
-        });
-    }
 
     function ShowAddChannelModal(type, subType) {
         $.get("<?php echo(url::base()); ?>parts/addchannel/" + type + "/" + subType, function(data) {
@@ -124,19 +64,6 @@
         });
     }
 
-    function Update() {
-        $.post(
-            "<?php echo(str_replace("/web", "", url::base())); ?>core/ServiceAPI/ChannelServices/RunNextChannel.php",
-            { key : "swiftriver_dev" }
-        );
-        var contentLeft = $("div#content-list ul > li").size();
-        var ids = new Array();
-        $("div#content-list ul li div.content-item").each(function(){
-            ids[ids.length] = $(this).attr('id');
-        });
-        AddContent(20, ids);
-    }
-
     function ConfigureTheme() {
         $.get("<?php echo(url::base()); ?>config/themes", function(data) {
             Shadowbox.open({
@@ -148,8 +75,44 @@
         });
     }
 
+    function FilterByType(type) {
+        nav_type = type;
+        nav_subType = "null";
+        nav_source = "null";
+        ClearList();
+        render_firstload = true;
+        AddContent(new Array());
+    }
+
+    function FilterBySubType(subType) {
+        nav_type = "null";
+        nav_subType = subType;
+        nav_source = "null";
+        ClearList();
+        render_firstload = true;
+        AddContent(new Array());
+    }
+
+    function FilterBySource(source) {
+        nav_type = "null";
+        nav_subType = "null";
+        nav_source = source;
+        ClearList();
+        render_firstload = true;
+        AddContent(new Array());
+    }
+
+    function ClearList() {
+        $("div#content-list ul li").each(function(){
+            $(this).remove();
+        })
+    }
+
 </script>
 <div id="content-list">
+    <div class="pagination">
+        <p class="total-count"></p>
+    </div>
     <ul>
     </ul>
 </div>

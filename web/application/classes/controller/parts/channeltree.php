@@ -23,15 +23,15 @@ class Controller_Parts_channelTree extends Controller_Template
             foreach($channelType->subTypes as $subType)
             {
                 $st->type = $subType;
-                $st->channels = array();
-                foreach($channelsArray as $channel)
+                $st->sources = array();
+                foreach($channelsArray as $source)
                 {
-                    if($channel->type != $t->type || $channel->subType != $st->type)
+                    if($source->type != $t->type || $source->subType != $st->type)
                         continue;
 
-                    $c->name = $channel->name;
-                    $c->id = $channel->id;
-                    $st->channels[] = $c;
+                    $c->name = $source->name;
+                    $c->id = $source->id;
+                    $st->sources[] = $c;
                     unset($c);
                 }
                 $t->subTypes[] = $st;

@@ -12,6 +12,7 @@ class Controller_ContentList extends Controller_Template_Master
     public function action_get($state)
     {
         $this->state = $state;
+        $_SESSION["nav_state"] = $state;
         $this->set_content();
         $this->set_menu();
     }

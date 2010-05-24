@@ -20,6 +20,18 @@ class Content_API {
         include_once(DOCROOT."../core/Setup.php");
     }
 
+    public function get_content_list($json_encoded_parameters)
+    {
+        //Instanciate the workflow
+        $workflow = new \Swiftriver\Core\Workflows\ContentServices\GetContent();
+
+        //run the workflow
+        $json = $workflow->RunWorkflow($json_encoded_parameters, $this->apiKey);
+
+        //return the json
+        return $json;
+    }
+
     public function get_paged_content_by_state_and_source_veracity($json_encoded_parameters)
     {
         //Instanciate the workflow

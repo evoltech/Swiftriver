@@ -79,7 +79,7 @@ Kohana::modules(array(
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('api-contentselection-get', 'api/contentselection/get/<state>/<pagestart>/<pagesize>(/<minveracity>/<maxveracity>)')
+Route::set('api-contentselection-get', 'api/contentselection/get/<state>/<minVeracity>/<maxVeracity>/<type>/<subType>/<source>/<pageSize>/<pageStart>/<orderBy>')
         ->defaults(array(
             'directory' => 'api',
             'controller' => 'contentselection',

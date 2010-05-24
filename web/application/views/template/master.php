@@ -9,7 +9,9 @@
         <?php echo(Html::script("media/js/jquery.treeview.js")); ?>
         <?php echo(Html::script("media/js/jquery.validate.js")); ?>
         <?php echo(Html::script("media/js/jquery.cookie.js")); ?>
+        <?php echo(Html::script("media/js/jquery.corner.js")); ?>
         <?php echo(Html::script("media/js/shadowbox.js")); ?>
+        <?php echo(Html::script("media/js/site/framework.js")); ?>
         <?php echo(Html::style("media/css/site/base.css")); ?>
         <?php echo(Html::style("media/css/site/layout.css")); ?>
         <?php echo(Html::style("media/css/site/fonts.css")); ?>

@@ -33,6 +33,25 @@ class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase {
         return array("state" => $state, "pagesize" => $pagesize, "pagestart" => $pagestart);
     }
 
+    public function ParseJSONToLooseParameters($json) {
+        $rawParams = json_decode($json);
+
+        $properties = array (
+            "state", "minVeracity", "maxVeracity", "type", "subType",
+            "source", "pageSize", "pageStart", "orderBy"
+        );
+
+        $params = array();
+
+        foreach($properties as $property) {
+            $params[$property] = (isset($rawParams->$property))
+                    ? $rawParams->$property
+                    : null;
+        }
+
+        return $params;
+    }
+
     public function ParseJSONToPagedContentByStateAndSourceVeracityParameters($json) {
         //use the ParseJSONToPagedContentByState method
         $params = $this->ParseJSONToPagedContentByStateParameters($json);

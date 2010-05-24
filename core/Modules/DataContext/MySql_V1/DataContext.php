@@ -510,6 +510,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                         "score" => "score",
                         "name" => "name",
                         "parent" => "parent",
+                        "type" => "type",
+                        "subType" => "subType",
                     ));
             $s->json = json_encode($source);
             $rb->store($s);
@@ -855,6 +857,79 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return array ("totalCount" => $totalCount, "contentItems" => $content);
     }
 
+    /**
+     *
+     * @param string $state - The state of the content
+     * @param int $minVeracity - The minimum veracity of the source
+     * @param int $maxVeracity - The maximum veracity of the source
+     * @param string $type - The type of the source
+     * @param string $subType - The subtype of the source
+     * @param string $source - the ID of the source
+     * @param int $pageSize - the number of results to show on the page
+     * @param int $pageStart - the 0 based page start index
+     * @param string $orderBy - the order by clause
+     */
+    public static function GetContentList(
+            $state, $minVeracity, $maxVeracity, $type, $subType, $source,
+            $pageSize, $pageStart, $orderBy) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $baseSql =
+            "select content.textId ".
+            "from content left join ".
+                "content_source on content.id = content_source.content_id left join ".
+                    "source on content_source.source_id = source.id";
+
+        $filters = array();
+        if($state != null) {
+            $filters[] = "content.state = '$state'";
+        }
+        if($minVeracity != null) {
+            $filters[] = ($minVeracity == 0)
+                ? "(source.score >= $minVeracity OR source.score IS NULL)"
+                : "source.score >= $minVeracity";
+        }
+        if($maxVeracity != null) {
+            $filters[] = "source.score <= $maxVeracity";
+        }
+        if($type != null) {
+            $filters[] = "source.type = '$type'";
+        }
+        if($subType != null) {
+            $filters[] = "source.subType = '$subType'";
+        }
+        if($source != null) {
+            $filters[] = "source.textId = '$source'";
+        }
+
+        $pagination = ($pageSize != null)
+            ? "limit " . (($pageStart == null) ? "0" : $pageStart) . ", $pageSize"
+            : "";
+
+        if($orderBy == null) {
+            $orderBy = "date desc";
+        }
+
+        $sql = $baseSql;
+        for($i = 0; $i < count($filters); $i++) {
+            $addition = ($i == 0) ? "WHERE" : "AND";
+            $sql .= " " . $addition . " " . $filters[$i];
+        }
+
+        $allIds = RedBeanController::DataBaseAdapter()->getCol($sql, array());
+        $totalCount = count($allIds);
+
+        $sql .= " order by content." . $orderBy . " " . $pagination;
+
+        $subjectIds = RedBeanController::DataBaseAdapter()->getCol($sql, array());
+
+        $content = DataContext::GetContent($subjectIds, $orderBy);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
+
+        return array ("totalCount" => $totalCount, "contentItems" => $content);
+    }
     /**
      * This method redords the fact that a marker (sweeper) has changed the score
      * of a source by marking a content items as either 'acurate', 'chatter' or

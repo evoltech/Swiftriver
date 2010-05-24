@@ -45,12 +45,17 @@ class ContentRepository {
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
     public function GetContent($ids) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = new $this->dataContext();
-        $content = $dc::GetContent($ids);
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method finished]", \PEAR_LOG_DEBUG);
-        return $content;
+        try {
+            $logger = \Swiftriver\Core\Setup::GetLogger();
+            $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
+            $dc = new $this->dataContext();
+            $content = $dc::GetContent($ids);
+            $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method finished]", \PEAR_LOG_DEBUG);
+            return $content;
+        }
+        catch (\Exception $e) {
+            return array();
+        }
     }
 
     /**
@@ -105,6 +110,34 @@ class ContentRepository {
         $content = $dc::GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby);
         $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByStateAndSourceVeracity [Method finished]", \PEAR_LOG_DEBUG);
         return $content;
+    }
+
+    /**
+     *
+     * @param string $state - The state of the content
+     * @param int $minVeracity - The minimum veracity of the source
+     * @param int $maxVeracity - The maximum veracity of the source
+     * @param string $type - The type of the source
+     * @param string $subType - The subtype of the source
+     * @param string $source - the ID of the source
+     * @param int $pageSize - the number of results to show on the page
+     * @param int $pageStart - the 0 based page start index
+     * @param string $orderBy - the order by clause
+     */
+    public function GetContentList(
+            $state, $minVeracity, $maxVeracity, $type, $subType, $source,
+            $pageSize, $pageStart, $orderBy) {
+        try {
+            $logger = \Swiftriver\Core\Setup::GetLogger();
+            $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
+            $dc = new $this->dataContext();
+            $content = $dc::GetContentList($state, $minVeracity, $maxVeracity, $type, $subType, $source, $pageSize, $pageStart, $orderBy);
+            $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
+            return $content;
+        }
+        catch (\Exception $e) {
+            return array();
+        }
     }
 }
 ?>

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 
 /**
  * The directory in which your application specific resources are located.
