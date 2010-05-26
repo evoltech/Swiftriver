@@ -22,6 +22,10 @@ body div#page div#body div#content div#content-list ul li div.content-item div.r
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-size:90%; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p.tag-type { font-weight:bold; }
 
+div.modal div.modal-content div#turbines ul#turbine-list li { font-size: 80%; }
+div.modal div.modal-content div#turbines ul#turbine-list li p.name, p.active { font-weight: bold; }
+div.modal div.modal-content div#turbines ul#turbine-list li p a { text-decoration: none;}
+div.modal div.modal-content div#turbines ul#turbine-list li p a:hover { text-decoration: underline;}
 body div#page div#body div#right-bar { text-align:left !important; }
 
 div#footer { background-color: #1674a7; }

@@ -13,7 +13,7 @@
     var render_firstload = true;
 
     $(document).ready(function(){
-        //setInterval("Update()", 10000);
+        setInterval("Update()", 10000);
 
         RepaintChannelTree();
 
@@ -26,6 +26,11 @@
         //Make the call to the main API function to list the
         //AddContent(20, new Array());
     });
+
+    function Update() {
+        $.post("<?php echo(str_replace("/web", "", url::base())); ?>core/ServiceAPI/ChannelServices/RunNextChannel.php",{ key : "swiftriver_dev" });
+        listController.RenderList();
+    }
 
     function ShowAddChannelModal(type, subType) {
         $.get("<?php echo(url::base()); ?>parts/addchannel/" + type + "/" + subType, function(data) {
@@ -47,8 +52,6 @@
     function TreeViewChannelTree() {
         $("div#channel-tree ul").treeview({
             animated: "fast",
-            collapsed: true,
-            unique: true,
             persist: "cookie"
         });
         $("div#channel-tree").show("fast");
@@ -66,6 +69,17 @@
 
     function ConfigureTheme() {
         $.get("<?php echo(url::base()); ?>config/themes", function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 450,
+                width : 500
+            });
+        });
+    }
+
+    function ConfigureTurbines() {
+        $.get("<?php echo(url::base()); ?>config/turbines", function(data) {
             Shadowbox.open({
                 content : data,
                 player : "html",

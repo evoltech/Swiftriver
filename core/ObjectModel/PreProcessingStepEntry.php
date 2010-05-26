@@ -1,6 +1,13 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
 class PreProcessingStepEntry {
+    
+    /**
+     * The name of the Pre Processor
+     * @var string
+     */
+    public $name;
+
     /**
      * The class name of the pre processing step
      * @var string
@@ -14,7 +21,8 @@ class PreProcessingStepEntry {
      */
     public $filePath;
     
-    public function __construct($className, $filePath) {
+    public function __construct($name, $className, $filePath) {
+        $this->name = $name;
         $this->className = $className;
         $this->filePath = $filePath;
     }

@@ -45,6 +45,12 @@ div.modal div.modal-content form label.error { display: block; margin-top: -12px
 div.modal div.modal-content form input[type=text] { display:block; width:100%; margin-bottom: 15px; }
 div.modal div.modal-content form input[type=submit] { margin-top: 10px; width:50%; float:right; }
 
+div.modal div.modal-content div#turbines ul#turbine-list li { margin-bottom: 5px; padding:10px;}
+div.modal div.modal-content div#turbines ul#turbine-list li p { margin-bottom:5px;}
+div.modal div.modal-content div#turbines ul#turbine-list li p.name { float:left; width:70%}
+div.modal div.modal-content div#turbines ul#turbine-list li p.more { float:right; width:5%}
+div.modal div.modal-content div#turbines ul#turbine-list li p.active img { margin-bottom:-3px; margin-left:5px; margin-right:10px;  }
+
 div#footer p { padding-left: 10px; padding-bottom: 10px; }
 div#footer ul { padding: 10px; }
 div#footer li { display: inline; font: 0.75em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif; }

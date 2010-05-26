@@ -82,5 +82,17 @@ class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreP
         return $taggedContentItems;
     }
 
+    public function Description() {
+        return "When using this Turbine, the cloud based TagThe.Net service will be called to ".
+               "add natural language tags to every content item.";
+    }
+    public function Name() {
+        return "TagThe.Net Natural Language Turbine";
+    }
+
+    public function ReturnRequiredParameters() {
+        return array();
+    }
+
 }
 ?>

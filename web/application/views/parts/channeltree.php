@@ -9,11 +9,11 @@
     <ul>
         <?php foreach($channels->channelTypes as $channelType) : ?>
             <li>
-                <a href="javascript:FilterByType('<?php echo($channelType->type); ?>')"><?php echo($channelType->type); ?></a>
+                <?php echo($channelType->type); ?>
                 <ul>
                     <?php foreach($channelType->subTypes as $subType) : ?>
                         <li>
-                            <a href="javascript:FilterBySubType('<?php echo($subType->type); ?>')"><?php echo($subType->type); ?></a>
+                            <?php echo($subType->type); ?>
                             <ul>
                                 <li>
                                     <a href="javascript:ShowAddChannelModal('<?php echo($channelType->type); ?>', '<?php echo($subType->type); ?>');">Add new <?php echo($subType->type); ?>?</a>
@@ -21,7 +21,7 @@
                                 <?php if(count($subType->sources) > 0 ) : ?>
                                     <?php foreach($subType->sources as $source) : ?>
                                         <li>
-                                            <a href="javascript:FilterBySource('<?php echo($source->id); ?>')"><?php echo($source->name); ?></a><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?></a>
+                                            <?php echo($source->name); ?><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?></a>
                                         </li>
                                     <?php endforeach; ?>
                                 <?php else : ?>

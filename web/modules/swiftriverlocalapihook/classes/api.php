@@ -15,5 +15,10 @@ class API {
     {
         return new Channels_API("swiftriver_dev");
     }
+
+    public static function preprocessing_steps_api()
+    {
+        return new PreProcessingSteps_API("swiftriver_dev");
+    }
 }
 ?>

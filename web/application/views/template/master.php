@@ -10,6 +10,7 @@
         <?php echo(Html::script("media/js/jquery.validate.js")); ?>
         <?php echo(Html::script("media/js/jquery.cookie.js")); ?>
         <?php echo(Html::script("media/js/jquery.corner.js")); ?>
+        <?php echo(Html::script("media/js/jquery.listreorder.js")); ?>
         <?php echo(Html::script("media/js/shadowbox.js")); ?>
         <?php echo(Html::script("media/js/site/framework.js")); ?>
         <?php echo(Html::style("media/css/site/base.css")); ?>
@@ -33,9 +34,9 @@
     <body>
         <div id="page">
             <div id="header" class="clearfix">
-					<div id="configuration" class="clearfix">
-						<?php echo($admin); ?>
-					</div>
+                <div id="configuration" class="clearfix">
+                    <?php echo($admin); ?>
+                </div>
                 <?php echo($header); ?>
             </div>
             <div id="body" class="clearfix">

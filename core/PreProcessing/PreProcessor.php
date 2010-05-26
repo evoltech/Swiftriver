@@ -77,5 +77,48 @@ class PreProcessor {
         //Return the content
         return $content;
     }
+
+    /**
+     * Returns all the classes that implment the IPreProcessor interface
+     * @return IPreProcessingStep[]
+     */
+    public function ListAllAvailablePreProcessingSteps() {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $steps = array();
+
+        $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+        $dirItterator = new \RecursiveDirectoryIterator($modulesDirectory);
+        $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach($iterator as $file) {
+            if($file->isFile()) {
+                $filePath = $file->getPathname();
+                if(strpos($filePath, "PreProcessingStep.php")) {
+                    try {
+                        include_once($filePath);
+                        $typeString = "\\Swiftriver\\PreProcessingSteps\\".$file->getFilename();
+                        $type = str_replace(".php", "", $typeString);
+                        $object = new $type();
+                        if($object instanceof IPreProcessingStep) {
+                            $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Adding type $type]", \PEAR_LOG_DEBUG);
+                            $object->filePath = str_replace($modulesDirectory, "", $filePath);
+                            $object->type = $type;
+                            $steps[] = $object;
+                        }
+                    }
+                    catch(\Exception $e) {
+                        $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [error adding type $type]", \PEAR_LOG_DEBUG);
+                        $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [$e]", \PEAR_LOG_ERR);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $steps;
+    }
 }
 ?>

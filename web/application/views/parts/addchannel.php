@@ -17,13 +17,13 @@
                  $("form#add-channel-form input[type=text]").not("[name=name]").each(function(){
                      json += '{"'+this.name+'":"'+$(this).val()+'"},';
                  })
+                 Shadowbox.close();
                  json = json.substring(0, json.length - 1) + '}';
                  $.post("<?php echo(url::base()); ?>api/channels/add",
                         { channel : json },
                         function(data) {
                             //TODO: do something if data.message != 'OK''
                              RepaintChannelTree();
-                             Shadowbox.close();
                         },
                         'json'
                  );

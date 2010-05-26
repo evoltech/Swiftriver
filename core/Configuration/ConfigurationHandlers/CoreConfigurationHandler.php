@@ -29,7 +29,6 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
 
     public function SaveToFile($configurationFilePath) {
         $xml = simplexml_load_file($configurationFilePath);
-
     }
 }
 ?>

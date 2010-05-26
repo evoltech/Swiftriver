@@ -13,5 +13,11 @@ class PreProcessorTest extends \PHPUnit_Framework_TestCase  {
         include_once(dirname(__FILE__)."/../../Setup.php");
         $preProcessor = new PreProcessing\PreProcessor();
     }
+
+    public function testListAllAvailablePreProcessingSteps() {
+        include_once(dirname(__FILE__)."/../../Setup.php");
+        $preProcessor = new PreProcessing\PreProcessor();
+        $steps = $preProcessor->ListAllAvailablePreProcessingSteps();
+    }
 }
 ?>

@@ -81,5 +81,17 @@ class GoogleLanguageServicePreProcessingStep implements \Swiftriver\Core\PreProc
         //return the translated content
         return $translatedContent;
     }
+
+    public function Description() {
+        return "When using this river turbine all your content will be automatically translated from any language ".
+               "supported by the Google Language Toolkit into the base language you specified while setting up ".
+               "your Swiftriver.";
+    }
+    public function Name() {
+        return "Google Language Services Turbine";
+    }
+    public function ReturnRequiredParameters() {
+        return array();
+    }
 }
 ?>

@@ -24,3 +24,6 @@ body div#page div#body div#right-bar div#channel-tree h2 { background-color:#167
 div#sb-player { background: #222; }
 div.modal { background: #222 url('../../images/background-page.gif') repeat-x 0 -100px; color:#FFF; }
 div.modal div.modal-content form label.error { background-color:#C90; color:#000; border:1px solid #900; }
+
+div.modal div.modal-content div#turbines ul#turbine-list li { background-color:#333; border-left:10px solid #AAA; }
+div.modal div.modal-content div#turbines ul#turbine-list li p a {color:#FFF;  }
