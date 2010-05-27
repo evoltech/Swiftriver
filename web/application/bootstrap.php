@@ -49,7 +49,9 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * - boolean  profile     enable or disable internal profiling               TRUE
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
-Kohana::init(array('base_url' => '/web/'));
+Kohana::init(array(
+'base_url' => '/web/', 
+));
 
 /**
  * Attach the file write to logging. Multiple writers are supported.

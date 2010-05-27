@@ -105,8 +105,8 @@
                 <div class="wait"></div>
                 <div class="message"></div>
                 <div class="action" style="display:none;">
-                    <p>Let's move on to checking your directory access.</p>
-                    <form action="step-db-intro.php" method="GET">
+                    <p>Let's move on to setting up my database.</p>
+                    <form action="step-db-setup.php" method="GET">
                         <input type="submit" value="lets go ..." class="button" />
                     </form>
                 </div>

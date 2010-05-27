@@ -5,7 +5,8 @@ body div#page div#header { height:125px; margin-top:30px; }
 body div#page div#header div#logo img { float:left; }
 body div#page div#header div#tag-line { margin-top:10px; float:right; width:50%; }
 body div#page div#header div#configuration { height: 20px; position: absolute; top:0; left:0; width:100%; margin-bottom:0px; padding:5px 0 0 0; border-bottom:1px solid #1A1A1A;}
-body div#page div#header div#configuration ul li { float:right; padding:0 10px 0 10px; }
+body div#page div#header div#configuration div#admin-menu { width:960px; margin-left:auto; margin-right:auto;  }
+body div#page div#header div#configuration div#admin-menu ul li { float:right; padding:0 10px 0 10px; }
 
 body div#page div#body div#menu div#list-option ul li a { float:left; padding:10px; margin-right:5px; list-style: none; }
 

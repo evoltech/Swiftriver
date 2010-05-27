@@ -53,11 +53,9 @@
              "for me and try again?";
 
     $finishedMessage =
-            "That wasn't that bad now was it? I think were done here. As I said ".
-            "I'm now going to hand you over to my old friend the Ushahidi installer so it ".
-            "can walk you though the final bits of the installation, then you're done! ".
-            "Oh, one last thing before I go...In future builds, I'll be handle all ".
-            "the setup tasks. Thanks and see you on the other side!"
+            "That wasn't that bad now was it? I think were done here. So lets move ".
+            "on to the final bit of the setup: getting the Kohana framework up and ".
+            "running.";
 
 ?>
 <div id="index">
@@ -159,8 +157,8 @@
                     </form>
                 </div>
                 <div class="action" style="display:none;">
-                    <form action="../webapp/installer/index.php" method="GET">
-                        <input type="submit" value="Bye for now ..." class="button" />
+                    <form action="step-rw-checks.php" method="GET">
+                        <input type="submit" value="Onwards and upwards!" class="button" />
                     </form>
                 </div>
             </div>

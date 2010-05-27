@@ -12,10 +12,11 @@ class Controller_Parts_Content extends Controller_Template
         $content = json_decode(json_encode($_POST["content"]));
 
         //do some work on organisng the tags
-        $tags = array("who" => array(), "what" => array(), "where" => array());
+        $tags = array("general" => array(), "who" => array(), "what" => array(), "where" => array());
         if(isset($content->tags)) {
             foreach($content->tags as $tag) {
                 switch($tag->type) {
+                    case "General" : $tags["general"][] = $tag->text; break;
                     case "who" : $tags["who"][] = $tag->text; break;
                     case "what" : $tags["what"][] = $tag->text; break;
                     case "where" : $tags["where"][] = $tag->text; break;

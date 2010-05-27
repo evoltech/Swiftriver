@@ -11,3 +11,7 @@
 2010-05-26 02:56:25 --- ERROR: ErrorException [ 64 ]: Cannot redeclare class Swiftriver\Core\Workflows\PreProcessingSteps\ActivatePreProcessingStep ~ C:\Users\matt\Code\Swiftriver\core\Workflows\PreProcessingSteps\DeactivatePreProcessingStep.php [ 97 ]
 2010-05-26 02:56:35 --- ERROR: ErrorException [ 64 ]: Cannot redeclare class Swiftriver\Core\Workflows\PreProcessingSteps\ActivatePreProcessingStep ~ C:\Users\matt\Code\Swiftriver\core\Workflows\PreProcessingSteps\DeactivatePreProcessingStep.php [ 97 ]
 2010-05-26 02:56:45 --- ERROR: ErrorException [ 64 ]: Cannot redeclare class Swiftriver\Core\Workflows\PreProcessingSteps\ActivatePreProcessingStep ~ C:\Users\matt\Code\Swiftriver\core\Workflows\PreProcessingSteps\DeactivatePreProcessingStep.php [ 97 ]
+2010-05-26 05:29:53 --- ERROR: ReflectionException [ -1 ]: Class controller_WEB does not exist ~ SYSPATH/classes\kohana\request.php [ 864 ]
+2010-05-26 07:43:37 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-05-26 07:43:37 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-05-26 07:43:40 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]

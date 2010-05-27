@@ -1,10 +1,7 @@
 <?php include_once("header.php"); ?>
 <?php
-    $htaccessFile = dirname(__FILE__)."/../.htaccess";
-    $webAppConfigFile = dirname(__FILE__)."/../webapp/application/config/config.php";
-    /*
-     * So ...
-     */
+    $htaccessFile = dirname(__FILE__)."/../web/.htaccess";
+    $bootstrapFile = dirname(__FILE__)."/../web/application/bootstrap.php";
 
      $checks = array();
 
@@ -33,25 +30,24 @@
      
      unset($check);
 
-     $check->check = "Next, I need to see if you have the web application config file in place.";
-     $check->result = (file_exists($webAppConfigFile));
+     $check->check = "Now, I need to check to see if you have a bootstrap.php file in place.";
+     $check->result = (file_exists($bootstrapFile));
      $check->message = $check->result
-                         ? "Excellent, it's in the right place."
-                         : "Oops, you don't seem to have a config.php file in the ".
-                           "directory [myroot]/WebApp/application/config . . . this ".
-                           "has been known to happen on occasion . . . All you need to do ".
-                           "is create a blank file called config.php in the above directory. ".
-                           "Can you do that for me?";
+                         ? "Excellent, it's there."
+                         : "Oops, you don't seem to have the bootstrap.php file in the ".
+                           "web/application folder. This is going to be a real issue. " .
+                           "I think the best thing to do is contact my creator and report ".
+                           "this mishap.";
      $checks[] = $check;
      unset($check);
 
-     $check->check = "Now I'm going to make sure I can write to the config file.";
-     $check->result = is_writable($webAppConfigFile);
+     $check->check = "Now we need to make sure that the botstrap.php file is writable.";
+     $check->result = is_writable($bootstrapFile);
      $check->message = $check->result
                        ? "No problems here, I can open it and write to it."
-                       : "Oops, that's a shame, I don't seem to be able to write ".
-                         "to it (I tried is_writable()). Can you check ".
-                         "the file permissions? Make them 755 or above.";
+                       : "Oops, that's a shame, I don't seem to be able to open it ".
+                         "for write access (I tried is_writable()). Can you check ".
+                         "the file access permissions? Make them 755 or above.";
 
      $checks[] = $check;
 
@@ -60,11 +56,9 @@
      //check directory acces to key directories
      $check->check = "So now I need to make sure that the directories I need to write to are ".
                      "available to me. I'll check them all at once to save time ... they are: ".
-                     "[myroot]/Core/Configuration/ConfigurationFiles ... [myroot]/Core/Modules ".
-                     "... and ... [myroot]/WebApp/application/config.";
-     $check->result = is_writable(dirname(__FILE__)."/../Core/Configuration/ConfigurationFiles") &&
-                      is_writable(dirname(__FILE__)."/../Core/Modules") &&
-                      is_writable(dirname(__FILE__)."/../WebApp/application/config");
+                     "[myroot]/Core/Configuration/ConfigurationFiles and [myroot]/Core/Modules.";
+     $check->result = is_writable(dirname(__FILE__)."/../core/Configuration/ConfigurationFiles") &&
+                      is_writable(dirname(__FILE__)."/../core/Modules");
      $check->message = $check->result
                         ? "Great news...they are all willing to accept my changes!"
                         : "Oops, at least one of the above directories wouldn't let me ".
@@ -144,8 +138,8 @@
                 <div class="wait"></div>
                 <div class="message"></div>
                 <div class="action" style="display:none;">
-                    <p>Let's move on to setting up the database.</p>
-                    <form action="step-db-intro.php" method="GET">
+                    <p>Ok, the last bit now, lets go and finish up.</p>
+                    <form action="step-urlrewrite-setup.php" method="GET">
                         <input type="submit" value="lets go ..." class="button" />
                     </form>
                 </div>
