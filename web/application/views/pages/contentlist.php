@@ -13,7 +13,7 @@
     var render_firstload = true;
 
     $(document).ready(function(){
-        setTimeout("Update()", 10000);
+        setInterval("Update()", 10000);
 
         RepaintChannelTree();
 

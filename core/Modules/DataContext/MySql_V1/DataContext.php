@@ -876,7 +876,6 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
 
         $baseSql =
-            "select content.textId ".
             "from content left join ".
                 "content_source on content.id = content_source.content_id left join ".
                     "source on content_source.source_id = source.id";
@@ -917,18 +916,38 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $sql .= " " . $addition . " " . $filters[$i];
         }
 
-        $allIds = RedBeanController::DataBaseAdapter()->getCol($sql, array());
+        $selectSql = "select content.textId " . $sql;
+
+        $allIds = RedBeanController::DataBaseAdapter()->getCol($selectSql, array());
         $totalCount = count($allIds);
 
-        $sql .= " order by content." . $orderBy . " " . $pagination;
+        $selectSql .= " order by content." . $orderBy . " " . $pagination;
 
-        $subjectIds = RedBeanController::DataBaseAdapter()->getCol($sql, array());
+
+        $typeSql = "select distinct source.type " . $sql;
+        $types = RedBeanController::DataBaseAdapter()->getCol($typeSql, array());
+
+        $subTypeSql = "select distinct source.subType " . $sql;
+        $subTypes = RedBeanController::DataBaseAdapter()->getCol($subTypeSql, array());
+
+        $sourceSql = "select distinct source.textId " .$sql;
+        $sources = RedBeanController::DataBaseAdapter()->getCol($sourceSql, array());
+
+
+        $subjectIds = RedBeanController::DataBaseAdapter()->getCol($selectSql, array());
 
         $content = DataContext::GetContent($subjectIds, $orderBy);
 
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
 
-        return array ("totalCount" => $totalCount, "contentItems" => $content);
+        return array (
+            "totalCount" => $totalCount,
+            "contentItems" => $content,
+            "navigation" => array(
+                "types" => $types,
+                "subTypes" => $subTypes,
+                "sources" => $sources
+            ));
     }
     /**
      * This method redords the fact that a marker (sweeper) has changed the score
