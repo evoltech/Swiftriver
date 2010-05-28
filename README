@@ -16,7 +16,7 @@ RELEASE NOTES
 	Walkthrough Installer
 	Turbine (Plugin Architecture)
 	Semantic Tagging (Who, What, Where)
-	Database Extraction Layer (for supporting noSQL DBs) 	
+	Database Abstraction Layer (for supporting noSQL DBs) 	
 	Extensible Source Parsing Service
 	Swift Web Service Integration (SiLCC)
 	One Page Workflow
