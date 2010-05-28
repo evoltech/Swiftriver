@@ -63,7 +63,7 @@
         }
     }
 
-    $rewriteBase = substr($_SERVER["REQUEST_URI"],0,stripos($request_uri,'/installer/'));
+    $rewriteBase = substr($_SERVER["REQUEST_URI"],0,stripos($_SERVER["REQUEST_URI"],'/installer/'));
 
     $checks = array();
 
@@ -71,29 +71,29 @@
     $check->result = ChangeHtaccessFile($rewriteBase);
     $check->message = $check->result
                      ? "Fine, did it,"
-                     : "Oh thats a shame, somethign went wrong while trying to write to the " .
-                       ".htaccess file, is it there? are the permissions set so I can write to it?";
+                     : "Oh thats a shame, something went wrong while trying to write to the " .
+                       ".htaccess file, is it there? Are the permissions writable";
 
     $checks[] = $check;
     unset($check);
 
-    $check->check = "No I'm goign to try and change the bootstrap.php file.";
+    $check->check = "Now we're going to try and change the bootstrap.php file.";
     $check->result = ChangeBootstrapFile($rewriteBase);
     $check->message = $check->result
                    ? "No problems here, I did it."
-                   : "Oh no, I had a few probelms while trying to write to the " .
-                     "bootstrap.php file, is it there? are the permissions set so I can write to it?";
+                   : "Oh no, I had a few problems while trying to write to the " .
+                     "bootstrap.php file, is it there? Are the permissions writable?";
 
     $checks[] = $check;
 
     unset($check);
 
-    $check->check = "Finally, lets turn the installer off and start the app going.";
+    $check->check = "You've reached the end of the installer! Let's tidy up a bit...";
     $check->result = ChangeIndexFile($rewriteBase);
     $check->message = $check->result
-                   ? "No problems here, I did it."
-                   : "Oh no, I had a few probelms while trying to write to the " .
-                     "index.php file in the root?, is it there? are the permissions set so I can write to it?";
+                   ? "No problems here, we did it!"
+                   : "Oh no, I had a few problems while trying to write to the " .
+                     "index.php file in the root?, is it there? Are the permissions writable?";
 
     $checks[] = $check;
 
@@ -146,7 +146,7 @@
             ClearMessages()
             DoWriteMessage(
                 "div#messages div.message",
-                "Ok, we are finished, that was fun wasn't it? Well you havent seen anything yet, you wait till we start the application going.",
+                "Ok, we're done! That was fun wasn't it? Now you're ready to use SwiftRiver!",
                 5);
             setTimeout('$("div#messages div.action").show();', 5500);
         } else if (messageType == "fail") {
@@ -175,8 +175,8 @@
                     </form>
                 </div>
                 <div class="fail" style="display:none;">
-                    <p>Sorry about that! One of the tests I carried out failed.</p>
-                    <p>Can you try to fix this problem and start the installation again?</p>
+                    <p>Sorry about that! One of the tests we carried out failed.</p>
+                    <p>Can you try to fix this problem and start the installer over?</p>
                 </div>
             </div>
         </div>

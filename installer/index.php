@@ -2,7 +2,7 @@
 <?php
     
     $message = 
-             "Welcome to the SwiftRiver installer for v0.2 Batuque. If you've ".
+             "Welcome to the SwiftRiver installer for Version 0.2 Batuque. If you've ".
              "received this message then pat yourself on the back. You are not only ".
              "one of the first people in the world to begin using this version of Swift ".
              "but you have also correctly uploaded the package to your server. ".
