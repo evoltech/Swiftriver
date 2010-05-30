@@ -1,31 +1,45 @@
-NOTE: This is an Alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
-
 ============================
 SWIFT RIVER v0.2.0 - Batuque
 ============================
  
-SwiftRiver is a FOSS platform for determining the veracity and accuracy of news related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://sws.ushahidi.com/ or at http://swift.ushahidi.com/doc/
+SwiftRiver is a FOSS platform for determining the veracity and accuracy of news related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about Swift Web Services at - http://sws.ushahidi.com/
 
-Find us on Github - http://github.com/ushahidi/Swiftriver
+	Find us on Github - http://github.com/ushahidi/Swiftriver
 
-================
+NOTE: This is a public alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
+
+============================
+SYSTEM REQUIREMENTS
+============================
+
+	Apache 1.3 or greater
+	PHP 5.3 or higher
+	PHP Pear Extensions
+	MySQL 4.0 or higher
+	Supports IE7+, FireFox, Safari
+	
+Further details on this release can be found at - http://swift.ushahidi.com/doc/doku.php?id=batuque	
+
+===============
 RELEASE NOTES
-================
-
-	Supports IE7+, FireFox, Safari 
+===============
+ 
 	Walkthrough Installer
 	Turbine (Plugin Architecture)
 	Semantic Tagging (Who, What, Where)
+	Add Unlimited Number of Feeds
 	Database Abstraction Layer (for supporting noSQL DBs) 	
 	Extensible Source Parsing Service
 	Swift Web Service Integration (SiLCC)
 	One Page Workflow
 	Auto-refresh (Ajax/jQuery)
 	Admin Bar
+	
+Further details on this release can be found at - http://swift.ushahidi.com/doc/doku.php?id=batuque	
 
-===========================
+===============
 DOCUMENTATION
-===========================
+===============
 
 Documentation - http://swift.ushahidi.com/doc/ 
 Installation - http://swift.ushahidi.com/doc/doku.php?id=install
@@ -41,20 +55,20 @@ Core Developers
 	Jon Gosier (Director, UX, System Architect)
 	Matthew Griffiths (Technical Architect) 
 
-Volunteer Contributors
+Contributors to Development
 
 	Moses Mugisha (SULSa)
 	Victor Miclovich (SiLCC)
 	Wolfgang Werner (SiLCC)
-	M. Edward (Ed) Borasky (SiLCC)
+	M. Edward Borasky (SiLCC)
 	Maarten J. van der Veen (Twitter API)
 	Soe (River ID)
-	Nishith (SiLCC)
+	Nishith Rastogi (SiLCC)
 	Mang-Git Ng (Reverberations)
 	Josh Bronson (SiCDS)
 	Ivan Kavuma (SiPS)
 
-SwiftRiver Advisors
+Other Contributors
 
 	Andrew Turner
 	Chris Blow
@@ -72,9 +86,9 @@ Contributing Organizations
 	Geo Commons
 	Meedan
 
-===============
+============
 CHANGE LOG
-===============
+============
 2010-05-28	Installer, .htaccess
 2010-05-22	Redesigned default theme, logo
 2010-05-20  Adding Parsers, New Theme Engine, Ajax refresh 
@@ -105,7 +119,6 @@ CHANGE LOG
 2010-02-11	Update
 2010-02-10	Early Build
 2010-01-27	Initial Push, README
-
 
 ==================
 RELEASE SCHEDULE
