@@ -10,7 +10,7 @@ class Setup {
         //TODO: Logging
 
         self::$Configuration = new DataContextConfigurationHandler(dirname(__FILE__)."/Configuration.xml");
-
+	/*
         $url = (string)Setup::$Configuration->DataBaseUrl;
         $username = (string)Setup::$Configuration->UserName;
         $password = (string)Setup::$Configuration->Password;
@@ -27,7 +27,7 @@ class Setup {
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
 
-        /*
+        
         //Create the channelprocessingjobs table
         $query = "CREATE TABLE IF NOT EXISTS channelprocessingjobs (
                     id LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
