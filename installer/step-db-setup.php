@@ -27,9 +27,9 @@
             $state = "inputerror";
         } else {
             //now try to write the lot the config file.
-            include_once(dirname(__FILE__)."/../Core/Configuration/ConfigurationHandlers/BaseConfigurationHandler.php");
-            include_once(dirname(__FILE__)."/../Core/Modules/DataContext/MySql_V1/DataContextConfigurationHandler.php");
-            $configFile = dirname(__FILE__)."/../Core/Modules/DataContext/MySql_V1/Configuration.xml";
+            include_once(dirname(__FILE__)."/../core/Configuration/ConfigurationHandlers/BaseConfigurationHandler.php");
+            include_once(dirname(__FILE__)."/../core/Modules/DataContext/MySql_V1/DataContextConfigurationHandler.php");
+            $configFile = dirname(__FILE__)."/../core/Modules/DataContext/MySql_V1/Configuration.xml";
             $config = new \Swiftriver\Core\Modules\DataContext\MySql_V1\DataContextConfigurationHandler($configFile);
             $xml = $config->xml;
             $xml->properties->property[0]["value"] = $dbserver;
@@ -85,7 +85,7 @@
             }
         });
     </script>
-    <img id="logo-callout" src="Assets/Images/logo-callout.png" />
+    <img id="logo-callout" src="assets/images/logo-callout.png" />
     <div id="baloon">
         <div class="top">&nbsp;</div>
         <div class="mid">
