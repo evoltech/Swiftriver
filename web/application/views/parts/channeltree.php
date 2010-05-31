@@ -1,9 +1,3 @@
-<script type="text/javascript" language="javascript">
-    $(document).ready(function(){
-        $("div#channel-tree").corner("top 11px");
-        $("div#channel-tree h2").corner("top");
-    })
-</script>
 <div id="channel-tree" style="display:none;">
     <h2>Channels</h2>
     <ul>

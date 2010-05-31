@@ -3,7 +3,7 @@
         <?php foreach($themes as $theme) : ?>
             <li>
                 <div class="theme">
-                    <img src="<?php echo($theme->thumbnail); ?>" width="100px" height="50px" />
+                    <!-- <img src="<?php echo($theme->thumbnail); ?>" width="100px" height="50px" /> -->
                     <div class="info">
                         <p class="title">Title: <?php echo($theme->title); ?></p>
                         <p class="description">Description: <?php echo($theme->description); ?></p>

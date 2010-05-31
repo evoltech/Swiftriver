@@ -89,6 +89,7 @@ Contributing Organizations
 ============
 CHANGE LOG
 ============
+2010-05-31	Writable Cache
 2010-05-28	Installer, .htaccess
 2010-05-22	Redesigned default theme, logo
 2010-05-20  Adding Parsers, New Theme Engine, Ajax refresh 
