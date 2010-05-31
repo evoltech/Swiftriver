@@ -17,7 +17,7 @@
                            "the .htaccess file and place it in the root folder.";
      $checks[] = $check;
      unset($check);
-     */
+     
      $check->check = "Now we need to make sure that the .htaccess file is writable.";
      $check->result = is_writable($htaccessFile);
      $check->message = $check->result
@@ -29,7 +29,7 @@
      $checks[] = $check;
      
      unset($check);
-
+     */
      $check->check = "Now, I need to check to see if you have a bootstrap.php file in place.";
      $check->result = (file_exists($bootstrapFile));
      $check->message = $check->result
