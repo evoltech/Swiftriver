@@ -4,7 +4,7 @@
     $bootstrapFile = dirname(__FILE__)."/../web/application/bootstrap.php";
 
      $checks = array();
-
+     /*
      $check->check = "Now, I need to check to see if you have an .htaccess file in place.";
      $check->result = (file_exists($htaccessFile));
      $check->message = $check->result
@@ -17,7 +17,7 @@
                            "the .htaccess file and place it in the root folder.";
      $checks[] = $check;
      unset($check);
-     
+     */
      $check->check = "Now we need to make sure that the .htaccess file is writable.";
      $check->result = is_writable($htaccessFile);
      $check->message = $check->result
@@ -56,9 +56,11 @@
      //check directory acces to key directories
      $check->check = "So now we need to make sure that the directories need are indeed ".
                      "writable. I'll check them all at once to save time ... they are: ".
-                     "[myroot]/Core/Configuration/ConfigurationFiles and [myroot]/Core/Modules.";
+                     "[myroot]/Core/Configuration/ConfigurationFiles, [myroot]/Core/Modules ".
+                     "and [myroot]/web/application/cache";
      $check->result = is_writable(dirname(__FILE__)."/../core/Configuration/ConfigurationFiles") &&
-                      is_writable(dirname(__FILE__)."/../core/Modules");
+                      is_writable(dirname(__FILE__)."/../core/Modules") &&
+                      is_writable(dirname(__FILE__)."/../web/application/cache");
      $check->message = $check->result
                         ? "Great news...they are all willing to accept my changes!"
                         : "Oops, at least one of the above directories wouldn't let me ".

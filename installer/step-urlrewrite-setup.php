@@ -2,13 +2,14 @@
 <?php
     function ChangeHtaccessFile($rewrite) {
         try {
-            $htaccessFile = file(dirname(__FILE__)."/../web/.htaccess");
-            $handle = fopen(dirname(__FILE__)."/../web/.htaccess", "w");
+            $filename = dirname(__FILE__)."/../web/temp.htaccess";
+            $htaccessFile = file($filename);
+            $handle = fopen(str_replace("/temp.htaccess", "/.htaccess", $filename), "w");
             foreach($htaccessFile as $lineNumber => $line) {
                 if(strpos(" ".$line, "RewriteBase") != 0) {
                     $lineToWrite = ($rewrite == "")
                         ? "RewriteBase /web/ \n"
-                        : "RewriteBase " . $rewrite . "/web/ \n";
+                        : "RewriteBase $rewrite/web/ \n";
                     fwrite($handle, $lineToWrite);
                 } else {
                     fwrite($handle, $line);
@@ -49,8 +50,8 @@
             foreach($bootstrapFile as $lineNumber => $line) {
                 if(strpos(" " . $line, "header") != 0) {
                     $lineToWrite = ($rewrite == "")
-                        ? "header(\"Location: web/\"); \n"
-                        : "header(\"Location: " . substr($rewrite, 1) . "web/\"); \n";
+                        ? "header(\"Location: /web/\"); \n"
+                        : "header(\"Location: $rewrite/web/\"); \n";
                     fwrite($handle, $lineToWrite);
                 } else {
                     fwrite($handle, $line);
