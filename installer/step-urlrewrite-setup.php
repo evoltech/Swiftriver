@@ -50,7 +50,7 @@
                 if(strpos(" " . $line, "header") != 0) {
                     $lineToWrite = ($rewrite == "")
                         ? "header(\"Location: web/\"); \n"
-                        : "header(\"Location: " . substr($rewrite, 1) . "web/\"); \n";
+                        : "header(\"Location: " . $rewrite . "/web/\"); \n";
                     fwrite($handle, $lineToWrite);
                 } else {
                     fwrite($handle, $line);
