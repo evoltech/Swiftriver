@@ -1,5 +1,5 @@
 ============================
-SWIFT RIVER v0.2.0 - Batuque
+SWIFT RIVER v0.2.1 - Batuque
 ============================
  
 SwiftRiver is a FOSS platform for determining the veracity and accuracy of news related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about Swift Web Services at - http://sws.ushahidi.com/

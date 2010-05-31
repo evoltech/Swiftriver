@@ -7,9 +7,9 @@ include_once (dirname(__FILE__)."/TextForUrlParser.php");
 class SiLCCPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProcessingStep {
 
     public function Description(){
-        return "When using this river turbine, all content will be sent to the Swift Web Service: " .
-               "Swithriver Language Computational Core (or SiLCC as we like to call it). This service " .
-               "will atempt to apply natural language tagging to all content items.";
+        return "This plugin sends all content to the Swift Web Service: " .
+               "Swiftriver Language Computational Core (SiLCC). It then attempts " .
+               "to apply auto-tag content with relevant keywords.";
     }
     public function Name(){
         return "SiLCC";
