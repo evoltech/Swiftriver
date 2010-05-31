@@ -66,11 +66,11 @@
                 <div class="action" style="display:none;">
                     <p><?php echo($nextActionMessage); ?></p>
                     <form action="<?php echo($nextAction); ?>" method="GET">
-                        <input type="submit" value="lets go ..." class="button" />
+                        <input type="submit" value="Let's Go ..." class="button" />
                     </form>
                 </div>
                 <div class="fail" style="display:none;">
-                    <p>Sorry about that! One of the tests I carried out didn't pass.</p>
+                    <p>Sorry about that! One of the tests we carried out didn't pass.</p>
                     <p>Can you fix this problem? Then, start the installation again.</p>
                 </div>
             </div>

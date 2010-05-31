@@ -33,12 +33,12 @@ class DetectionAndTranslationWorkflow {
     }
 
     /**
-     * When executed this method will firtly attempt to identify the language
-     * that the contents text is in. If this can not be done then the workflow
-     * mark the language as unknow and return the content. If a language is
-     * identifed as the same as the base language, the text is marked with the
+     * When executed, this method will firstly attempt to identify the language
+     * that the content text is in. If this can not be done, then the workflow
+     * marks the language as unknown and returns the content. If a language is
+     * identified as being same as the base language, the text is marked with the
      * language code and the content is returned. If the language is identified
-     * as something other than the base language, then translations is attempted
+     * as something other than the base language, then translations are attempted
      * and the translated text in the base language is added at position 0 to the
      * content text collection while the original text is stored at position 1
      *

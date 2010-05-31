@@ -25,8 +25,8 @@
      $check->message = $check->result
                        ? "Phew! I found it!"
                        : "Oops, you don't seem to have PEAR ".
-                         "installed - or perhaps it's just not in your include paths. ".
-                         "I need to use some PEAR packages so you will have to correct ".
+                         "installed - or perhaps it's just not in your include path. ".
+                         "Swift requires these PEAR packages so you will have to correct ".
                          "this before we can move on.";
                          
      $checks[] = $check;
@@ -105,14 +105,14 @@
                 <div class="wait"></div>
                 <div class="message"></div>
                 <div class="action" style="display:none;">
-                    <p>Let's move on to setting up my database.</p>
+                    <p>Let's move on to setting up the database.</p>
                     <form action="step-db-setup.php" method="GET">
-                        <input type="submit" value="lets go ..." class="button" />
+                        <input type="submit" value="Let's Go..." class="button" />
                     </form>
                 </div>
                 <div class="fail" style="display:none;">
-                    <p>Sorry about that! One of the tests I carried out failed.</p>
-                    <p>Can you and try to fix it? Then start the installation again.</p>
+                    <p>Sorry about that! One of the tests we carried out failed.</p>
+                    <p>Can you and try to fix it? Then start the installer again.</p>
                 </div>
             </div>
         </div>

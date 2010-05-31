@@ -4,7 +4,7 @@
     $bootstrapFile = dirname(__FILE__)."/../web/application/bootstrap.php";
 
      $checks = array();
-
+     /*
      $check->check = "Now, I need to check to see if you have an .htaccess file in place.";
      $check->result = (file_exists($htaccessFile));
      $check->message = $check->result
@@ -13,11 +13,11 @@
                            "folder of the install. This can happen sometimes when ".
                            "you take the code from the GitHub repo but shouldn't if you ".
                            "got a packaged download. It's fine though, you just need to ".
-                           "goto my GitHub repo, download the .htaccess file and place it ".
-                           "in the root folder.";
+                           "go to http://github.com/ushahidi/Swiftriver/issues, download ".
+                           "the .htaccess file and place it in the root folder.";
      $checks[] = $check;
      unset($check);
-     
+     */
      $check->check = "Now we need to make sure that the .htaccess file is writable.";
      $check->result = is_writable($htaccessFile);
      $check->message = $check->result
@@ -36,12 +36,12 @@
                          ? "Excellent, it's there."
                          : "Oops, you don't seem to have the bootstrap.php file in the ".
                            "web/application folder. This is going to be a real issue. " .
-                           "I think the best thing to do is contact my creator and report ".
-                           "this mishap.";
+                           "I think the best thing to do is contact SwiftRiver and report ".
+                           "at http://github.com/ushahidi/Swiftriver/issues.";
      $checks[] = $check;
      unset($check);
 
-     $check->check = "Now we need to make sure that the botstrap.php file is writable.";
+     $check->check = "Now we need to make sure that the bootstrap.php file is writable.";
      $check->result = is_writable($bootstrapFile);
      $check->message = $check->result
                        ? "No problems here, I can open it and write to it."
@@ -54,11 +54,13 @@
      unset($check);
 
      //check directory acces to key directories
-     $check->check = "So now I need to make sure that the directories I need to write to are ".
-                     "available to me. I'll check them all at once to save time ... they are: ".
-                     "[myroot]/Core/Configuration/ConfigurationFiles and [myroot]/Core/Modules.";
+     $check->check = "So now we need to make sure that the directories need are indeed ".
+                     "writable. I'll check them all at once to save time ... they are: ".
+                     "[myroot]/Core/Configuration/ConfigurationFiles, [myroot]/Core/Modules ".
+                     "and [myroot]/web/application/cache";
      $check->result = is_writable(dirname(__FILE__)."/../core/Configuration/ConfigurationFiles") &&
-                      is_writable(dirname(__FILE__)."/../core/Modules");
+                      is_writable(dirname(__FILE__)."/../core/Modules") &&
+                      is_writable(dirname(__FILE__)."/../web/application/cache");
      $check->message = $check->result
                         ? "Great news...they are all willing to accept my changes!"
                         : "Oops, at least one of the above directories wouldn't let me ".
@@ -140,11 +142,11 @@
                 <div class="action" style="display:none;">
                     <p>Ok, the last bit now, lets go and finish up.</p>
                     <form action="step-urlrewrite-setup.php" method="GET">
-                        <input type="submit" value="lets go ..." class="button" />
+                        <input type="submit" value="Let's Go..." class="button" />
                     </form>
                 </div>
                 <div class="fail" style="display:none;">
-                    <p>Sorry about that! One of the tests I carried out failed.</p>
+                    <p>Sorry about that! One of the tests we carried out failed.</p>
                     <p>Can you try to fix this problem and start the installation again?</p>
                 </div>
             </div>

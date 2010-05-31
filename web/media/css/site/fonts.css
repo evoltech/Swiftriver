@@ -1,5 +1,3 @@
-/* @override http://localhost:8888/loctest_2/web/media/css/site/fonts.css */
-
 body { font-family:Arial, sans-serif; }
 span {
 	display: none;
@@ -22,6 +20,7 @@ body div#page div#body div#content div#content-list ul li div.content-item div.r
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-size:90%; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p.tag-type { font-weight:bold; }
 
+div#themes ul#theme-list .theme { font-size: 80%;}
 div.modal div.modal-content div#turbines ul#turbine-list li { font-size: 80%; }
 div.modal div.modal-content div#turbines ul#turbine-list li p.name, p.active { font-weight: bold; }
 div.modal div.modal-content div#turbines ul#turbine-list li p a { text-decoration: none;}

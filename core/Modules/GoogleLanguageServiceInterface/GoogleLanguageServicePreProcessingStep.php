@@ -9,14 +9,14 @@ class GoogleLanguageServicePreProcessingStep implements \Swiftriver\Core\PreProc
     }
 
     /**
-     * Given a collection of content items, this method will firstly assertain in what language
+     * Given a collection of content items, this method will firstly ascertain in what language
      * content is presented. If this differs from the base language set up in the $configuration
-     * then all text forthe content will be translated, the original test will be relegated to
+     * then all text for the content will be translated, the original test will be relegated to
      * the second position of the $content->text collection and the translation into the
      * base language will be placed at position 0 in the $content->text collection.
      * Each piece of content that comes into this method, can expect to be returned with this
      * pattern - ie: the $content->text[0] LanguageSpecificText class being in the base
-     * language and (if applicable) the original LanguageSpecificText class beign at
+     * language and (if applicable) the original LanguageSpecificText class begin at
      * $content->text[1]
      *
      * @param \Swiftriver\Core\ObjectModel\Content[] $contentItems
@@ -83,12 +83,12 @@ class GoogleLanguageServicePreProcessingStep implements \Swiftriver\Core\PreProc
     }
 
     public function Description() {
-        return "When using this river turbine all your content will be automatically translated from any language ".
-               "supported by the Google Language Toolkit into the base language you specified while setting up ".
-               "your Swiftriver.";
+        return "This plugin automatically translates your content from any language ".
+               "supported by the Google Language Toolkit into the base language".
+			   "specified during installation.";
     }
     public function Name() {
-        return "Google Language Services Turbine";
+        return "Google Language Services";
     }
     public function ReturnRequiredParameters() {
         return array();

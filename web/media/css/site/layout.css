@@ -1,5 +1,3 @@
-/* @override http://localhost:8888/loctest_2/web/media/css/site/layout.css */
-
 body div#page { width:960px; margin-left:auto; margin-right:auto; margin-bottom:50px; }
 body div#page div#header { height:125px; margin-top:30px; }
 body div#page div#header div#logo img { float:left; }
