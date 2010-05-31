@@ -1,3 +1,3 @@
 <?php
-header("Location: /batuque/web/"); 
+header("Location: installer/"); 
 ?>
