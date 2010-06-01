@@ -49,7 +49,7 @@
                 <?php endif; ?>
             <?php endforeach; ?>
             <div class="form-row">
-                <input type="submit" value="Add to this channel" onclick="AddChannel()"/>
+                <input type="submit" value="Add this channel" onclick="AddChannel()"/>
             </div>
         </fieldset>
     </form>

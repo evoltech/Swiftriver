@@ -15,7 +15,7 @@ class FeedsParser implements IParser {
         //Extract the required variables
         $feedUrl = $channel->parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parameter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
@@ -34,7 +34,7 @@ class FeedsParser implements IParser {
         //Construct a new SimplePie Parsaer
         $feed = new \SimplePie();
 
-        //Get the cache directory
+        //Get the cach directory
         $cacheDirectory = $config->CachingDirectory;
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Setting the caching directory to $cacheDirectory]", \PEAR_LOG_DEBUG);
@@ -47,13 +47,10 @@ class FeedsParser implements IParser {
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($feedUrl);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Initializing the feed]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Initilising the feed]", \PEAR_LOG_DEBUG);
 
         //Run the SimplePie
         $feed->init();
-
-		//Strip HTML
-		$feed->strip_htmltags(array('span', 'font', 'style'));
 
         //Create the Content array
         $contentItems = array();
@@ -68,9 +65,8 @@ class FeedsParser implements IParser {
 
         $lastsucess = $channel->lastSucess;
 
-        //Loop through the Feed Items
+        //Loop throught the Feed Items
         foreach($feeditems as $feedItem) {
-	
             //Extract the date of the content
             $contentdate =  strtotime($feedItem->get_date());
             if(isset($lastsucess) && is_numeric($lastsucess) && isset($contentdate) && is_numeric($contentdate)) {
@@ -94,7 +90,6 @@ class FeedsParser implements IParser {
             $source->type = $channel->type;
             $source->subType = $channel->subType;
 
-			
             //Extract all the relevant feedItem info
             $title = $feedItem->get_title();
             $description = $feedItem->get_description();
@@ -149,8 +144,8 @@ class FeedsParser implements IParser {
     }
 
     /**
-     * This method returns an array of the required parameters that
-     * are necessary to run this parser. The Array should be in the
+     * This method returns an array of the required paramters that
+     * are nessesary to run this parser. The Array should be in the
      * following format:
      * array(
      *  "SubType" => array ( ConfigurationElements )
