@@ -44,7 +44,7 @@ class FeedsParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
 
-        //Pass the feed URL to the SImplePie object
+        //Pass the feed URL to the SimplePie object
         $feed->set_feed_url($feedUrl);
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Initializing the feed]", \PEAR_LOG_DEBUG);
