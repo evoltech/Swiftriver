@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>SwiftRiver Installer | v0.1.0 Apala</title>
+        <title>SwiftRiver Installer | v0.2 Batuque</title>
         <script type="text/javascript" language="javascript" src="assets/scripts/jQuery.js"></script>
         <script type="text/javascript" language="javascript" src="assets/scripts/jTypeWriter.js"></script>
         <link rel="stylesheet" media="screen" href="assets/styles/master.css" />

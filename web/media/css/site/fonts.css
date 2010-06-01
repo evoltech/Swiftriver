@@ -1,8 +1,4 @@
 body { font-family:Arial, sans-serif; }
-span {
-	display: none;
-}
-
 body div#page div#header div#tag-line h1 {
 	font: 0.7em/1.2em "Lucida Grande", Lucida, Verdana, sans-serif; background-image: url(../../images/bg_gr.png); border: 1px solid #0f1a2d; padding: 15px; }
 body div#page div#header div#configuration a { text-decoration: none; font: bold .6em "Lucida Grande", Lucida, Verdana, sans-serif; }
