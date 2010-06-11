@@ -15,7 +15,7 @@ class FeedsParser implements IParser {
         //Extract the required variables
         $feedUrl = $channel->parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parameter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [the parameter 'feedUrl' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
@@ -26,12 +26,17 @@ class FeedsParser implements IParser {
 
         //Include the Simple Pie Framework to get and parse feeds
         $config = \Swiftriver\Core\Setup::Configuration();
+
         $simplePiePath = $config->ModulesDirectory."/SimplePie/simplepie.inc";
         include_once($simplePiePath);
 
+		//Include the Simple Pie YouTube Framework
+		$simpleTubePiePath = $config->ModulesDirectory."/SimplePie/simpletube.inc";
+		include_once($simpleTubePath);
+
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
-        //Construct a new SimplePie Parsaer
+        //Construct a new SimplePie Parser
         $feed = new \SimplePie();
 
         //Get the cache directory
@@ -44,7 +49,7 @@ class FeedsParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
 
-        //Pass the feed URL to the SimplePie object
+        //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($feedUrl);
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Initializing the feed]", \PEAR_LOG_DEBUG);
