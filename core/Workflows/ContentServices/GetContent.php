@@ -59,9 +59,17 @@ class GetContent extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [END: Parsing content to JSON]", \PEAR_LOG_DEBUG);
 
+        $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [START: Parsing navigation to JSON]", \PEAR_LOG_DEBUG);
+
+        $navigationJson = (isset($results["navigation"]) && $results["navigation"] != null)
+                            ? json_encode($results["navigation"])
+                            : "[]";
+
+        $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [END: Parsing navigation to JSON]", \PEAR_LOG_DEBUG);
+
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [START: Constructing return JSON]", \PEAR_LOG_DEBUG);
 
-        $returnJson = '{"totalcount":"'.$results["totalCount"].'","contentitems":'.$contentJson.'}';
+        $returnJson = '{"totalcount":"'.$results["totalCount"].'","contentitems":'.$contentJson.',"navigation":'.$navigationJson.'}';
 
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [END: Constructing return JSON]", \PEAR_LOG_DEBUG);
 

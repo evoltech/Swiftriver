@@ -22,5 +22,11 @@ class GetContent extends \PHPUnit_Framework_TestCase  {
                         json_encode(array("state" => "new_content", "pageStart" => 0, "pageSize" => 20))
                         , null);
     }
+
+    public function testWithVeracity() {
+        $content = $this->object->RunWorkflow(
+                        json_encode(array("state" => "new_content", "minVeracity" => 0, "maxVeracity" => 20))
+                        , null);
+    }
 }
 ?>

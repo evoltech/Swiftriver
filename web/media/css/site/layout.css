@@ -10,6 +10,7 @@ body div#page div#body div#menu div#list-option ul li a { float:left; padding:10
 
 body div#page div#body div#content { width:650px; float:left; }
 body div#page div#body div#content div#content-list { padding-left:10px; margin-bottom: 25px;}
+body div#page div#body div#content div#content-list div.pagination { padding:10px; margin-top:5px; }
 body div#page div#body div#content div#content-list ul li div.content-item { padding:10px 10px 0 10px; }
 
 body div#page div#body div#content div#content-list ul li div.content-item div.left-column { float:left; width:75px; }
@@ -36,6 +37,16 @@ body div#page div#body div#right-bar div#channel-tree { width:250px; margin:5px 
 body div#page div#body div#right-bar div#channel-tree h2 { padding:10px; }
 body div#page div#body div#right-bar div#channel-tree img { position: relative; top:5px; }
 
+body div#page div#body div#right-bar div#nav-container { margin: 5px 10px 0 10px; }
+body div#page div#body div#right-bar div#nav-container div.nav-container { margin-bottom:0; padding:10px;}
+body div#page div#body div#right-bar div#nav-container div.nav-container h4 { padding:5px; }
+body div#page div#body div#right-bar div#nav-container div.nav-container div.nav-inner { padding:10px; }
+body div#page div#body div#right-bar div#nav-container div.nav-container div.nav-inner ul.facets li { width:100%; }
+body div#page div#body div#right-bar div#nav-container div.nav-container div.nav-inner ul.facets li a { width:100%; }
+body div#page div#body div#right-bar div#nav-container div#veracity-slider div#label-container { margin-bottom: 10px; }
+body div#page div#body div#right-bar div#nav-container div#veracity-slider div#label-container p#min { float:left;}
+body div#page div#body div#right-bar div#nav-container div#veracity-slider div#label-container p#max { float:right;}
+
 div.modal div.modal-header { height:106px; }
 div.modal div.modal-header h2 { padding:30px; }
 div.modal div.modal-content { padding:20px; }
@@ -49,6 +60,8 @@ div.modal div.modal-content div#turbines ul#turbine-list li p { margin-bottom:5p
 div.modal div.modal-content div#turbines ul#turbine-list li p.name { float:left; width:70%}
 div.modal div.modal-content div#turbines ul#turbine-list li p.more { float:right; width:5%}
 div.modal div.modal-content div#turbines ul#turbine-list li p.active img { margin-bottom:-3px; margin-left:5px; margin-right:10px;  }
+
+div.modal div.modal-content div#sources h3 a { width:100%; display:block; padding:10px; }
 
 div#footer p { padding-left: 10px; padding-bottom: 10px; }
 div#footer ul { padding: 10px; }

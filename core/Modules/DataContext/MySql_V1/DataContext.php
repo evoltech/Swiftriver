@@ -884,13 +884,15 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         if($state != null) {
             $filters[] = "content.state = '$state'";
         }
-        if($minVeracity != null) {
-            $filters[] = ($minVeracity == 0)
+        if($minVeracity != null || $minVeracity === 0) {
+            $filters[] = ($minVeracity === 0)
                 ? "(source.score >= $minVeracity OR source.score IS NULL)"
                 : "source.score >= $minVeracity";
         }
         if($maxVeracity != null) {
-            $filters[] = "source.score <= $maxVeracity";
+            $filters[] = ($minVeracity === 0)
+                ? "(source.score <= $maxVeracity OR source.score IS NULL)"
+                : "source.score <= $maxVeracity";
         }
         if($type != null) {
             $filters[] = "source.type = '$type'";
@@ -923,16 +925,40 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         $selectSql .= " order by content." . $orderBy . " " . $pagination;
 
+        $navigation = array();
 
-        $typeSql = "select distinct source.type " . $sql;
-        $types = RedBeanController::DataBaseAdapter()->getCol($typeSql, array());
+        if($subType == null) {
+            $typeSql = "select source.type as name, source.type as id, count(source.type) as count " . $sql . " group by source.type order by count desc";
+            $types = array(
+                "type" => "list",
+                "key" => "type",
+                "selected" => $type != null,
+                "facets" => RedBeanController::DataBaseAdapter()->get($typeSql, array())
+            );
+            $navigation["Channels"] = $types;
+        }
 
-        $subTypeSql = "select distinct source.subType " . $sql;
-        $subTypes = RedBeanController::DataBaseAdapter()->getCol($subTypeSql, array());
+        if($type != null && $source == null) {
+            $subTypeSql = "select source.subType as name, source.subType as id, count(source.subType) as count " . $sql . " group by source.subType order by count desc";
+            $subTypes = array(
+                "type" => "list",
+                "key" => "subType",
+                "selected" => $subType != null,
+                "facets" => RedBeanController::DataBaseAdapter()->get($subTypeSql, array())
+            );
+            $navigation["Sub Channels"] = $subTypes;
+        }
 
-        $sourceSql = "select distinct source.textId " .$sql;
-        $sources = RedBeanController::DataBaseAdapter()->getCol($sourceSql, array());
-
+        if($subType != null && $type != null) {
+            $sourceSql = "select source.name as name, source.textId as id, count(source.name) as count " .$sql . " group by source.name order by count desc";
+            $sources = array(
+                "type" => "list",
+                "key" => "source",
+                "selected" => $source != null,
+                "facets" => RedBeanController::DataBaseAdapter()->get($sourceSql, array())
+            );
+            $navigation["Sources"] = $sources;
+        }
 
         $subjectIds = RedBeanController::DataBaseAdapter()->getCol($selectSql, array());
 
@@ -943,11 +969,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return array (
             "totalCount" => $totalCount,
             "contentItems" => $content,
-            "navigation" => array(
-                "types" => $types,
-                "subTypes" => $subTypes,
-                "sources" => $sources
-            ));
+            "navigation" => $navigation
+        );
     }
     /**
      * This method redords the fact that a marker (sweeper) has changed the score

@@ -10,6 +10,7 @@ body div#page div#body div#menu div#list-option ul li a { color:#FFF; }
 body div#page div#body div#menu div#list-option ul li a.selected { background-color:#FFF; color:#000; }
 body div#page div#body div#menu div#list-option ul li a:hover { background-color:#FFF; color:#000; }
 
+body div#page div#body div#content div#content-list div.pagination { background-color:#CCC; }
 body div#page div#body div#content div#content-list ul li { border-bottom:1px dotted #cccccc; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { color:#015B87; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:0px solid #EBE8FA; }
@@ -19,9 +20,18 @@ body div#page div#body div#content div#content-list ul li div.content-item div.r
 body div#page div#body div#right-bar div#channel-tree { border:2px solid #1674a7; }
 body div#page div#body div#right-bar div#channel-tree h2 { background-color:#1674a7; color:#FFF; font-size: 0.95em; font-weight: normal; font-style: normal; }
 
+body div#page div#body div#right-bar div#nav-container { background-color:#CCC; }
+body div#page div#body div#right-bar div#nav-container div.nav-container h4 { border-bottom: 1px solid #555; }
+body div#page div#body div#right-bar div#nav-container div.nav-container div.nav-inner ul.facets li a { color:#000; }
+
 div#sb-player { background: #222; }
 div.modal { background: #222 url('../../images/background-page.gif') repeat-x 0 -100px; color:#FFF; }
 div.modal div.modal-content form label.error { background-color:#C90; color:#000; border:1px solid #900; }
 
 div.modal div.modal-content div#turbines ul#turbine-list li { background-color:#333; border-left:10px solid #AAA; }
 div.modal div.modal-content div#turbines ul#turbine-list li p a {color:#FFF;  }
+
+
+div.modal div.modal-content div#sources h3 a {background-color:#1674a7; color:#FFF; }
+div.modal div.modal-content div#sources h3 a:hover {background-color:#FFF; color:#000; }
+div.modal div.modal-content div#sources div.channel-container { background-color:#FFF; color:#000; }

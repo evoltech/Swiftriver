@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><?php echo($title); ?></title>
-		<link rel="shortcut icon" href="favicon.ico" />
+        <link rel="shortcut icon" href="favicon.ico" />
         <?php echo(Html::script("media/js/jquery.js")); ?>
         <?php echo(Html::script("media/js/jquery.ui.js")); ?>
         <?php echo(Html::script("media/js/jquery.treeview.js")); ?>
@@ -13,10 +13,12 @@
         <?php echo(Html::script("media/js/jquery.listreorder.js")); ?>
         <?php echo(Html::script("media/js/shadowbox.js")); ?>
         <?php echo(Html::script("media/js/site/framework.js")); ?>
+
         <?php echo(Html::style("media/css/site/base.css")); ?>
         <?php echo(Html::style("media/css/site/layout.css")); ?>
         <?php echo(Html::style("media/css/site/fonts.css")); ?>
         <?php echo(Html::style("media/css/site/coloursandimages.css")); ?>
+        <?php echo(Html::style("media/css/plugins/jquery.ui.css")); ?>
         <?php echo(Html::style("media/css/plugins/jquery.treeview.css")); ?>
         <?php echo(Html::style("media/css/plugins/shadowbox.css")); ?>
 
@@ -29,6 +31,13 @@
         <script type="text/javascript" language="javascript">
             //Init the Shadowbox plugin
             Shadowbox.init({skipSetup:true});
+            $(document).ready(function(){
+                $("div#nav-container").corner("5px");
+                $("div#menu li a").corner("top 5px");
+                $("div#body").corner("top 5px");
+                $("div#footer").corner("bottom 5px");
+                $("div.pagination").corner("5px");
+            });
         </script>
     </head>
     <body>

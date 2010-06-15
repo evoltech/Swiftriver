@@ -96,4 +96,12 @@ class Controller_Api_Channels extends Controller
         //return the json
         $this->request->response = $json;
     }
+
+    public function action_getall()
+    {
+        $json = API::channel_api()->get_all_channels();
+
+        //return the json
+        $this->request->response = $json;
+    }
 }

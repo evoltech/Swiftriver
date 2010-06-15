@@ -139,7 +139,8 @@ class FeedsParser implements IParser {
     public function ListSubTypes() {
         return array(
             "Blogs",
-            "News Feeds"
+            "News Feeds",
+            "You Tube"
         );
     }
 

@@ -1,5 +1,10 @@
-
-function ListController(baseUrl, subject) {
+/**
+ *
+ * @param baseUrl The base url for all ajax calls
+ * @param subject The CSS Selector for the UL that will become the content list
+ * @param navContainer The Css Selector for the Ul that will become the nav tree
+ */
+function ListController(baseUrl, subject, navContainer) {
 
     /**
      * The base url for all ajax requests
@@ -13,6 +18,13 @@ function ListController(baseUrl, subject) {
      * @var CssSelector
      */
     this.subject = subject;
+
+    /**
+     * The ul that should be turned into the
+     * navigation tree.
+     * @var CssSelector
+     */
+    this.navContainer = navContainer;
     
     /**
      * Object array to hold the Async objects relating to 
@@ -36,7 +48,7 @@ function ListController(baseUrl, subject) {
         this.BeforListChanged();
 
         //Set list
-        this.RenderList();
+        this.RenderList(true);
 
         //Fire the after list set event
         this.AfterListChanged();
@@ -45,7 +57,7 @@ function ListController(baseUrl, subject) {
     /**
      * Renders the list from an api call
      */
-    this.RenderList = function() {
+    this.RenderList = function(rerenderNavigation) {
         //set the request Url
         var uri = this.baseUrl +
                   "api/contentselection/get/" +
@@ -61,6 +73,10 @@ function ListController(baseUrl, subject) {
 
          //get the current array index
          this.currentRequests[uri] = $.getJSON(uri, function(data){
+
+            if(rerenderNavigation) {
+                listController.RenderNavigation(data.navigation);
+            }
 
              var totalCount = data.totalcount;
              if(totalCount < 1) {
@@ -99,16 +115,65 @@ function ListController(baseUrl, subject) {
          });
     }
 
+
+    this.RenderNavigation = function(navigationTree) {
+        if(navigationTree == null) {
+            return;
+        }
+        
+        $.post(
+            listController.baseUrl + "parts/facetgroup/render",
+            {group : navigationTree},
+            function(navTemplate) {
+                $.get(
+                    listController.baseUrl + "parts/veracityslider/render",
+                    function(veracityTemplate) {
+                        $(listController.navContainer).children().remove();
+                        $(listController.navContainer).append(veracityTemplate);
+                        $(listController.navContainer).append(navTemplate);
+
+                        var min = (listController.navigationState.minVeracity != "null") ? listController.navigationState.minVeracity : 0;
+                        var max = (listController.navigationState.maxVeracity != "null") ? listController.navigationState.maxVeracity : 100;
+                        $("div#veracity-slider p#min").html(min + "&#37;");
+                        $("div#veracity-slider p#max").html(max + "&#37;");
+                        $("div#veracity-slider div#slider").slider({
+                            range: true,
+                            minValue: 0,
+                            maxValue: 100,
+                            values: [min,max],
+                            step: 5,
+                            slide: function(event, ui) {
+                                $("div#veracity-slider p#min").html(ui.values[0] + "&#37;");
+                                $("div#veracity-slider p#max").html(ui.values[1] + "&#37;");
+                            },
+                            stop : function(event, ui) {
+                                var newNavState = listController.navigationState.Copy();
+                                newNavState.minVeracity = ui.values[0];
+                                newNavState.maxVeracity = ui.values[1];
+                                listController.NavigationStateChange(newNavState);
+                            }
+                        });
+                    }
+                )
+            }
+        );
+        
+    }
+
     /**
      * The before list changed even
      */
     this.BeforListChanged = function() {
         //Stop all the current AJAX requests
+        for(var request in listController.currentRequests) {
+            listController.currentRequests[request].abort();
+        }
+        /*
         for(var i=0; i<this.currentRequests.length; i++) {
             var ajaxRequest = this.currentRequests[i];
             ajaxRequest.abort();
         }
-
+        */
         this.currentRequests = new Object();
 
         $(this.subject).hide().children().remove();
@@ -156,7 +221,7 @@ function ListController(baseUrl, subject) {
         $.getJSON(this.baseUrl + "api/contentcuration/markasaccurate/" + contentId, function(data) {
             listController.UpdateSourceScores(data.sourceId, data.sourceScore);
         });
-        this.RenderList(this.CurrentIds());
+        this.RenderList(false);
     }
 
     /**
@@ -172,7 +237,7 @@ function ListController(baseUrl, subject) {
         $.getJSON(this.baseUrl + "api/contentcuration/markasinaccurate/" + contentId, function(data) {
             listController.UpdateSourceScores(data.sourceId, data.sourceScore);
         });
-        this.RenderList(this.CurrentIds());
+        this.RenderList(false);
     }
 
     /**
@@ -188,7 +253,35 @@ function ListController(baseUrl, subject) {
         $.getJSON(this.baseUrl + "api/contentcuration/markascrosstalk/" + contentId, function(data) {
             listController.UpdateSourceScores(data.sourceId, data.sourceScore);
         });
-        this.RenderList(this.CurrentIds());
+        this.RenderList(false);
+    }
+
+    this.DeselectFacet = function(facetgroup) {
+        var newNavigationState = listController.navigationState.Copy();
+        if(facetgroup == "type") {
+            newNavigationState.type = "null";
+        }
+        else if (facetgroup == "subType") {
+            newNavigationState.subType = "null";
+        }
+        else if (facetgroup == "source") {
+            newNavigationState.source = "null";
+        }
+        listController.NavigationStateChange(newNavigationState);
+    }
+
+    this.SelectFacet = function(facetgroup, facet) {
+        var newNavigationState = listController.navigationState.Copy();
+        if(facetgroup == "type") {
+            newNavigationState.type = facet;
+        }
+        else if (facetgroup == "subType") {
+            newNavigationState.subType = facet;
+        }
+        else if (facetgroup == "source") {
+            newNavigationState.source = facet;
+        }
+        listController.NavigationStateChange(newNavigationState);
     }
 
     /**
@@ -219,6 +312,19 @@ function NavigationState(state, minVeracity, maxVeracity, type, subType, source,
         if(navigationState.pageStart != this.pageStart)         return false;
         if(navigationState.orderBy != this.orderBy)             return false;
         return true;
+    }
+
+    this.Copy = function() {
+        return new NavigationState(
+            this.state,
+            this.minVeracity,
+            this.maxVeracity,
+            this.type,
+            this.subType,
+            this.source,
+            this.pageSize,
+            this.pageStart,
+            this.orderBy);
     }
 
     /**
