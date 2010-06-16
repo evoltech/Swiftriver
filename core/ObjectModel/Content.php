@@ -51,5 +51,11 @@ class Content {
      * @var \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[]
      */
     public $difs = array();
+
+    /**
+     * The global positioning data for this content
+     * @var GisData;
+     */
+    public $gisData;
 }
 ?>

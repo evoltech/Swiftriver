@@ -90,6 +90,16 @@ class ContentFactory {
             $content->difs = $difCollectionsArray;
         }
 
+        //Sort out the GIS Data
+        $gisData = $object->gisData;
+        if($gisData != null) {
+            $long = $gisData->longitude;
+            $lat = $gisData->latitude;
+            if($long != null && is_float($long) && $lat != null && is_float($lat)) {
+                $content->gisData = new \Swiftriver\Core\ObjectModel\GisData($long, $lat);
+            }
+        }
+
         //return the contetn
         return $content;
     }
