@@ -311,13 +311,23 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [START: Querying the data store]", \PEAR_LOG_DEBUG);
 
-        $dbResults = RedBeanController::Finder()->where("channel", "deleted != 1");
+        try {
+            //Attempt to query the data store
+            $dbResults = RedBeanController::Finder()->where("channel", "deleted != 1");
 
-        if(!$dbResults || $dbResults == null || !is_array($dbResults) || count($dbResults) < 1) {
-            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [No sourcse found]", \PEAR_LOG_DEBUG);
+            //If the db returns noting then throw an exception
+            if(!$dbResults || $dbResults == null || !is_array($dbResults) || count($dbResults) < 1) {
+                throw new \Exception("No sources returned from the data store, it may be because none have been added?");
+            }
+        }
+        catch(\Exception $e) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [An exception was thrown, returning empty array]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [$e]", \PEAR_LOG_ERR);
             $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [Method finished]", \PEAR_LOG_DEBUG);
             return array();
         }
+
+
 
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannels [END: Querying the data store]", \PEAR_LOG_DEBUG);
 
