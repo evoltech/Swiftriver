@@ -92,12 +92,27 @@ class ContentFactory {
 
         //Sort out the GIS Data
         $gisData = $object->gisData;
-        if($gisData != null) {
-            $long = $gisData->longitude;
-            $lat = $gisData->latitude;
-            if($long != null && is_float($long) && $lat != null && is_float($lat)) {
-                $content->gisData = new \Swiftriver\Core\ObjectModel\GisData($long, $lat);
+        if($gisData != null && is_array($gisData)) {
+            foreach($gisData as $gis) {
+                $long = $gis->longitude;
+                $lat = $gis->latitude;
+                if($long != null && is_float($long) && $lat != null && is_float($lat)) {
+                    $content->gisData[] = new \Swiftriver\Core\ObjectModel\GisData($long, $lat);
+                }
             }
+        }
+
+        //sort out the extensions
+        $extensions = $object->extensions;
+        if($extensions != null) {
+            //JSON code up the extensions again
+            $jsonEncodedExtensions = json_encode($extensions);
+
+            //Decode them but this time make sure they are an associative array
+            $extensionsArray = json_decode($jsonEncodedExtensions, true);
+
+            //Apply the array back to the content items
+            $content->extensions = $extensionsArray;
         }
 
         //return the contetn

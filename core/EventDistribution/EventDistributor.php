@@ -16,6 +16,10 @@ class EventDistributor {
         $logger->log("Core::EventDistribution::EventDistributor::__construct [Method finished]", \PEAR_LOG_DEBUG);
     }
 
+    /**
+     *
+     * @param GenericEvent $event
+     */
     public function RaiseAndDistributeEvent($event) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::EventDistribution::EventDistributor [Method invoked]", \PEAR_LOG_DEBUG);
@@ -48,6 +52,7 @@ class EventDistributor {
                     $message = $e->getMessage();
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$message]", \PEAR_LOG_ERR);
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Unable to run event distribution for event handler: $className]", \PEAR_LOG_ERR);
+                    continue;
                 }
 
                 $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [END: Instanciating event handler: $className]", \PEAR_LOG_DEBUG);
@@ -55,8 +60,14 @@ class EventDistributor {
                 $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [START: Run event distribution for $className]", \PEAR_LOG_DEBUG);
 
                 try {
-                    //Run the handle event method
-                    $handler->HandleEvent($event, $configuration, $logger);
+                    //Loop throught the events that this handler subscribes to
+                    foreach($handler->ReturnEventNamesToHandle() as $eventName) {
+                        //If we have a match
+                        if($eventName == $event->name) {
+                            //Run the handle event method
+                            $handler->HandleEvent($event, $configuration, $logger);
+                        }
+                    }
                 }
                 catch (\Exception $e) {
                     $message = $e->getMessage();

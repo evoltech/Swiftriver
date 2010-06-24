@@ -4,7 +4,11 @@ class GenericEvent {
     /**
      * The name of the event, event handlers should be listening
      * to raised events and filtering only the ones they want
-     * to handle based on this attribute.
+     * to handle based on this attribute. All
+     * the strings returned should be accessed throught the
+     * \Swiftriver\Core\EventDistribution\EventEnumeration
+     * static enumerator by calling EventEnumeration::[event]
+     *
      * @var string
      */
     public $name;
@@ -13,6 +17,7 @@ class GenericEvent {
      * The event arguments, these can be anything held in an
      * associative aray, Event handlers can interpret the data
      * in this array to act on the raising of this event
+     *
      * @var Associative Array
      */
     public $arguments;

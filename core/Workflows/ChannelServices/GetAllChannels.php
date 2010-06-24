@@ -44,7 +44,7 @@ class GetAllChannels extends ChannelServicesBase {
             return parent::FormatErrorMessage("An exception was thrown: $message");
         }
 
-        $logger->log("Core::Workflows::ChannelServices::GetAllChannels::RunWorkflow [END: Listing all Channels]", \PEAR_LOG_DEBUG);
+         $logger->log("Core::Workflows::ChannelServices::GetAllChannels::RunWorkflow [END: Listing all Channels]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Workflows::ChannelServices::GetAllChannels::RunWorkflow [START: Parsing channel processing jobs to JSON]", \PEAR_LOG_DEBUG);
 

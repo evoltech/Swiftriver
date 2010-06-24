@@ -2,8 +2,8 @@
 namespace Swiftriver\Core\ObjectModel;
 class Tag {
     /**
-     * The type of the tag. eg: Location, Person etc.
-     * @var string
+     * The type of the tag. 
+     * @var string (who|what|where)
      */
     public $type = "General";
 

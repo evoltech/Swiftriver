@@ -21,6 +21,12 @@ class ConfigurationElement {
     public $description;
 
     /**
+     * The value of this configuration property
+     * @var unknown - described by $type
+     */
+    public $value;
+
+    /**
      *
      * @param string $name The name of this element
      * @param string $type 'int'|'string'|'bool'|'float'
@@ -31,6 +37,7 @@ class ConfigurationElement {
         $this->name = $name;
         $this->type = $type;
         $this->description = $description;
+        $this->value = $value;
     }
 }
 ?>

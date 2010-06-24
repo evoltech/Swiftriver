@@ -56,6 +56,14 @@ class Content {
      * The global positioning data for this content
      * @var GisData;
      */
-    public $gisData;
+    public $gisData = array();
+
+    /**
+     * This is the primary mechnisum for extending the product item class,
+     * You can use this associative array in any way you can imagine! All
+     * you need to be aware of is how the data will be used later on.
+     * @var array
+     */
+    public $extensions = array();
 }
 ?>

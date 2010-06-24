@@ -5,6 +5,7 @@ class Setup {
     private static $dalConfiguration;
     private static $preProcessingStepsConfiguration;
     private static $eventDistributionConfiguration;
+    private static $dynamicModuleConfiguration;
 
     public static function GetLogger() {
         $log = new \Log("this message is ignored, however not supplying one throws an error :o/");
@@ -50,6 +51,16 @@ class Setup {
             return self::$eventDistributionConfiguration;
         self::$eventDistributionConfiguration = new Configuration\ConfigurationHandlers\EventDistributionConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/EventDistributionConfiguration.xml");
         return self::$eventDistributionConfiguration;
+    }
+
+    /**
+     * @return Configuration\ConfigurationHandlers\DynamicModuleConfigurationHandler
+     */
+    public static function DynamicModuleConfiguration() {
+        if(isset(self::$dynamicModuleConfiguration))
+            return self::$dynamicModuleConfiguration;
+        self::$dynamicModuleConfiguration = new Configuration\ConfigurationHandlers\DynamicModuleConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/DynamicModuleConfiguration.xml");
+        return self::$dynamicModuleConfiguration;
     }
 }
 //include the Loging Framework
