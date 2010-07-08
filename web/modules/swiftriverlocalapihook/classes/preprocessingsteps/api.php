@@ -55,5 +55,17 @@ class PreProcessingSteps_API {
         //return the json
         return $json;
     }
+
+    public function save_preprocessing_step($json_encoded_parameters)
+    {
+        //Instanciate the workflow
+        $workflow = new Swiftriver\Core\Workflows\PreProcessingSteps\SavePreProcessingStep();
+
+        //run the workflow
+        $json = $workflow->RunWorkflow($json_encoded_parameters, $this->apiKey);
+
+        //return the json
+        return $json;
+    }
 }
 ?>

@@ -27,4 +27,13 @@ class Controller_Config_Turbines extends Controller_Template_Modal
         $this->request->response = $json;
     }
 
+    public function action_save()
+    {
+        $object->name = $_POST["name"];
+        $object->data = $_POST["data"];
+        $json_encoded_parameters = json_encode($object);
+        $json = API::preprocessing_steps_api()->save_preprocessing_step($json_encoded_parameters);
+        $this->request->response = $json;
+    }
+
 }

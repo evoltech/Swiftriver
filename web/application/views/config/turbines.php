@@ -29,13 +29,15 @@
 </div>
 <script language="javascript" type="text/javascript">
     function SaveConfiguration(name, number) {
-        var data = new Array();
-        $("div#turbine_config_" + number + " input").each(function(){
-            data[this.name] = $(this).val();
-        });
+        var postData = new Object();
+        var inputs = $("div#turbine_config_" + number + " input");
+        for(var i=0; i<inputs.length; i++) {
+            var input = inputs[i];
+            postData[$(input).attr("name")] = $(input).val();
+        }
         $.post(
             "<?php echo(url::base()); ?>config/turbines/save",
-            { name : name, data : data },
+            { "name" : name, "data" : postData },
             function(data){},
             'json'
         );
