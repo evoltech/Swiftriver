@@ -63,8 +63,8 @@
         });
     }
 
-    function ConfigureTurbines() {
-        $.get("<?php echo(url::base()); ?>config/turbines", function(data) {
+    function ConfigureImpulseTurbines() {
+        $.get("<?php echo(url::base()); ?>config/impulseturbines", function(data) {
             Shadowbox.open({
                 content : data,
                 player : "html",

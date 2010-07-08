@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Config_Turbines extends Controller_Template_Modal
+class Controller_Config_ImpulseTurbines extends Controller_Template_Modal
 {
     public function action_index()
     {
         $this->template->title = "Configure Swiftriver Turbines";
-        $this->template->content = new View("config/turbines");
+        $this->template->content = new View("config/impulseturbines");
         $return = API::preprocessing_steps_api()->list_all_preprocessing_steps();
         $object = json_decode($return);
         $this->template->content->turbines = $object->data->steps;

@@ -36,7 +36,7 @@
             postData[$(input).attr("name")] = $(input).val();
         }
         $.post(
-            "<?php echo(url::base()); ?>config/turbines/save",
+            "<?php echo(url::base()); ?>config/impulseturbines/save",
             { "name" : name, "data" : postData },
             function(data){},
             'json'
@@ -60,7 +60,7 @@
         $("p#inactive_" + number).hide("fast");
         $("p#active_" + number).show("fast");
         $.post(
-            "<?php echo(url::base()); ?>config/turbines/activate",
+            "<?php echo(url::base()); ?>config/impulseturbines/activate",
             { name: name },
             function(data){},
             'json'
@@ -70,7 +70,7 @@
         $("p#active_" + number).hide("fast");
         $("p#inactive_" + number).show("fast");
         $.post(
-            "<?php echo(url::base()); ?>config/turbines/deactivate",
+            "<?php echo(url::base()); ?>config/impulseturbines/deactivate",
             { name: name },
             function(data){},
             'json'
