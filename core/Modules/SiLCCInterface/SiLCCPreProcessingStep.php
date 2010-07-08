@@ -78,7 +78,12 @@ class SiLCCPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
         return $taggedContentItems;
     }
     public function ReturnRequiredParameters() {
-        return array();
+        return array(
+            new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                    "Url", 
+                    "string", 
+                    "The fully qulaified URL of the SiLCC Service")
+        );
     }
 }
 ?>

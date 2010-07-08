@@ -22,7 +22,7 @@ class DynamicModuleConfigurationHandler extends BaseConfigurationHandler {
                 $name = (string) $property["name"];
                 $type = (string) $property["type"];
                 $description = (string) $property["description"];
-                $value = (object) $property["value"];
+                $value = (string) $property["value"];
                 $configEelement = new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         $name,
                         $type,

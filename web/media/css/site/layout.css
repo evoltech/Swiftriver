@@ -60,6 +60,8 @@ div.modal div.modal-content div#turbines ul#turbine-list li p { margin-bottom:5p
 div.modal div.modal-content div#turbines ul#turbine-list li p.name { float:left; width:70%}
 div.modal div.modal-content div#turbines ul#turbine-list li p.more { float:right; width:5%}
 div.modal div.modal-content div#turbines ul#turbine-list li p.active img { margin-bottom:-3px; margin-left:5px; margin-right:10px;  }
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container p.name { float:left; width:30%; }
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container input { width:65%; }
 
 div.modal div.modal-content div#sources h3 a { width:100%; display:block; padding:10px; }
 

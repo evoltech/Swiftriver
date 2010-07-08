@@ -35,7 +35,7 @@ class ListAllPreProcessingSteps extends PreProcessingStepsBase {
         }
 
         $logger->log("Core::Workflows::PreProcessingSteps::ListAllPreProcessingSteps::RunWorkflow [END: Finding out which are active]", \PEAR_LOG_DEBUG);
-        
+
         $logger->log("Core::Workflows::PreProcessingSteps::ListAllPreProcessingSteps::RunWorkflow [START: Encoding results to JSON]", \PEAR_LOG_DEBUG);
 
         $json = parent::ParseStepsToJson($steps);

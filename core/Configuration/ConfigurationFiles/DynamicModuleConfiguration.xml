@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<configuration><modules></modules></configuration>
+<configuration><modules><module name="SiLCC"><properties><property name="Url" type="string" description="The fully qulaified URL of the SiLCC Service" value="testUrl"/></properties></module></modules></configuration>

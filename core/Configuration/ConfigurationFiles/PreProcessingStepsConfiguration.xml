@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<configuration><preProcessingSteps><step name="SiLCC" className="\Swiftriver\PreProcessingSteps\SiLCCPreProcessingStep" filePath="\SiLCCInterface\SiLCCPreProcessingStep.php"/><step name="Google Language Services" className="\Swiftriver\PreProcessingSteps\GoogleLanguageServicePreProcessingStep" filePath="\GoogleLanguageServiceInterface\GoogleLanguageServicePreProcessingStep.php"/></preProcessingSteps></configuration>
+<configuration><preProcessingSteps><step name="Google Language Services" className="\Swiftriver\PreProcessingSteps\GoogleLanguageServicePreProcessingStep" filePath="\GoogleLanguageServiceInterface\GoogleLanguageServicePreProcessingStep.php"/></preProcessingSteps></configuration>

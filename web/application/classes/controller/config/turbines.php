@@ -26,4 +26,5 @@ class Controller_Config_Turbines extends Controller_Template_Modal
         $json = API::preprocessing_steps_api()->deactivate_preprocessing_step($json_encodedParameters);
         $this->request->response = $json;
     }
+
 }
