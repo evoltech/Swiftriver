@@ -85,5 +85,49 @@ class EventDistributor {
 
         $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Method finished]", \PEAR_LOG_DEBUG);
     }
+
+    /**
+     * Returns all the classes that implement the
+     * IEventHandler interface.
+     * @return IEventHandler[]
+     */
+    public function ListAllAvailableEventHandlers() {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $handlers = array();
+
+        $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+        $dirItterator = new \RecursiveDirectoryIterator($modulesDirectory);
+        $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach($iterator as $file) {
+            if($file->isFile()) {
+                $filePath = $file->getPathname();
+                if(strpos($filePath, "EventHandler.php")) {
+                    try {
+                        include_once($filePath);
+                        $typeString = "\\Swiftriver\\EventHandlers\\".$file->getFilename();
+                        $type = str_replace(".php", "", $typeString);
+                        $object = new $type();
+                        if($object instanceof IEventHandler) {
+                            $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Adding type $type]", \PEAR_LOG_DEBUG);
+                            $object->filePath = str_replace($modulesDirectory, "", $filePath);
+                            $object->type = $type;
+                            $handlers[] = $object;
+                        }
+                    }
+                    catch(\Exception $e) {
+                        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [error adding type $type]", \PEAR_LOG_DEBUG);
+                        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [$e]", \PEAR_LOG_ERR);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $handlers;
+    }
 }
 ?>

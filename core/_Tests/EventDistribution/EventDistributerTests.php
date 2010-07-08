@@ -14,5 +14,11 @@ class EventDistributerTests extends \PHPUnit_Framework_TestCase  {
         $eventDistributer = new EventDistribution\EventDistributor();
         $eventDistributer->RaiseAndDistributeEvent(null);
     }
+
+    public function testListAllHandlers() {
+        include_once(dirname(__FILE__)."/../../Setup.php");
+        $eventDistributer = new EventDistribution\EventDistributor();
+        $handlers = $eventDistributer->ListAllAvailableEventHandlers();
+    }
 }
 ?>

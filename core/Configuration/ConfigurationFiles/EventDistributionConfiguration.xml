@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration name="Event Distribution Configuration">
+<?xml version="1.0"?>
+<configuration>
     <eventHandlers>
-        <!--<handler
-         className=""
-         filePath=""
-        />-->
     </eventHandlers>
 </configuration>

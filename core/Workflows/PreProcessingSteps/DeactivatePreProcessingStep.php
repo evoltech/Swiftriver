@@ -73,7 +73,7 @@ class DeactivatePreProcessingStep extends PreProcessingStepsBase {
             }
         }
 
-        //Add the step to the configuration framework
+        //Remove the step from the configuration framework
         if(isset($index)) {
             $config->PreProcessingSteps[$index] = null;
         }

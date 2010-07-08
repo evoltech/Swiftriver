@@ -83,6 +83,7 @@ foreach($iterator as $file) {
 //Include some specific files
 include_once(dirname(__FILE__)."/Workflows/WorkflowBase.php");
 include_once(dirname(__FILE__)."/Workflows/ContentServices/ContentServicesBase.php");
+include_once(dirname(__FILE__)."/Workflows/EventHandlers/EventHandlersBase.php");
 include_once(dirname(__FILE__)."/Workflows/ChannelServices/ChannelServicesBase.php");
 include_once(dirname(__FILE__)."/Workflows/SourceServices/SourceServicesBase.php");
 include_once(dirname(__FILE__)."/Workflows/PreProcessingSteps/PreProcessingStepsBase.php");

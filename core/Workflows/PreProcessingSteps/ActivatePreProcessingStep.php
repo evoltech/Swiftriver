@@ -6,7 +6,7 @@ class ActivatePreProcessingStep extends PreProcessingStepsBase {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::PreProcessingSteps::ActivatePreProcessingStep::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
-        $logger->log("Core::Workflows::PreProcessingSteps::ActivatePreProcessingStep::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Workflows::PreProcessingSteps::ActivatePreProcessingStep::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
         try {
             //Call the parent to decode the json

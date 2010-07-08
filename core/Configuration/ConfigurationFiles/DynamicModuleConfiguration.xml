@@ -1,2 +1,5 @@
 <?xml version="1.0"?>
-<configuration><modules><module name="SiLCC"><properties><property name="Url" type="string" description="The fully qulaified URL of the SiLCC Service" value="testUrl2"/></properties></module><module name="Google Language Services"><properties><property name="Something" type="string" description="The fully qulaified URL of the SiLCC Service" value=""/></properties></module></modules></configuration>
+<configuration>
+    <modules>
+    </modules>
+</configuration>

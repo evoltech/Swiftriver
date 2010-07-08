@@ -33,7 +33,7 @@ class UshahidiAPIEventHandler implements \Swiftriver\Core\EventDistribution\IEve
     public function ReturnRequiredParameters(){
         return array(
             new \Swiftriver\Core\ObjectModel\ConfigurationElement(
-                    "UshahidiUrl",
+                    "Ushahidi Url",
                     "string",
                     "The fully qualified url to the Ushahidi instance you want to " .
                     "communicate with (please dont include the API path, just the root)")
