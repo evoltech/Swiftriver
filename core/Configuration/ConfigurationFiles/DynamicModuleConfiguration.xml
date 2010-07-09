@@ -1,5 +1,2 @@
 <?xml version="1.0"?>
-<configuration>
-    <modules>
-    </modules>
-</configuration>
+<configuration><modules><module name="Ushahidi Report Push"><properties><property name="Ushahidi Url" type="string" description="The fully qualified url to the Ushahidi instance you want to communicate with (please dont include the API path, just the root)" value=""/></properties></module></modules></configuration>

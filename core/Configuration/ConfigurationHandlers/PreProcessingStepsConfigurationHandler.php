@@ -18,7 +18,7 @@ class PreProcessingStepsConfigurationHandler extends BaseConfigurationHandler {
 
     public function __construct($configurationFilePath) {
         $this->configurationFilePath = $configurationFilePath;
-        $xml = simplexml_load_file($configurationFilePath);
+        $xml = parent::SaveOpenConfigurationFile($configurationFilePath, "preProcessingSteps");
         $this->xml = $xml;
         $this->PreProcessingSteps = array();
         foreach($xml->preProcessingSteps->step as $step) {

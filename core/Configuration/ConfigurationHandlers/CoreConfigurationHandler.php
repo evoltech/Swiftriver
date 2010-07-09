@@ -9,8 +9,10 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
 
     public $BaseLanguageCode;
 
+    public $EnableDebugLogging = false;
+
     public function __construct($configurationFilePath) {
-        $xml = simplexml_load_file($configurationFilePath);
+        $xml = parent::SaveOpenConfigurationFile($configurationFilePath, "properties");
         $this->Name = (string) $xml["name"];
         foreach($xml->properties->property as $property) {
             switch((string) $property["name"]) {
@@ -23,12 +25,12 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
                 case "BaseLanguageCode" :
                     $this->BaseLanguageCode = (string) $property["value"];
                     break;
+                case "EnableDebugLogging" :
+                    $value = (string) $property["value"];
+                    $this->EnableDebugLogging = $value === "true";
+                    break;
             }
         }
-    }
-
-    public function SaveToFile($configurationFilePath) {
-        $xml = simplexml_load_file($configurationFilePath);
     }
 }
 ?>

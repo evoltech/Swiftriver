@@ -7,7 +7,7 @@ class DALConfigurationHandler extends BaseConfigurationHandler {
     public $DataContextDirectory;
 
     public function __construct($configurationFilePath) {
-        $xml = simplexml_load_file($configurationFilePath);
+        $xml = parent::SaveOpenConfigurationFile($configurationFilePath, "properties");
         foreach($xml->properties->property as $property) {
             switch((string) $property["name"]) {
                 case "DataContextType" :

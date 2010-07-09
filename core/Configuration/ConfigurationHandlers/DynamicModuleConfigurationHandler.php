@@ -14,7 +14,7 @@ class DynamicModuleConfigurationHandler extends BaseConfigurationHandler {
 
     public function __construct($configurationFilePath){
         $this->configurationFilePath = $configurationFilePath;
-        $xml = simplexml_load_file($configurationFilePath);
+        $xml = parent::SaveOpenConfigurationFile($configurationFilePath, "modules");
         foreach($xml->modules->module as $module) {
             $moduleName = (string) $module["name"];
             $configuration = array();

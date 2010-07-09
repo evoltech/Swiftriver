@@ -16,7 +16,7 @@ class EventDistributionConfigurationHandler extends BaseConfigurationHandler {
 
     public function __construct($configurationFilePath) {
         $this->configurationFilePath = $configurationFilePath;
-        $xml = simplexml_load_file($configurationFilePath);
+        $xml = parent::SaveOpenConfigurationFile($configurationFilePath, "eventHandlers");
         $this->EventHandlers = array();
         foreach($xml->eventHandlers->handler as $handler) {
             $this->EventHandlers[] =
