@@ -36,7 +36,11 @@ class UshahidiAPIEventHandler implements \Swiftriver\Core\EventDistribution\IEve
                     "Ushahidi Url",
                     "string",
                     "The fully qualified url to the Ushahidi instance you want to " .
-                    "communicate with (please dont include the API path, just the root)")
+                    "communicate with (please dont include the API path, just the root)"),
+            new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                    "Ushahidi API Key",
+                    "string",
+                    "The API Key to pass to Ushahidi")
         );
     }
 

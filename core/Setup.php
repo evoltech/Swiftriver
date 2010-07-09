@@ -10,6 +10,10 @@ class Setup {
     public static function GetLogger() {
         $log = new \Log("this message is ignored, however not supplying one throws an error :o/");
         $logger = $log->singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
+        if(!self::Configuration()->EnableDebugLogging) {
+            $mask = \Log::UPTO(\PEAR_LOG_INFO);
+            $logger->setMask($mask);
+        }
         return $logger;
     }
 
