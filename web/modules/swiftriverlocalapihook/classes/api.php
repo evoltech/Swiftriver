@@ -20,5 +20,10 @@ class API {
     {
         return new PreProcessingSteps_API("swiftriver_dev");
     }
+
+    public static function event_handlers_api()
+    {
+        return new EventHandlers_API("swiftriver_dev");
+    }
 }
 ?>

@@ -65,6 +65,17 @@
         });
     }
 
+    function ConfigureReactorTurbines() {
+        $.get("<?php echo(url::base()); ?>config/reactorturbines", function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 450,
+                width : 500
+            });
+        });
+    }
+
     function ConfigureSources() {
         $.get("<?php echo(url::base()); ?>config/sources", function(data) {
             Shadowbox.open({

@@ -4,7 +4,7 @@ class Controller_Config_ImpulseTurbines extends Controller_Template_Modal
 {
     public function action_index()
     {
-        $this->template->title = "Configure Swiftriver Turbines";
+        $this->template->title = "Configure Swiftriver Impulse Turbines";
         $this->template->content = new View("config/impulseturbines");
         $return = API::preprocessing_steps_api()->list_all_preprocessing_steps();
         $object = json_decode($return);
@@ -35,5 +35,4 @@ class Controller_Config_ImpulseTurbines extends Controller_Template_Modal
         $json = API::preprocessing_steps_api()->save_preprocessing_step($json_encoded_parameters);
         $this->request->response = $json;
     }
-
 }
