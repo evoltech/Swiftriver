@@ -43,6 +43,6 @@
                 $("div#login div.alert").slideDown();
             },
             "json"
-        )
+        );
     }
 </script>

@@ -77,7 +77,18 @@
     }
 
     function LogIn() {
-        $.get("<?php echo(url::base()); ?>config/login", function(data) {
+        $.get("<?php echo(url::base()); ?>config/loginandregister/login", function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 350,
+                width : 400
+            });
+        });
+    }
+
+    function RegisterNewUser() {
+        $.get("<?php echo(url::base()); ?>config/loginandregister/register", function(data) {
             Shadowbox.open({
                 content : data,
                 player : "html",

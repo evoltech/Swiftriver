@@ -19,4 +19,17 @@ class Controller_Config_User extends Controller
 
         $this->request->redirect("");
     }
+
+    public function action_register()
+    {
+        $username = $_POST["username"];
+
+        $password = $_POST["password"];
+
+        $role = $_POST["role"];
+
+        $return->result = RiverId::register($username, $password, $role);
+
+        $this->request->response = json_encode($return);
+    }
 }
