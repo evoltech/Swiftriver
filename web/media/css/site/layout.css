@@ -68,3 +68,5 @@ div.modal div.modal-content div#sources h3 a { width:100%; display:block; paddin
 div#footer p { padding-left: 10px; padding-bottom: 10px; }
 div#footer ul { padding: 10px; }
 div#footer li { display: inline; font: 0.75em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif; }
+
+div.alert { padding:5px; }

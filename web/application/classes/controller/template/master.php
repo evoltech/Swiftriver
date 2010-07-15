@@ -8,11 +8,17 @@ class Controller_Template_Master extends Controller_Template
         parent::before();
         
         $this->template->title = 'Swiftriver';
-		$this->template->admin = new View('defaults/admin');
         $this->template->header = new View('defaults/header');
         $this->template->content = '';
         $this->template->rightbar = new View('defaults/rightbar');
         $this->template->footer = new View('defaults/footer');
+        
+
+        $loggedinstatus = RiverId::is_logged_in();
+        $this->template->admin = ($loggedinstatus["IsLoggedIn"] && $loggedinstatus["Role"] == "admin")
+                                        ? new View('config/adminmenu')
+                                        : new View('defaults/topmenu');
+        $this->template->admin->loggedIn = $loggedinstatus["IsLoggedIn"];
     }
 
 }

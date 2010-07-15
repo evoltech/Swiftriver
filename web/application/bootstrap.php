@@ -68,6 +68,7 @@ Kohana::$config->attach(new Kohana_Config_File);
  */
 Kohana::modules(array(
         'swiftriverapihook' => MODPATH.'swiftriverlocalapihook',
+        'riverid' => MODPATH.'riverid',
         // 'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'database'   => MODPATH.'database',   // Database access

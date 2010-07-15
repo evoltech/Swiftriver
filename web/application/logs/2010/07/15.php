@@ -1,0 +1,15 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-07-15 05:45:25 --- ERROR: ErrorException [ 1 ]: Class 'RiverId' not found ~ APPPATH/classes\controller\template\master.php [ 15 ]
+2010-07-15 05:46:10 --- ERROR: ErrorException [ 8 ]: Undefined index: authkey ~ MODPATH/riverid\classes\RiverId.php [ 15 ]
+2010-07-15 06:44:05 --- ERROR: ErrorException [ 1 ]: Class 'Config_RiverId' not found ~ MODPATH/riverid\classes\RiverId.php [ 93 ]
+2010-07-15 06:45:15 --- ERROR: ErrorException [ 1 ]: Class 'Config_RiverId' not found ~ MODPATH/riverid\classes\RiverId.php [ 93 ]
+2010-07-15 06:46:36 --- ERROR: ErrorException [ 2 ]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given ~ MODPATH/riverid\classes\RiverId.php [ 107 ]
+2010-07-15 10:55:26 --- ERROR: ReflectionException [ -1 ]: Class controller_web does not exist ~ SYSPATH/classes\kohana\request.php [ 864 ]
+2010-07-15 10:56:12 --- ERROR: ReflectionException [ -1 ]: Class controller_web does not exist ~ SYSPATH/classes\kohana\request.php [ 864 ]
+2010-07-15 10:57:43 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-07-15 10:57:44 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-07-15 10:57:46 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-07-15 11:04:45 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]
+2010-07-15 11:05:46 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]
+2010-07-15 11:06:14 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]

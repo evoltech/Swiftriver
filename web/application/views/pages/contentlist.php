@@ -76,6 +76,21 @@
         });
     }
 
+    function LogIn() {
+        $.get("<?php echo(url::base()); ?>config/login", function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 350,
+                width : 400
+            });
+        });
+    }
+
+    function LogOut() {
+        window.location = "<?php echo(url::base()); ?>config/user/logout";
+    }
+
     function ConfigureSources() {
         $.get("<?php echo(url::base()); ?>config/sources", function(data) {
             Shadowbox.open({

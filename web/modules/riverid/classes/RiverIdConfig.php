@@ -1,5 +1,5 @@
 <?php
-class Config_RiverId {
+class RiverIdConfig {
     public static $databaseurl = "localhost";
     public static $username = "swiftriver";
     public static $password = "swiftriver";

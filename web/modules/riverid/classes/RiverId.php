@@ -12,22 +12,31 @@ class RiverId {
      */
     public static function is_logged_in()
     {
-        $key = $_SESSION["authkey"];
+        $key = array_key_exists("authkey", $_SESSION) ? $_SESSION["authkey"] : null;
 
-        $username = $_SESSION["username"];
+        $username = array_key_exists("username", $_SESSION) ? $_SESSION["username"] : null;
 
         if($key == null || $key == "" || $username == null || $username == "") 
-            return array("IsLoggedIn" => false);
+            return array(
+                "IsLoggedIn" => false,
+                "Role" => "user"
+            );
 
         $result = self::get_hashes_password_and_role($username);
 
         if($result === false)
-            return array("IsLoggedIn" => false);;
+            return array(
+                "IsLoggedIn" => false,
+                "Role" => "user"
+            );
 
         $password = $result["password"];
 
         if($password != $key)
-            return array("IsLoggedIn" => false);
+            return array(
+                "IsLoggedIn" => false,
+                "Role" => "user"
+            );
 
         $role = $result["role"];
 
@@ -39,22 +48,73 @@ class RiverId {
         return $return;
     }
 
+    public static function log_in($username, $password)
+    {
+        $hashedPasswordResult = self::get_hashes_password_and_role($username);
+
+        $hashedPassword = $hashedPasswordResult["password"];
+
+        $password = md5($password);
+
+        if($hashedPassword != $password)
+            return false;
+
+        $_SESSION["username"] = $username;
+
+        $_SESSION["authkey"] = $password;
+
+        $_SESSION["role"] = $hashedPasswordResult["role"];
+
+        return true;
+    }
+
+    public static function log_out()
+    {
+        $_SESSION["authkey"] = null;
+    }
+
+    public static function register($username, $password, $role)
+    {
+        $username = mysql_escape_string($username);
+
+        $password = md5($password);
+
+        if($role != "user" && $role != "sweeper" && $role != "admin")
+            $role = "user";
+
+        $sql = "INSERT INTO users VALUES('$username', '$password', '$role');";
+
+        $con = mysql_connect(
+                RiverIdConfig::$databaseurl,
+                RiverIdConfig::$username,
+                RiverIdConfig::$password);
+
+        mysql_select_db(RiverIdConfig::$database, $con);
+
+        mysql_query(RiverIdConfig::$createsql, $con);
+
+        $result = mysql_query($sql, $con);
+    }
+
     private static function get_hashes_password_and_role($username)
     {
         $con = mysql_connect(
-                Config_RiverId::$databaseurl,
-                Config_RiverId::$username,
-                Config_RiverId::$password);
+                RiverIdConfig::$databaseurl,
+                RiverIdConfig::$username,
+                RiverIdConfig::$password);
 
-        mysql_select_db(Config_RiverId::$database, $con);
+        mysql_select_db(RiverIdConfig::$database, $con);
 
-        mysql_query(Config_RiverId::$createsql, $con);
+        mysql_query(RiverIdConfig::$createsql, $con);
 
         $username = mysql_escape_string($username);
 
-        $sql = "SELECT * FROM users WHERE username = '" . $username . '";';
+        $sql = "SELECT * FROM users WHERE username = '" . $username . "';";
 
-        $results = mysql_query($sql);
+        $results = mysql_query($sql, $con);
+
+        if($results == false)
+            return false;
 
         $row = mysql_fetch_assoc($results);
 
@@ -65,7 +125,7 @@ class RiverId {
 
         $password = $row["password"];
 
-        $hashedPassword = md5($password);
+        $hashedPassword = $password;
 
         $return = array(
             "password" => $hashedPassword,
