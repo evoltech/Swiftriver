@@ -391,7 +391,64 @@ class TwitterParser implements IParser {
                 array());
         $item->link = $contentLink;
         $item->date = strtotime($date);
+
+        //Sanitize the tweet text into a DIF collection
+        $sanitizedTweetDiffCollection = $this->ParseTweetToSanitizedTweetDiffCollection($tweet);
+
+        //Add the dif collection to the item
+        $item->difs = array(
+            $sanitizedTweetDiffCollection,
+        );
+
+        //return the item
         return $item;
+    }
+
+    /**
+     * @param \SimplePie_Item $tweet
+     * @return \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection
+     */
+    private function ParseTweetToSanitizedTweetDiffCollection($tweet) {
+        //Get the original text
+        $tweetText = $tweet->get_title();
+
+        //Break the text down into words
+        $tweetTextParts = explode(" ", $tweetText);
+
+        //Set up the sanitized return string
+        $sanitizedText = "";
+
+        //loop through all the words
+        foreach($tweetTextParts as $part) {
+            //to lowwer the word
+            $part = strtolower($part);
+
+            //If the word contains none standard chars, continue
+            if(preg_match("/[^\w\d\.\(\)\!']/si", $part))
+                continue;
+
+            //if the owrd is just rt then continue
+            if($part == "rt")
+                continue;
+
+            //Add the word to the sanitized
+            $sanitizedText .= $part . " ";
+        }
+
+        //Create a new Diff
+        $dif = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField(
+                "Sanitized Tweet",
+                $sanitizedText
+        );
+
+        //Create the new diff collection
+        $difCollection = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection(
+                "Sanitized Tweet",
+                array($dif)
+        );
+
+        //Return the diff collection
+        return $difCollection;
     }
 }
 ?>

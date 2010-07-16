@@ -57,8 +57,8 @@ class FeedsParser implements IParser {
         //Run the SimplePie
         $feed->init();
 
-		//Strip HTML
-		$feed->strip_htmltags(array('span', 'font', 'style'));
+        //Strip HTML
+        $feed->strip_htmltags(array('span', 'font', 'style'));
 
         //Create the Content array
         $contentItems = array();
@@ -91,7 +91,7 @@ class FeedsParser implements IParser {
 
             //Get source data
             $source_name = $feedItem->get_author()->name;
-            $source_name = $source_name . " @ " . $feedUrl;
+            $source_name = ($source_name == null || $source_name == "") ? $feedUrl : $source_name . " @ " . $feedUrl;
             $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
             $source->name = $source_name;
             $source->email = $feedItem->get_author()->email;
