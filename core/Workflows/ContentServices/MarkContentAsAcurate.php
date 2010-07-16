@@ -138,6 +138,19 @@ class MarkContentAsAcurate extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [END: Recording the transaction]", \PEAR_LOG_DEBUG);
 
+        $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [START: Event Distribution]", \PEAR_LOG_DEBUG);
+
+        $event = new \Swiftriver\Core\EventDistribution\GenericEvent(
+                \Swiftriver\Core\EventDistribution\EventEnumeration::$MarkContentAsAccurate,
+                $content
+        );
+
+        $eventDistributor = new \Swiftriver\Core\EventDistribution\EventDistributor();
+
+        $eventDistributor->RaiseAndDistributeEvent($event);
+
+        $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [END: Event Distribution]", \PEAR_LOG_DEBUG);
+
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
 
         $return = json_encode(array(

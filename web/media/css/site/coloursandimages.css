@@ -30,11 +30,13 @@ div.modal div.modal-content form label.error { background-color:#C90; color:#000
 
 div.modal div.modal-content div#turbines ul#turbine-list li { background-color:#333; border-left:10px solid #AAA; }
 div.modal div.modal-content div#turbines ul#turbine-list li p a {color:#FFF;  }
-
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container { background-color:#AAA; }
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container div.config-property-container p.name { color:#000; }
 
 div.modal div.modal-content div#sources h3 a {background-color:#1674a7; color:#FFF; }
 div.modal div.modal-content div#sources h3 a:hover {background-color:#FFF; color:#000; }
 div.modal div.modal-content div#sources div.channel-container { background-color:#FFF; color:#000; }
+div.modal div.modal-content div#sources div.channel-container form { background-color:#AAA; border:1px #333 solid; }
 
 div.alert { border:2px solid #C30; background-color:#FC3;}
 div.alert li { color:#000; }

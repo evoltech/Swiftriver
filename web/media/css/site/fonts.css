@@ -24,6 +24,7 @@ div.modal div.modal-content div#turbines ul#turbine-list li { font-size: 80%; }
 div.modal div.modal-content div#turbines ul#turbine-list li p.name, p.active { font-weight: bold; }
 div.modal div.modal-content div#turbines ul#turbine-list li p a { text-decoration: none;}
 div.modal div.modal-content div#turbines ul#turbine-list li p a:hover { text-decoration: underline;}
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container div.config-property-container p.name { font-size:80%;}
 
 div.modal div.modal-content div#sources h3 a { text-decoration:none;}
 
