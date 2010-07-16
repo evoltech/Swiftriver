@@ -35,6 +35,23 @@ class Parser {
         return $json;
     }
 
+    public function ParseItemToRequestJson($item, $apiKey) {
+        $i->id = $item->id;
+        $i->difcollections = $item->difs;
+
+        //Add the json header information
+        $object->key = $apiKey;
+
+        //Add the content item dto
+        $object->contentItems = array($i);
+
+        //to json the object
+        $json = json_encode($object);
+
+        //return the json
+        return $json;
+    }
+
     /**
      * Given the JSON returned from the SiCDS, this function attempts
      * to parse and return an array of content item ID's that have been
@@ -70,6 +87,35 @@ class Parser {
 
         //return the array
         return $return;
+    }
+
+    public function ContentIsUnique($json, $id) {
+        //decode the json param
+        $array = json_decode($json, true);
+
+        //Null and not array check
+        if($array == null || !is_array($array))
+            throw new \InvalidArgumentException("The json was not well formed");
+
+        //Ensure required property 'results' is there and is array
+        if(!key_exists("results", $array) || !is_array($array["results"]))
+            throw new \InvalidArgumentException("The json did not contain the required property 'results'");
+
+        //get the results array
+        $results = $array["results"];
+
+        //set up the return array
+        $return = array();
+
+        //Loop through the results looking for unique content item ids
+        foreach($results as $result) {
+            if($result["id"] == $id) {
+                return ($result["result"] == "unique");
+            }
+        }
+
+        //return default
+        return true;
     }
 }
 ?>

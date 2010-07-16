@@ -1,5 +1,7 @@
 <?php
 namespace Swiftriver\PreProcessingSteps;
+include_once(dirname(__FILE__)."/ServiceInterface.php");
+include_once(dirname(__FILE__)."/Parser.php");
 class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProcessingStep {
     /**
      * The short name for this pre processing step, should be no longer
@@ -81,45 +83,42 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
 
             $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Loading module configuration]", \PEAR_LOG_DEBUG);
 
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Parsing the content items into JSON]", \PEAR_LOG_DEBUG);
+            $uniqueContentItems = array();
 
             $parser = new \Swiftriver\SiCDSInterface\Parser();
 
-            $jsonForService = $parser->ParseToRequestJson($contentItems, $apiKey);
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Parsing the content items into JSON]", \PEAR_LOG_DEBUG);
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Interfacing with the SiCDS]", \PEAR_LOG_DEBUG);
-
             $serviceInterface = new \Swiftriver\SiCDSInterface\ServiceInterface();
 
-            $jsonFromService = $serviceInterface->InterafceWithService(
-                    $serviceUrl,
-                    $jsonForService,
-                    $configuration
-            );
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Interfacing with the SiCDS]", \PEAR_LOG_DEBUG);
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Parsing the return from the SiCDS]", \PEAR_LOG_DEBUG);
-
-            $uniqueIds = $parser->ParseResponseFromJsonToUniqueIds($jsonFromService);
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Parsing the return from the SiCDS]", \PEAR_LOG_DEBUG);
-
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: removing duplicates from the content items array]", \PEAR_LOG_DEBUG);
-
-            $uniqueContentItems = array();
+            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Looping through the content items]", \PEAR_LOG_DEBUG);
 
             foreach($contentItems as $item) {
-                foreach($uniqueIds as $id) {
-                    if($item->id == $id) {
-                        $uniqueContentItems[] = $item;
-                    }
+                
+                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
+
+                $jsonForService = $parser->ParseItemToRequestJson($item, $apiKey);
+
+                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
+
+                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Calling the SiCDS]", \PEAR_LOG_DEBUG);
+
+                $jsonFromService = $serviceInterface->InterafceWithService(
+                        $serviceUrl,
+                        $jsonForService,
+                        $configuration
+                );
+
+                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Calling the SiCDS]", \PEAR_LOG_DEBUG);
+
+                if($parser->ContentIsUnique($jsonFromService, $item->id)) {
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id is unique]", \PEAR_LOG_DEBUG);
+                    $uniqueContentItems[] = $item;
+                }
+                else {
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id a duplicate]", \PEAR_LOG_DEBUG);
                 }
             }
 
-            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: removing duplicates from the content items array]", \PEAR_LOG_DEBUG);
+            $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Looping through the content items]", \PEAR_LOG_DEBUG);
 
             $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Method finished]", \PEAR_LOG_DEBUG);
 

@@ -131,19 +131,15 @@ class TwitterParser implements IParser {
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
 
         //Twitter url combined with the account name passed to this feed.
-        $TwitterUrl = "http://search.twitter.com/search.atom?rpp=50&q=".urlencode($SearchKeyword);
+        $TwitterUrl = "http://search.twitter.com/search.atom?q=".urlencode($SearchKeyword);
 
-        //if there is a last sucess then set it
-        if(isset($channel->lastSucess) && $channel->lastSucess != null) {
-            $since = date("Y-m-d", $channel->lastSucess);
-            $TwitterUrl .= "&since=$since";
-        }
-        
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($TwitterUrl);
 
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Initilising the feed]", \PEAR_LOG_DEBUG);
 
+        $feed->enable_cache(false);
+        
         //Run the SimplePie
         $feed->init();
 
@@ -161,7 +157,7 @@ class TwitterParser implements IParser {
         //Loop throught the Feed Items
         foreach($tweets as $tweet) {
             //Extract the date of the content
-            $contentdate = strtotime($tweet->get_date());
+            $contentdate = strtotime($tweet->get_date('c'));
             if(isset($channel->lastSucess) && is_numeric($channel->lastSucess) && isset($contentdate) && is_numeric($contentdate)) {
                 if($contentdate < $channel->lastSucess) {
                     $textContentDate = date("c", $contentdate);
@@ -438,7 +434,7 @@ class TwitterParser implements IParser {
         //Create a new Diff
         $dif = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField(
                 "Sanitized Tweet",
-                $sanitizedText
+                utf8_encode($sanitizedText)
         );
 
         //Create the new diff collection
