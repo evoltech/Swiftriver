@@ -12,7 +12,7 @@ class TwitterParserTest extends \PHPUnit_Framework_TestCase {
     public function testTwitterSearch() {
         $source = new ObjectModel\Source();
         $source->subType = "Search";
-        $source->lastSucess = time();
+        $source->lastSucess = time() - 1000;
         $source->parameters = array(
             "SearchKeyword" => "earthquake"
         );

@@ -13,3 +13,6 @@
 2010-07-15 11:04:45 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]
 2010-07-15 11:05:46 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]
 2010-07-15 11:06:14 --- ERROR: ErrorException [ 8 ]: Undefined index: role ~ APPPATH/classes\controller\template\master.php [ 18 ]
+2010-07-15 14:21:13 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-07-15 14:21:13 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]
+2010-07-15 14:21:16 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: contentlist/get/favicon.ico ~ SYSPATH/classes\kohana\request.php [ 579 ]

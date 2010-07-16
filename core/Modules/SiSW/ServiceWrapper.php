@@ -38,6 +38,26 @@ class ServiceWrapper {
 
     /**
      *
+     * @param string $json
+     * @param int $timeout
+     * @return string
+     */
+    public function MakeJSONPOSTRequest($json, $timeout) {
+        $context = stream_context_create(
+            array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => 'Content-type: application/json; charset=utf-8\r\n',
+                    'content' => $json,
+                    'timeout' => $timeout,
+                ),
+            ));
+        $returnData = file_get_contents($this->uri, false, $context);
+        return $returnData;
+    }
+
+    /**
+     *
      */
     public function MakeGETRequest() {
         $returnData = file_get_contents($this->uri, false);
