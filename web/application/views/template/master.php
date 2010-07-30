@@ -4,6 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><?php echo($title); ?></title>
         <link rel="shortcut icon" href="favicon.ico" />
+        <script type="text/javascript" language="javascript">
+            var baseurl = "<?php echo(url::base()); ?>";
+            var imageurl = baseurl + "/media/images/";
+        </script>
         <?php echo(Html::script("media/js/jquery.js")); ?>
         <?php echo(Html::script("media/js/jquery.ui.js")); ?>
         <?php echo(Html::script("media/js/jquery.treeview.js")); ?>
@@ -13,6 +17,7 @@
         <?php echo(Html::script("media/js/jquery.listreorder.js")); ?>
         <?php echo(Html::script("media/js/shadowbox.js")); ?>
         <?php echo(Html::script("media/js/site/framework.js")); ?>
+        <?php echo(Html::script("media/js/site/functions.js")); ?>
 
         <?php echo(Html::style("media/css/site/base.css")); ?>
         <?php echo(Html::style("media/css/site/layout.css")); ?>

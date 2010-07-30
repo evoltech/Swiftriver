@@ -24,29 +24,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" language="javascript">
-    function ValidateAndTryRegister() {
-        $("div#register-new-user div.alert").slideUp("slow");
-        $("div#register-new-user div.alert ul").children().remove();
-
-        var username = $("div#register-new-user input[name=username]").val();
-        var password = $("div#register-new-user input[name=password]").val();
-        var role = $("div#register-new-user select[name=role] option:selected").val();
-
-        if(username == "" || password == "") {
-            $("div#register-new-user div.alert ul").append("<li>You have to enter both a username and password</li>");
-            $("div#register-new-user div.alert").slideDown();
-            return;
-        }
-
-        $.post(
-            "<?php echo(url::base()); ?>config/user/register",
-            { "username" : username, "password" : password, "role" :role },
-            function(data) {
-                Shadowbox.close();
-                return;
-            },
-            "json"
-        );
-    }
-</script>
