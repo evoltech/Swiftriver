@@ -2,8 +2,7 @@
     <ul id="theme-list">
         <?php foreach($themes as $theme) : ?>
             <li>
-                <div class="theme">
-                    <!-- <img src="<?php echo($theme->thumbnail); ?>" width="100px" height="50px" /> -->
+                <div class="theme clearfix">
                     <div class="info">
                         <p class="title">Title: <?php echo($theme->title); ?></p>
                         <p class="description">Description: <?php echo($theme->description); ?></p>
@@ -12,13 +11,13 @@
                         <p class="url">Url: <?php echo($theme->url); ?></p>
                         <p class="notes">Notes: <?php echo($theme->notes); ?></p>
                     </div>
-                </div>
-                <div class="action">
-                    <form action="<?php echo(url::base()); ?>config/themes/select" method="POST">
-                        <input type="hidden" name="currenturl" value="<?php echo(url::base()); ?>" />
-                        <input type="hidden" name="cssfile" value="<?php echo($theme->cssFilePath); ?>" />
-                        <input type="submit" value="Choose this theme" />
-                    </form>
+                    <img src="<?php echo($theme->thumbnail); ?>"/>
+                    <div class="action">
+                        <form action="<?php echo(url::base()); ?>config/themes/select" method="POST">
+                            <input type="hidden" name="cssfile" value="<?php echo($theme->cssFilePath); ?>" />
+                            <input type="submit" value="Choose this theme" />
+                        </form>
+                    </div>
                 </div>
             </li>
         <?php endforeach; ?>

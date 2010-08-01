@@ -8,6 +8,7 @@ class Controller_Template_Master extends Controller_Template
         parent::before();
         
         $this->template->title = 'Swiftriver';
+        $this->template->theme = Theming::get_theme();
         $this->template->header = new View('defaults/header');
         $this->template->content = '';
         $this->template->rightbar = new View('defaults/rightbar');

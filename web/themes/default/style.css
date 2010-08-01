@@ -7,210 +7,44 @@
  * @notes The default
  */
 
- /*
-=============================
-CSS Reset (using Eric Meyer's CSS reset: http://meyerweb.com/eric/thoughts/2008/01/15/resetting-again/)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-
-ins {
-	text-decoration: none;
-}
-del {
-	text-decoration: line-through;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-input, select, textarea {
-font-size:100%;
-font-weight:normal;
-font-family: inherit;
-}
-
-/*
-=============================
-float clearing
-*/
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-.clearfix {display: inline-block;}
-
-/* Hides from IE-mac \*/
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
-/* End hide from IE-mac */
-
-/*
-=============================
-skip links and hidden content
-*/
-.skip {text-align:left;}
-
-.hidden, .access
-{
-position:absolute;
-left:0px;
-top:-500px;
-width:1px;
-height:1px;
-overflow:hidden;
-}
-
-.skip {position:absolute; left:-9000px; top:0}
-
-.skip a:focus,
-.skip a:active {
-  position:absolute;
-  left:9000px;
-  width: 940px;
-  padding: 10px;
-  top:0;
-  z-index: 100;
-  text-decoration: underline;
-}
-
-.lightbox_bg {
-    background:#ffffff none repeat scroll 0 0;
-    display:none;
-    height:800px;
-    left:0;
-    filter:alpha(opacity=50);
-    opacity: 0.5;
-    top:0;
-    width:100%;
-    z-index:50;
-    display:none;
-    position:fixed;
-}
-
-/* === FONTS === */
-
-body {  font-family:'Century Gothic', Calibri, Arial, sans-serif; }
-
-body div#page div#header div#tag-line h1 { font-size:0.8em; font-family:'Verdana'; text-align:justify; }
-body div#page div#header configuration a { text-decoration: none; }
-body div#page div#header configuration a:hover { font-weight: bold; }
-
-body div#page div#body div#menu div#list-option ul li a { font-weight:bold; text-decoration: none; }
-
-body div#page div#body div#content div#content-list ul li div.content-item {font-size:90%; }
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity { text-align:center; }
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity p { font-size: 80%; font-weight:bold; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { font-weight:bold; font-size:110%; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { font-weight:bold; font-size:90%; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p.tag-type { font-weight:bold; }
-
-body div#page div#body div#right-bar { text-align:left !important; }
-
-div#sb-body div.html h2 { text-align: center; }
-
-
-/* === COLORS AND IMAGES === */
-
-body { background: #222 url('../../images/background-page.gif') repeat-x; color:#FFF; }
-
-body div#page div#header div#configuration { background-color: #333; color:#fff; }
+/* COLOURS AND IMAGES */
+/* == PAGE STYLES == */
+body { background: #222 url('images/background-page.gif') repeat-x; color:#FFF; }
+body div#header div#configuration { color:#fff; background-image: url(images/bg_gr.png); }
+body div#page div#body { border:5px solid #1674a7; background-color:#FFF; color:#000; }
 body div#page div#header div#configuration a { color:#fff; }
-
-body div#page div#body { border:4px solid #0183C1; background-color:#FFF; color:#000; }
-
-body div#page div#body div#menu div#list-option { background-color:#0183C1; }
+body div#page div#body div#menu div#list-option { background-color:#1674a7; }
 body div#page div#body div#menu div#list-option ul li a { color:#FFF; }
 body div#page div#body div#menu div#list-option ul li a.selected { background-color:#FFF; color:#000; }
 body div#page div#body div#menu div#list-option ul li a:hover { background-color:#FFF; color:#000; }
-
-body div#page div#body div#content div#content-list ul li { border-bottom:2px solid #0183C1; }
+body div#page div#body div#content div#content-list div.pagination { background-color:#CCC; }
+body div#page div#body div#content div#content-list ul li { border-bottom:1px dotted #cccccc; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p.title { color:#015B87; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:1px solid #0183C1; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { border-bottom:1px solid #0183C1; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { border-bottom:0px solid #EBE8FA; }
+body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { border-bottom:0px solid #EBE8FA; }
 body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group div.tag-list p { background-color:#DDD; }
+body div#page div#body div#right-bar div#channel-tree { border:2px solid #1674a7; }
+body div#page div#body div#right-bar div#channel-tree h2 { background-color:#1674a7; color:#FFF; font-size: 0.95em; font-weight: normal; font-style: normal; }
+body div#page div#body div#right-bar div#nav-container { background-color:#CCC; }
+body div#page div#body div#right-bar div#nav-container div.nav-container h4 { border-bottom: 1px solid #555; }
+body div#page div#body div#right-bar div#nav-container div.nav-container div.nav-inner ul.facets li a { color:#000; }
 
-body div#page div#body div#right-bar div#channel-tree { border:2px solid #0183C1; }
-body div#page div#body div#right-bar div#channel-tree h2 { background-color:#0183C1; color:#FFF; }
-
-div#sb-player { background: #222; }
-div.modal { background: #222 url('../../images/background-page.gif') repeat-x 0 -100px; color:#FFF; }
+/* == MODAL STYLES == */
+div.modal { background: #222 url('images/background-page.gif') repeat-x 0 -100px; color:#FFF; }
 div.modal div.modal-content form label.error { background-color:#C90; color:#000; border:1px solid #900; }
+div.modal div.modal-content div#turbines ul#turbine-list li { background-color:#333; border-left:10px solid #AAA; }
+div.modal div.modal-content div#turbines ul#turbine-list li p a {color:#FFF;  }
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container { background-color:#AAA; }
+div.modal div.modal-content div#turbines ul#turbine-list li div.config-container div.config-property-container p.name { color:#000; }
+div.modal div.modal-content div#sources h3 a {background-color:#1674a7; color:#FFF; }
+div.modal div.modal-content div#sources h3 a:hover {background-color:#FFF; color:#000; }
+div.modal div.modal-content div#sources div.channel-container { background-color:#FFF; color:#000; }
+div.modal div.modal-content div#sources div.channel-container form { background-color:#AAA; border:1px #333 solid; }
+div.modal div.modal-content div#themes ul#theme-list li div.theme { background-color:#AAA; }
 
-/* LAYOUT */
+/* == OTHER STYLES == */
+div.alert { border:2px solid #C30; background-color:#FC3;}
+div.alert li { color:#000; }
+div#sb-player { background: #222; }
 
-body div#page { width:960px; margin-left:auto; margin-right:auto; margin-bottom:-2px; }
-body div#page div#header { height:125px; margin-top:25px; }
-body div#page div#header div#logo img { float:left; }
-body div#page div#header div#tag-line { margin-top:10px; float:right; width:50%;}
-body div#page div#header div#configuration { height: 20px; position: absolute; top:0; left:0; width:100%; margin-bottom: 10px;  }
-body div#page div#header div#configuration ul li {float:right; padding:0 10px 0 10px; }
 
-body div#page div#body div#menu div#list-option ul li a { float:left; padding:10px; margin-right:5px; list-style: none; }
-
-body div#page div#body div#content { width:600px; float:left; }
-body div#page div#body div#content div#content-list { padding-left:10px; }
-body div#page div#body div#content div#content-list ul li div.content-item { padding:10px 10px 0 10px; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column { float:left; width:75px; }
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity { padding-top:10px; }
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column div.veracity p { width:100%; }
-body div#page div#body div#content div#content-list ul li div.content-item div.left-column a.logo img { margin-left:10px; margin-bottom:10px; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column { float:right; width:480px; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.system-details { display:none; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages { padding-bottom:5px; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.more { display: none; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.languages div.language p { margin-bottom:2px; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags div.tag-group p { float:left; padding:2px; margin:2px; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.tags { padding-top:5px; padding-bottom:5px; }
-
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta { padding-top:5px; padding-bottom:5px; }
-body div#page div#body div#content div#content-list ul li div.content-item div.right-column div.meta p { padding-bottom: 2px;}
-
-body div#page div#body div#right-bar { float:right; width:320px; }
-body div#page div#body div#right-bar div#channel-tree { width:300px; margin:5px auto 5px auto; }
-body div#page div#body div#right-bar div#channel-tree h2 { padding:10px; }
-body div#page div#body div#right-bar div#channel-tree img { position: relative; top:5px; }
-
-div.modal div.modal-header { height:106px; }
-div.modal div.modal-header h2 { padding:30px; }
-div.modal div.modal-content { padding:20px; }
-div.modal div.modal-content form label { display: block; margin-bottom: 5px; }
-div.modal div.modal-content form label.error { display: block; margin-top: -12px; margin-bottom: 15px; padding:5px; }
-div.modal div.modal-content form input[type=text] { display:block; width:100%; margin-bottom: 15px; }
-div.modal div.modal-content form input[type=submit] { margin-top: 10px; width:50%; float:right; }

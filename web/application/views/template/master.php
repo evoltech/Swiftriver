@@ -20,18 +20,11 @@
         <?php echo(Html::script("media/js/site/functions.js")); ?>
 
         <?php echo(Html::style("media/css/site/base.css")); ?>
-        <?php echo(Html::style("media/css/site/layout.css")); ?>
-        <?php echo(Html::style("media/css/site/fonts.css")); ?>
-        <?php echo(Html::style("media/css/site/coloursandimages.css")); ?>
         <?php echo(Html::style("media/css/plugins/jquery.ui.css")); ?>
         <?php echo(Html::style("media/css/plugins/jquery.treeview.css")); ?>
         <?php echo(Html::style("media/css/plugins/shadowbox.css")); ?>
 
-        <?php
-            if(isset($_COOKIE["theme"]) && $_COOKIE["theme"] != null) {
-                echo(Html::style(substr($_COOKIE["theme"], strpos($_COOKIE["theme"], url::base()) + strlen(url::base()))));
-            }
-        ?>
+        <?php echo(Html::style(($theme != "default") ? str_replace("/web", "", $theme) : "themes/default/style.css")); ?>
 
         <script type="text/javascript" language="javascript">
             //Init the Shadowbox plugin
