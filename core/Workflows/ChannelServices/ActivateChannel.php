@@ -52,7 +52,7 @@ class ActivateChannel extends ChannelServicesBase {
 
         try {
             //Get the channel from the repo
-            $channel = $repository->GetChannelById($id);
+            $channel = reset($repository->GetChannelsById(array($id)));
         }
         catch (\Exception $e) {
             //get the exception message
@@ -72,7 +72,7 @@ class ActivateChannel extends ChannelServicesBase {
             $channel->active = true;
 
             //save the channel back to the repo
-            $repository->SaveChannel($channel);
+            $repository->SaveChannels(array($channel));
         }
         catch (\Exception $e) {
             //get the exception message

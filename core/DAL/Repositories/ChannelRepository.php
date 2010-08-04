@@ -33,7 +33,7 @@ class ChannelRepository {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::DAL::Repositories::ChannelRepository::GetChannelsById [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        $Channels = $dc::GetChannelsById($id);
+        $Channels = $dc::GetChannelsById($ids);
         $logger->log("Core::DAL::Repositories::ChannelRepository::GetChannelsById [Method Finished]", \PEAR_LOG_DEBUG);
         return $Channels;
     }

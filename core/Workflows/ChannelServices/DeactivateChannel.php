@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\Workflows\ChannelServices;
 class DeactivateChannel extends ChannelServicesBase {
     /**
-     * Activates a Channel based on the Channel ID
+     * Deactivates a Channel based on the Channel ID
      * encode in the JSON param
      *
      * @param string $json
@@ -52,7 +52,7 @@ class DeactivateChannel extends ChannelServicesBase {
 
         try {
             //Get the channel from the repo
-            $channel = $repository->GetChannelById($id);
+            $channel = reset($repository->GetChannelsById(array($id)));
         }
         catch (\Exception $e) {
             //get the exception message
@@ -72,7 +72,7 @@ class DeactivateChannel extends ChannelServicesBase {
             $channel->active = false;
 
             //save the channel back to the repo
-            $repository->SaveChannel($channel);
+            $repository->SaveChannels(array($channel));
         }
         catch (\Exception $e) {
             //get the exception message

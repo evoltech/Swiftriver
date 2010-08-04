@@ -81,7 +81,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $idsQuery .= "'$id',";
         $idsQuery = rtrim($idsQuery, ",").")";
 
-        $dbResults = RedBeanController::Finder()->where("channel", "textId in :id", array(":id" => $idsQuery));
+        $dbResults = RedBeanController::Finder()->where("channel", "textId in $idsQuery", array());
 
         if(!$dbResults || $dbResults == null || !is_array($dbResults) || count($dbResults) < 1) {
             $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetChannelsById [No sourcse found matching any of the IDs supplied]", \PEAR_LOG_DEBUG);
