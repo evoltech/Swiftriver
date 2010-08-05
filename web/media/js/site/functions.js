@@ -1,3 +1,8 @@
+/* ========= VARIABLES ========= */
+var debug = false; //Set this to true to prevent content from loading
+
+
+
 // Turbines
 function SaveConfiguration(name, number, turbineType) {
     var postData = new Object();
@@ -118,7 +123,6 @@ function DeleteChannel(id) {
     });
 }
 
-
 function SubmitForm(id) {
     var formId = "#form_" + id;
     $(formId).validate({
@@ -166,6 +170,26 @@ function SubmitForm(id) {
     });
 }
 
+function ActivateSource(number, id) {
+    $("span#inactive_" + number).css("display", "none");
+    $("span#active_" + number).css("display", "inline");
+    $.post(
+        baseurl + "config/sources/activate",
+        { id: id },
+        function(data){},
+        'json'
+    );
+}
+function DeactivateSource(number, id) {
+    $("span#active_" + number).css("display", "none");
+    $("span#inactive_" + number).css("display", "inline");
+    $.post(
+        baseurl + "config/sources/deactivate",
+        { id: id },
+        function(data){},
+        'json'
+    );
+}
 
 
 // CONTENT LIST

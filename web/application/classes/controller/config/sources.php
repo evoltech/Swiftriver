@@ -30,6 +30,7 @@ class Controller_Config_Sources extends Controller_Template_Modal
 
                     $c->name = $source->name;
                     $c->id = $source->id;
+                    $c->active = $source->active;
                     $st->sources[] = $c;
                     unset($c);
                 }
@@ -58,5 +59,19 @@ class Controller_Config_Sources extends Controller_Template_Modal
         }
         $json_encoded_parameters = json_encode($data);
         $json = API::channel_api()->add_channel($json_encoded_parameters);
+    }
+
+    public function action_activate()
+    {
+        $object->id = $_POST["id"];
+        $json_encoded_parameters = json_encode($object);
+        $json = API::channel_api()->activate_channel($json_encoded_parameters);
+    }
+
+    public function action_deactivate()
+    {
+        $object->id = $_POST["id"];
+        $json_encoded_parameters = json_encode($object);
+        $json = API::channel_api()->desctivate_channel($json_encoded_parameters);
     }
 }

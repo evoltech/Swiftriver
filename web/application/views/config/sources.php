@@ -39,11 +39,16 @@
                                         </form>
                                     </ul>
                                 </li>
+                                <?php $innerInnerCounter = 1; ?>
                                 <?php if(count($subType->sources) > 0 ) : ?>
                                     <?php foreach($subType->sources as $source) : ?>
-                                        <li id="<?php echo($source->id); ?>">
-                                            <?php echo($source->name); ?><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?></a>
+                                        <li id="<?php echo($source->id); ?>" class="source-actions">
+                                            <?php echo($source->name); ?>
+                                            <span><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?>delete?</a></span>
+                                            <span class="active" style="<?php echo($source->active ? "display:inline" : "display:none"); ?>" id="active_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><?php echo(Html::image("media/images/button-activate.png", array())); ?><a href="javascript:DeactivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">deactivate?</a></span>
+                                            <span class="active" style="<?php echo(!$source->active ? "display:inline" : "display:none"); ?>" id="inactive_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><?php echo(Html::image("media/images/button-deactivate.png", array())); ?><a href="javascript:ActivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">actiavte?</a></span>
                                         </li>
+                                    <?php $innerInnerCounter++; ?>
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                         <li class="no-feeds">
