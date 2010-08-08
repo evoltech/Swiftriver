@@ -1,11 +1,12 @@
 <?php
-namespace Swiftriver\Core\EventHandlers\UshahidiAPIInterface;
+namespace Swiftriver\UshahidiAPIInterface;
 class ContentToUshahidiAPIParser {
     /**
      * Given a Content items, this function parses the properties of the
      * content item into the format required by the Ushahidi API.
      *
      * @param \Swiftriver\Core\ObjectModel\Content $content
+     * @return string[] parameters
      */
     public function ParseContentItemToUshahidiAPIFormat($content) {
         //Extract the apropriate Ushahidi categories form the content item
@@ -20,11 +21,14 @@ class ContentToUshahidiAPIParser {
         //Extract the location name form the content item
         $locationName = $this->ExtractLocationNameFromContent($content);
 
+        //Extract the text
+        $description = $this->ExtractDescriptionFromContent($content);
+
         //Use the data above and others to build the parameters array
         $parameters = array(
             "task" => "report",
             "incident_title" => $content->text[0]->title,
-            "incident_description" => reset($content->text[0]->text),
+            "incident_description" => $description,
             "incident_date" => date("m/d/y", $date),
             "incident_hour" => date("h", $date),
             "incident_minute" => date("i", $date),
@@ -34,11 +38,8 @@ class ContentToUshahidiAPIParser {
 
         //TODO: Untill riverId is online and the data schema has been decided, user name and address are not implemnted.
 
-        //Use the inbuild function to code up the parameters into query format
-        $ushahidiEncodedData = http_build_query($parameters, '', '&');
-
         //return the encoded query
-        return $ushahidiEncodedData;
+        return $parameters;
     }
 
     /**
@@ -108,13 +109,13 @@ class ContentToUshahidiAPIParser {
      */
     private function ExtractLocationNameFromContent($content) {
         
-        //Set up the return variable with the defaul value
-        $return = "unknown";
-
         //if there are no tags then just return the defult
-        if(!isset($content->tags) || !is_array($content->tags)) {
-            return $return;
-        }
+        if(!isset($content->tags) || !is_array($content->tags)) 
+            return "unknown";
+        
+
+        //Set up the return variable with the defaul value
+        $return = "";
 
         //loop through the content tags
         foreach($content->tags as $tag) {
@@ -123,11 +124,28 @@ class ContentToUshahidiAPIParser {
             if($tag->type == "where") {
 
                 //set the location
-                $return = $tag->text;
+                $return .= $tag->text . ", ";
             }
         }
 
+        //If no where tags, return unknown
+        if (strlen($return) == 0)
+            return "unknown";
+
+        //trim the extra comma and space off the end
+        $return = rtrim($return, " ,");
+
         //return the location
+        return $return;
+    }
+
+    private function ExtractDescriptionFromContent($content) {
+        $return = "";
+        if(isset($content->text) && is_array($content->text)) {
+            foreach($content->text as $text) {
+                $return .= "$text ";
+            }
+        }
         return $return;
     }
 }
