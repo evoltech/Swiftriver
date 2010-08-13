@@ -16,7 +16,8 @@ class StateController {
         "new_content",
         "accurate",
         "inaccurate",
-        "chatter"
+        "chatter",
+        "irrelevant"
     );
 
     /**
@@ -43,6 +44,15 @@ class StateController {
      */
     public static function MarkContentChatter($content) {
         $content->state = "chatter";
+        return $content;
+    }
+
+    /**
+     *
+     * @param \Swiftriver\Core\ObjectModel\Content $content
+     */
+    public static function MarkContentIrrelevant($content) {
+        $content->state = "irrelevant";
         return $content;
     }
 
