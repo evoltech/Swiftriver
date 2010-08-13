@@ -10,6 +10,7 @@
         <div class="actions">
             <a href="javascript:listController.MarkContentAsInaccurate('<?php echo($content->id); ?>')" title="Mark this content as inaccurate"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?></a>
             <a href="javascript:listController.MarkContentAsCrossTalk('<?php echo($content->id); ?>')" title="Mark this content as cross talk"><?php echo(Html::image("media/images/button-markas-crosstalk.png")); ?></a>
+            <a href="javascript:listController.MarkContentAsIrrelevant('<?php echo($content->id); ?>')" title="Mark this content as irrelevant"><?php echo(Html::image("media/images/button-markas-irrelevant.png")); ?></a>
             <a href="<?php echo($content->link); ?>" title="View original content" target="_blank"><?php echo(Html::image("media/images/button-view-article.png")); ?></a>
         </div>
         <div class="veracity">

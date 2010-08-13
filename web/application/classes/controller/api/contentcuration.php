@@ -25,6 +25,17 @@ class Controller_Api_ContentCuration extends Controller
         $this->request->response = $json;
     }
 
+    public function action_markasirrelevant($contentId)
+    {
+        $json_encoded_parameters = json_encode(array(
+            "id" => $contentId,
+            "markerId" => "swiftriver_dev_marker"
+        ));
+        $json = API::content_api()->mark_content_as_irrelevant($json_encoded_parameters);
+
+        $this->request->response = $json;
+    }
+
     public function action_markascrosstalk($contentId)
     {
         $json_encoded_parameters = json_encode(array(

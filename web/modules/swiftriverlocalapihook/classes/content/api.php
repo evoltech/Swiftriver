@@ -68,6 +68,18 @@ class Content_API {
         return $json;
     }
 
+    public function mark_content_as_irrelevant($json_encoded_parameters)
+    {
+        //Instanciate the workflow
+        $workflow = new \Swiftriver\Core\Workflows\ContentServices\MarkContentAsIrrelevant();
+
+        //run the workflow
+        $json = $workflow->RunWorkflow($json_encoded_parameters, $this->apiKey);
+
+        //return the json
+        return $json;
+    }
+
     public function mark_content_as_cross_talk($json_encoded_parameters)
     {
         //Instanciate the workflow

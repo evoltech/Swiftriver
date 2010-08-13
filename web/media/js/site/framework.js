@@ -226,6 +226,22 @@ function ListController(baseUrl, subject, navContainer) {
 
     /**
      * Given the id of a content item, this method will mark it
+     * as irrelevant with the core and remove it from the list, It will also
+     * fetch the next bit of content to preserve the list.
+     * @param contentId string
+     */
+    this.MarkContentAsIrrelevant = function(contentId) {
+        $("div#"+contentId).parent().slideUp("normal", function(){
+            $(this).remove();
+        });
+        $.getJSON(this.baseUrl + "api/contentcuration/markasirrelevant/" + contentId, function(data) {
+            listController.UpdateSourceScores(data.sourceId, data.sourceScore);
+        });
+        this.RenderList(false);
+    }
+
+    /**
+     * Given the id of a content item, this method will mark it
      * as inaccurate with the core and remove it from the list, It will also
      * fetch the next bit of content to preserve the list.
      * @param contentId string
