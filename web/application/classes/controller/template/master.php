@@ -16,10 +16,14 @@ class Controller_Template_Master extends Controller_Template
         
 
         $loggedinstatus = RiverId::is_logged_in();
-        $this->template->admin = ($loggedinstatus["IsLoggedIn"] && $loggedinstatus["Role"] == "admin")
-                                        ? new View('config/adminmenu')
-                                        : new View('defaults/topmenu');
-        $this->template->admin->loggedIn = $loggedinstatus["IsLoggedIn"];
+        if(!$loggedinstatus["IsLoggedIn"])
+            $this->template->admin = new View("adminbar/user");
+        else if($loggedinstatus["Role"] == "sweeper")
+            $this->template->admin = new View("adminbar/sweeper");
+        else if($loggedinstatus["Role"] == "editor")
+            $this->template->admin = new View("adminbar/editor");
+        else if($loggedinstatus["Role"] == "admin")
+            $this->template->admin = new View("adminbar/admin");
     }
 
 }

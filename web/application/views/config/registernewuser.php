@@ -14,8 +14,8 @@
         <div class="form-row">
             <label for="role">Their role:</label>
             <select name="role">
-                <option value="user" selected="selected">User</option>
-                <option value="sweeper">Sweeper</option>
+                <option value="sweeper" selected="selected">Sweeper</option>
+                <option value="editor">Editor</option>
                 <option value="admin">Admin</option>
             </select>
         </div>

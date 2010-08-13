@@ -79,8 +79,8 @@ class RiverId {
 
         $password = md5($password);
 
-        if($role != "user" && $role != "sweeper" && $role != "admin")
-            $role = "user";
+        if($role != "sweeper" && $role != "editor" && $role != "admin")
+            $role = "sweeper";
 
         $sql = "INSERT INTO users VALUES('$username', '$password', '$role');";
 
