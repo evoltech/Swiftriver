@@ -92,29 +92,35 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
             $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Looping through the content items]", \PEAR_LOG_DEBUG);
 
             foreach($contentItems as $item) {
-                
-                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
+                try {
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
 
-                $jsonForService = $parser->ParseItemToRequestJson($item, $apiKey);
+                    $jsonForService = $parser->ParseItemToRequestJson($item, $apiKey);
 
-                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Parsing content item into JSON]", \PEAR_LOG_DEBUG);
 
-                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Calling the SiCDS]", \PEAR_LOG_DEBUG);
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [START: Calling the SiCDS]", \PEAR_LOG_DEBUG);
 
-                $jsonFromService = $serviceInterface->InterafceWithService(
-                        $serviceUrl,
-                        $jsonForService,
-                        $configuration
-                );
+                    $jsonFromService = $serviceInterface->InterafceWithService(
+                            $serviceUrl,
+                            $jsonForService,
+                            $configuration
+                    );
 
-                $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Calling the SiCDS]", \PEAR_LOG_DEBUG);
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [END: Calling the SiCDS]", \PEAR_LOG_DEBUG);
 
-                if($parser->ContentIsUnique($jsonFromService, $item->id)) {
-                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id is unique]", \PEAR_LOG_DEBUG);
-                    $uniqueContentItems[] = $item;
+                    if($parser->ContentIsUnique($jsonFromService, $item->id)) {
+                        $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id is unique]", \PEAR_LOG_DEBUG);
+                        $uniqueContentItems[] = $item;
+                    }
+                    else {
+                        $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id a duplicate]", \PEAR_LOG_DEBUG);
+                    }
                 }
-                else {
-                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [Content with Id: $item->id a duplicate]", \PEAR_LOG_DEBUG);
+                catch (\Exception $e) {
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [An exception was thrown]", \PEAR_LOG_ERR);
+                    $logger->log("Swiftriver::PreProcessingSteps::SiCDSPreProcessingStep::Process [$e]", \PEAR_LOG_ERR);
+                    $uniqueContentItems[] = $item;
                 }
             }
 
