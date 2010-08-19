@@ -21,11 +21,10 @@ class SiCDSPreProcessingStepTests extends \PHPUnit_Framework_TestCase {
         );
 
         $configuration = new MockConfiguration();
-        $logger = null;
 
         $SiCDS = new \Swiftriver\PreProcessingSteps\SiCDSPreProcessingStep();
 
-        $SiCDS->Process(array($item), $configuration, $logger);
+        $SiCDS->Process(array($item), $configuration, Setup::GetLogger());
 
     }
 }
@@ -37,4 +36,5 @@ class MockConfiguration {
         $this->ModulesDirectory = dirname(__FILE__)."/../../../Modules";
     }
 }
+
 ?>
