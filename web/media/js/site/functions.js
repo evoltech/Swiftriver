@@ -194,7 +194,7 @@ function DeactivateSource(number, id) {
 
 // CONTENT LIST
 function Update() {
-    var url = baseurl.replace("/web", "/");
+    var url = baseurl.replace("/web", "");
     $.post(url + "core/ServiceAPI/ChannelServices/RunNextChannel.php",{ key : "swiftriver_dev" });
 }
 
