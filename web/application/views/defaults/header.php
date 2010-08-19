@@ -4,6 +4,6 @@
 </div>
 <div id="tag-line">
     <h1>
-        SwiftRiver is a free and open source software platform that uses algorithms and crowdsourcing to validate and filter news.
+        SwiftRiver is a free and open source software platform that uses algorithms and crowdsourcing to validate and filter realtime news.
     </h1>
 </div>
