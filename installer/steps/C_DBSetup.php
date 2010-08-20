@@ -197,5 +197,4 @@ class C_DBSetup implements IInstallStep {
         return $return;
     }
 }
-$steps[] = new C_DBSetup();
 ?>

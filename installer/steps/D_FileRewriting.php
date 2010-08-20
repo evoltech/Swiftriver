@@ -116,5 +116,4 @@ class D_FileRewriting implements IInstallStep
                    "</div>";
     }
 }
-$steps[] = new D_FileRewriting();
 ?>

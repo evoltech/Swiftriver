@@ -11,15 +11,20 @@ include_once($thisDirectory."/steps/IInstallStep.php");
 //Include the introduction step
 include_once($thisDirectory."/Introduction.php");
 
-//steps array with the introduction in it
-$steps = array(
-    new Introduction(),
-);
-
 //Loop through the steps directory including all the steps
 foreach(new DirectoryIterator($thisDirectory . "/steps") as $fileInfo)
     if(strpos($fileInfo->getFilename(), ".php") !== false)
         include_once($fileInfo->getPathname());
+
+//steps array with the introduction in it
+$steps = array(
+    new Introduction(),
+    new A_Environment(),
+    new B_ReadWriteAccess(),
+    new C_DBSetup(),
+    new D_FileRewriting()
+);
+
 
 //get the current step postion
 $position = (int) ($_GET["position"] != null ? $_GET["position"] : "0");

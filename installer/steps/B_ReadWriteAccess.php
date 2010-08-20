@@ -83,7 +83,4 @@ class B_ReadWriteAccess implements IInstallStep
         return $return;
     }
 }
-
-//Instanciate this step and add it to the steps array
-$steps[] = new B_ReadWriteAccess();
 ?>
