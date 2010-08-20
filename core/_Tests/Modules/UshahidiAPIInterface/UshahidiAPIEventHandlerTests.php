@@ -13,8 +13,6 @@ class UshahidiAPIEventHandlerTests extends \PHPUnit_Framework_TestCase {
 
         $handler = new \Swiftriver\EventHandlers\UshahidiAPIEventHandler();
 
-
-
         $handler->HandleEvent($event, $configuration, \Swiftriver\Core\Setup::GetLogger());
     }
 }
