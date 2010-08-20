@@ -15,7 +15,7 @@ class A_Environment implements IInstallStep
                "are installed";
     }
 
-    public function RunChecks()
+    public function RunChecks($postVar)
     {
         //Check the PHP Version
         $versionIsOk = (version_compare(PHP_VERSION, '5.3.0', '>='));

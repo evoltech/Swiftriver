@@ -1,12 +1,20 @@
 <?php
+//Turn off the error display
+ini_set("display_errors", 0);
+
 //get this directory
 $thisDirectory = dirname(__FILE__);
 
 //Include the IInstallStep interface
 include_once($thisDirectory."/steps/IInstallStep.php");
 
-//steps array
-$steps = array();
+//Include the introduction step
+include_once($thisDirectory."/Introduction.php");
+
+//steps array with the introduction in it
+$steps = array(
+    new Introduction(),
+);
 
 //Loop through the steps directory including all the steps
 foreach(new DirectoryIterator($thisDirectory . "/steps") as $fileInfo)
@@ -20,7 +28,7 @@ $position = (int) ($_GET["position"] != null ? $_GET["position"] : "0");
 $step = $steps[$position];
 
 //Run all the checks and see if they suceed
-$sucess = $step->RunChecks();
+$sucess = $step->RunChecks($_POST);
 ?>
 <html>
     <head>
@@ -48,13 +56,13 @@ $sucess = $step->RunChecks();
                 <div class="top">&nbsp;</div>
                 <div class="mid">
                     <h2>Step: <?php echo($step->GetName()); ?></h2>
-                    <?php if($sucess) : ?>
+                    <p class="description"><?php echo($step->GetDescription()); ?></p>
+                    <?php if($sucess === true) : ?>
                         <img src="assets/images/sucess-large.png" />
-                    <?php else : ?>
+                    <?php elseif ($sucess === false) : ?>
                         <img src="assets/images/fail-large.png" />
                     <?php endif; ?>
                     <?php echo($step->Render()); ?>
-
                     <?php if($sucess) : ?>
                         <a href="<?php echo(($position + 1 != count($steps)) ? "?position=".($position + 1) : "../index.php"); ?>">
                             <img src="assets/images/button-nextstep.png" />

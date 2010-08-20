@@ -5,7 +5,7 @@ interface IInstallStep
 
     public function GetDescription();
 
-    public function RunChecks();
+    public function RunChecks($postVar);
 
     public function Render();
 }
