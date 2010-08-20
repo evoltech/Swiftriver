@@ -33,16 +33,7 @@ class GetContent extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [START: Querying repository]", \PEAR_LOG_DEBUG);
 
-        $results = $repository->GetContentList(
-                $parameters["state"],
-                $parameters["minVeracity"],
-                $parameters["maxVeracity"],
-                $parameters["type"],
-                $parameters["subType"],
-                $parameters["source"],
-                $parameters["pageSize"],
-                $parameters["pageStart"],
-                $parameters["orderBy"]);
+        $results = $repository->GetContentList($parameters);
 
         if(!isset($results) || !is_array($results) || !isset($results["totalCount"]) || !isset($results["contentItems"]) || !is_numeric($results["totalCount"]) || $results["totalCount"] < 1) {
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [No results were returned from the repository]", \PEAR_LOG_DEBUG);

@@ -72,66 +72,15 @@ class ContentRepository {
     }
 
     /**
-     * Given a status, pagesize, page start index and possibly
-     * an order by calse, this method will return a page of content.
      *
-     * @param int $state
-     * @param int $pagesize
-     * @param int $pagestart
-     * @param string $orderby
-     * @return array("totalCount" => int, "contentItems" => Content[])
+     * @param string[] $parameters
      */
-    public function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = new $this->dataContext();
-        $content = $dc::GetPagedContentByState($state, $pagesize, $pagestart, $orderby);
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method finished]", \PEAR_LOG_DEBUG);
-        return $content;
-    }
-
-    /**
-     * Given the correct parameters, this method will reatun a page of content
-     * in the correct state for whome the source of that content has a veracity
-     * score in between the $minVeracity and $maxVeracity supplied.
-     *
-     * @param int $state
-     * @param int $pagesize
-     * @param int $pagestart
-     * @param int $minVeracity 0 - 100
-     * @param int $maxVeracity 0 - 100
-     * @param string $orderby
-     * @return array("totalCount" => int, "contentItems" => Content[])
-     */
-    public function GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby = null) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByStateAndSourceVeracity [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = new $this->dataContext();
-        $content = $dc::GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby);
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByStateAndSourceVeracity [Method finished]", \PEAR_LOG_DEBUG);
-        return $content;
-    }
-
-    /**
-     *
-     * @param string $state - The state of the content
-     * @param int $minVeracity - The minimum veracity of the source
-     * @param int $maxVeracity - The maximum veracity of the source
-     * @param string $type - The type of the source
-     * @param string $subType - The subtype of the source
-     * @param string $source - the ID of the source
-     * @param int $pageSize - the number of results to show on the page
-     * @param int $pageStart - the 0 based page start index
-     * @param string $orderBy - the order by clause
-     */
-    public function GetContentList(
-            $state, $minVeracity, $maxVeracity, $type, $subType, $source,
-            $pageSize, $pageStart, $orderBy) {
+    public function GetContentList($parameters) {
         try {
             $logger = \Swiftriver\Core\Setup::GetLogger();
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
             $dc = new $this->dataContext();
-            $content = $dc::GetContentList($state, $minVeracity, $maxVeracity, $type, $subType, $source, $pageSize, $pageStart, $orderBy);
+            $content = $dc::GetContentList($parameters);
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
             return $content;
         }
