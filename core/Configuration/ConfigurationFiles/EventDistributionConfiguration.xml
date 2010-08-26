@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<configuration><eventHandlers><handler name="Ushahidi Report Push" className="\Swiftriver\EventHandlers\UshahidiAPIEventHandler" filePath="\UshahidiAPIInterface\UshahidiAPIEventHandler.php"/></eventHandlers></configuration>
+<configuration><eventHandlers/></configuration>
