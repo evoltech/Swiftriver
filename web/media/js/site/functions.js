@@ -19,18 +19,18 @@ function SaveConfiguration(name, number, turbineType) {
     );
 }
 function ShowTurbineDescription(number) {
-    $("p#turbinedesctiption_" + number).show("slow");
+    $("#turbinedesctiption_" + number).show("slow");
     setTimeout("HideTurbineDescription("+number+")", 10000);
 }
 function HideTurbineDescription(number) {
-    $("p#turbinedesctiption_" + number).hide("slow");
+    $("#turbinedesctiption_" + number).hide("slow");
 }
 function ShowConfigurationDescription(number) {
-    $("p#config_description_" + number).show("slow");
+    $("#config_description_" + number).show("slow");
     setTimeout("HideConfigurationDescription('"+number+"')", 5000);
 }
 function HideConfigurationDescription(number) {
-    $("p#config_description_" + number).hide("slow");
+    $("#config_description_" + number).hide("slow");
 }
 function ActivateTurbine(number, name, turbineType) {
     $("p#inactive_" + number).hide("fast");
@@ -330,3 +330,51 @@ function ClearList() {
         $(this).remove();
     })
 }
+
+function MoreContent(pagesize) {
+    pagesize = pagesize + 10;
+    $("#more_content a").attr("href", "javascript:MoreContent("+ pagesize + ")");
+    listController.NavigationStateChange(new NavigationState(nav_state, nav_minVeracity, nav_maxVeracity, nav_type, nav_subType, nav_source, pagesize, nav_pageStart, nav_orderBy));
+}
+
+function ConfigureFacetGroup() {
+    $.get(baseurl + "config/facetgroup", function(data) {
+        Shadowbox.open({
+            content : data,
+            player : "html",
+            height : 450,
+            width : 400
+        });
+    });
+}
+
+function Rating(type, id) {
+    $.get(
+        baseurl + "config/rating/rating",
+        { type: type, id: id },
+        function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 350,
+                width : 400
+                });
+            }
+    );
+}
+
+function Content(name, type, ratings, score, sourcelink, contentlink) {
+    $.get(
+        baseurl + "config/content/content",
+        { name: name, type: type, ratings: ratings, score: score, sourcelink: sourcelink, contentlink: contentlink },
+        function(data) {
+            Shadowbox.open({
+                content : data,
+                player : "html",
+                height : 350,
+                width : 400
+            });
+        }
+    );
+}
+

@@ -80,6 +80,7 @@ function ListController(baseUrl, subject, navContainer) {
 
              var totalCount = data.totalcount;
              if(totalCount < 1) {
+                 $("div#no-results").slideDown();
                  return;
              }
 
@@ -121,42 +122,35 @@ function ListController(baseUrl, subject, navContainer) {
             return;
         }
         
-        $.post(
-            listController.baseUrl + "parts/facetgroup/render",
-            {group : navigationTree},
-            function(navTemplate) {
-                $.get(
-                    listController.baseUrl + "parts/veracityslider/render",
-                    function(veracityTemplate) {
-                        $(listController.navContainer).children().remove();
-                        $(listController.navContainer).append(veracityTemplate);
-                        $(listController.navContainer).append(navTemplate);
+        $.get(
+            listController.baseUrl + "parts/veracityslider/render",
+            function(veracityTemplate) {
+                $(listController.navContainer).children().remove();
+                $(listController.navContainer).append(veracityTemplate);
 
-                        var min = (listController.navigationState.minVeracity != "null") ? listController.navigationState.minVeracity : 0;
-                        var max = (listController.navigationState.maxVeracity != "null") ? listController.navigationState.maxVeracity : 100;
-                        $("div#veracity-slider p#min").html(min + "&#37;");
-                        $("div#veracity-slider p#max").html(max + "&#37;");
-                        $("div#veracity-slider div#slider").slider({
-                            range: true,
-                            minValue: 0,
-                            maxValue: 100,
-                            values: [min,max],
-                            step: 5,
-                            slide: function(event, ui) {
-                                $("div#veracity-slider p#min").html(ui.values[0] + "&#37;");
-                                $("div#veracity-slider p#max").html(ui.values[1] + "&#37;");
-                            },
-                            stop : function(event, ui) {
-                                var newNavState = listController.navigationState.Copy();
-                                newNavState.minVeracity = ui.values[0];
-                                newNavState.maxVeracity = ui.values[1];
-                                listController.NavigationStateChange(newNavState);
-                            }
-                        });
+                var min = (listController.navigationState.minVeracity != "null") ? listController.navigationState.minVeracity : 0;
+                var max = (listController.navigationState.maxVeracity != "null") ? listController.navigationState.maxVeracity : 100;
+                $("div#veracity-slider span#min").html(min);
+                $("div#veracity-slider span#max").html(max);
+                $("div#veracity-slider div#slider").slider({
+                    range: true,
+                    minValue: 0,
+                    maxValue: 100,
+                    values: [min,max],
+                    step: 5,
+                    slide: function(event, ui) {
+                        $("div#veracity-slider span#min").html(ui.values[0]);
+                        $("div#veracity-slider span#max").html(ui.values[1]);
+                    },
+                    stop : function(event, ui) {
+                        var newNavState = listController.navigationState.Copy();
+                        newNavState.minVeracity = ui.values[0];
+                        newNavState.maxVeracity = ui.values[1];
+                        listController.NavigationStateChange(newNavState);
                     }
-                )
+                });
             }
-        );
+        )
         
     }
 
@@ -168,14 +162,9 @@ function ListController(baseUrl, subject, navContainer) {
         for(var request in listController.currentRequests) {
             listController.currentRequests[request].abort();
         }
-        /*
-        for(var i=0; i<this.currentRequests.length; i++) {
-            var ajaxRequest = this.currentRequests[i];
-            ajaxRequest.abort();
-        }
-        */
         this.currentRequests = new Object();
 
+        $("div#no-results").slideUp()
         $(this.subject).hide().children().remove();
         $(this.subject).show();
     }
@@ -203,8 +192,8 @@ function ListController(baseUrl, subject, navContainer) {
      * Updates the source score shown on the content list
      */
     this.UpdateSourceScores = function(sourceId, newScore) {
-        $("p."+sourceId).each(function(){
-            $(this).html(newScore + "&#37;");
+        $("h2."+sourceId).each(function(){
+            $(this).html(newScore);
         });
     }
 

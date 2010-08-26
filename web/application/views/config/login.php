@@ -1,4 +1,5 @@
 <div id="login">
+    <div class="icon"></div>
     <div class="form">
         <div class="alert" style="display:none;">
             <ul></ul>
@@ -12,7 +13,8 @@
             <input type="password" name="password" />
         </div>
         <div class="form-row">
-            <input type="submit" value="login" onclick="ValidateAndTryLogin()" />
+            <button type="submit" onclick="ValidateAndTryLogin()" class="submit"><span>Log In</span></button>
+            <button type="submit" onclick="Shadowbox.close()" class="cancel"><span>Cancel</span></button>
         </div>
     </div>
 </div>

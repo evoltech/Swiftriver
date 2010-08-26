@@ -49,8 +49,7 @@ class EventDistributor {
                     $handler = new $className();
                 }
                 catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$message]", \PEAR_LOG_ERR);
+                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$e]", \PEAR_LOG_ERR);
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Unable to run event distribution for event handler: $className]", \PEAR_LOG_ERR);
                     continue;
                 }
@@ -70,8 +69,7 @@ class EventDistributor {
                     }
                 }
                 catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$message]", \PEAR_LOG_ERR);
+                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$e]", \PEAR_LOG_ERR);
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Unable to run event distribution for event handler: $className]", \PEAR_LOG_ERR);
                 }
 

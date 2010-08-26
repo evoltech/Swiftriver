@@ -29,10 +29,6 @@ class Controller_Parts_Content extends Controller_Template
 
         $logincheck = RiverId::is_logged_in();
 
-        $this->template->actions = ($logincheck["IsLoggedIn"])
-                                        ? new View("/parts/contentitemactiveactions")
-                                        : new View("/parts/contentiteminactiveactions");
-
-        $this->template->actions->content = $content;
+        $this->template->enableActions = $logincheck["IsLoggedIn"];
     }
 }

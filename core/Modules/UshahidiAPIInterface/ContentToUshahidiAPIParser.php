@@ -143,7 +143,10 @@ class ContentToUshahidiAPIParser {
         $return = "";
         if(isset($content->text) && is_array($content->text)) {
             foreach($content->text as $text) {
-                $return .= "$text ";
+                $return .= "$text->title ";
+                if(isset($text->text))
+                    foreach($text->text as $innerText)
+                        $return .= "$innerText ";
             }
         }
         return $return;
