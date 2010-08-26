@@ -16,7 +16,7 @@ foreach(new DirectoryIterator($thisDirectory . "/steps") as $fileInfo)
     if(strpos($fileInfo->getFilename(), ".php") !== false)
         include_once($fileInfo->getPathname());
 
-//steps array with the introduction in it
+//steps array with the steps to run in it
 $steps = array(
     new Introduction(),
     new A_Environment(),
@@ -24,7 +24,6 @@ $steps = array(
     new C_DBSetup(),
     new D_FileRewriting()
 );
-
 
 //get the current step postion
 $position = (int) ($_GET["position"] != null ? $_GET["position"] : "0");
@@ -48,7 +47,7 @@ $sucess = $step->RunChecks($_POST);
                     <?php for($i = 0; $i < count($steps); $i++) : ?>
                         <td class="<?php echo($position == $i ? 'selected' : ''); ?>">
                             <a href="?position=<?php echo($i); ?>">
-                                <?php echo($steps[$i]->GetName()); ?>
+                                <?php echo(($i+1) . ": " . $steps[$i]->GetName()); ?>
                             </a>
                         </td>
                     <?php endfor; ?>
