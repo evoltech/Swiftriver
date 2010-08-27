@@ -1,5 +1,5 @@
 <?php
-class A_Environment implements IInstallStep
+class Environment implements IInstallStep
 {
     private $checks = array();
 

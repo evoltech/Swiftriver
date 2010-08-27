@@ -75,8 +75,8 @@
             <div class="tags">
                 <?php foreach($content->tags as $type => $tags) : ?>
                     <?php if(is_array($tags) && count($tags) > 0) : ?>
-                        <?php if($type == 'what' && count($tags) > 0) : ?>
-                            <ol class="tag-list"><li><strong>Tagged as:</strong></li>
+                        <?php if($type != 'where' && count($tags) > 0) : ?>
+                            <ol class="tag-list"><li><strong><?php echo($type); ?>:</strong></li>
                                 <?php foreach($tags as $key => $tag) : ?>
                                     <li><?php echo strtolower($tag); ?></li>
                                 <?php endforeach; ?>

@@ -1,5 +1,6 @@
 <?php
-class RiverId {
+class RiverId
+{
     /**
      * This function checks that the current user is logged in.
      * The return value is an associative array in the following

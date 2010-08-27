@@ -1,5 +1,5 @@
 <?php
-class B_ReadWriteAccess implements IInstallStep
+class ReadWriteAccess implements IInstallStep
 {
     private $checks = array();
 

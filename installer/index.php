@@ -19,10 +19,11 @@ foreach(new DirectoryIterator($thisDirectory . "/steps") as $fileInfo)
 //steps array with the steps to run in it
 $steps = array(
     new Introduction(),
-    new A_Environment(),
-    new B_ReadWriteAccess(),
-    new C_DBSetup(),
-    new D_FileRewriting()
+    new Environment(),
+    new ReadWriteAccess(),
+    new DBSetup(),
+    new UserCreation(),
+    new FileRewriting()
 );
 
 //get the current step postion

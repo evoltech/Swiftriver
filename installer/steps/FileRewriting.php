@@ -1,5 +1,5 @@
 <?php
-class D_FileRewriting implements IInstallStep
+class FileRewriting implements IInstallStep
 {
     private $passed = false;
 

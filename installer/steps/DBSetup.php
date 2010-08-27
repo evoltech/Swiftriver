@@ -1,5 +1,5 @@
 <?php
-class C_DBSetup implements IInstallStep {
+class DBSetup implements IInstallStep {
     
     private $firstTime = false;
     private $host = null;
