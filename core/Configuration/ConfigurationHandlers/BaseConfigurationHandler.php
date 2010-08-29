@@ -1,6 +1,12 @@
 <?php
 namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
-class BaseConfigurationHandler {
+/**
+ * Base Configuration handler that provides functions that can
+ * be utalised by an inheriting class
+ * @author mg@swiftly.org
+ */
+class BaseConfigurationHandler
+{
     /**
      * Given the file path and then name of the collection
      * element, this function will open the xml config file
@@ -11,9 +17,11 @@ class BaseConfigurationHandler {
      * @param string $collectionElement
      * @return \SimpleXMLElement 
      */
-    public function SaveOpenConfigurationFile($filePath, $collectionElement) {
+    public function SaveOpenConfigurationFile($filePath, $collectionElement)
+    {
         //Check to see if the file is there
-        if(!file_exists($filePath)) {
+        if(!file_exists($filePath))
+        {
             //If not then create a new XML structure
             $root = new \SimpleXMLElement("<configuration></configuration>");
 
