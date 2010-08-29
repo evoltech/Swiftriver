@@ -58,7 +58,7 @@ class UserCreation implements IInstallStep
         }
         catch(\Exception $e)
         {
-            $this->errors[] = "There was a problem registering the admin user name and password: $e";
+            $this->errors[] = "There was a problem registering the admin username and password: $e";
             return false;
         }
     }
@@ -67,7 +67,7 @@ class UserCreation implements IInstallStep
     {
         if(!$this->firsttime && count($this->errors) == 0)
             return "<div class='message'>" .
-                    "<p>Thats great, all that worked out with no problems</p>".
+                    "<p>Thats great, all that worked out with no problems.</p>".
                     "<p>When you have finished installing me, click the login ".
                     "button and then use the username <strong>'admin'</strong> and the password ".
                     "you just set!</p>".

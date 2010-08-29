@@ -12,7 +12,7 @@ class Environment implements IInstallStep
     {
         return "In this step I will check that you have the required PHP version " .
                "running on your server and that some of the PHP plugins I need " .
-               "are installed";
+               "are installed.";
     }
 
     public function RunChecks($postVar)
@@ -46,7 +46,7 @@ class Environment implements IInstallStep
                 : "Sorry, I can't access the PEAR Logging framework, I tried ".
                   "'include_once(\"Log.php\")' but it returned false. You need ".
                   "to ensure that the PEAR Logging system is installed and".
-                  "included";
+                  "included.";
         $this->checks[] = $logCheck;
 
         //Check that all the steps passed and if not then return false

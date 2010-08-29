@@ -11,8 +11,9 @@ class DBSetup implements IInstallStep {
     public function GetDescription() 
     {
         return "In this step I need to take a few details relating to how I am " .
-               "going to talk to the data base. Before you fill in the form here, " .
-               "please make sure you have created the empty data base!";
+               "going to talk to the database. Before you fill in the form here, " .
+               "please make sure you have created an empty database for me on the ".
+               "database server!";
     }
     
     public function GetName() 
@@ -31,13 +32,13 @@ class DBSetup implements IInstallStep {
             $this->errors[] = "You haven't written the host down.";
 
         if(!key_exists("username", $postVar) || strlen($postVar["username"]) == 0)
-            $this->errors[] = "You haven't written the user name down.";
+            $this->errors[] = "You haven't written the username down.";
 
         if(!key_exists("password", $postVar) || strlen($postVar["password"]) == 0)
             $this->errors[] = "You haven't written the password down.";
 
         if(!key_exists("database", $postVar) || strlen($postVar["database"]) == 0)
-            $this->errors[] = "You haven't written the data base name down.";
+            $this->errors[] = "You haven't written the database name down.";
 
         if(count($this->errors) > 0)
             return false;
@@ -63,9 +64,9 @@ class DBSetup implements IInstallStep {
         }
         catch(\Exception $e)
         {
-            $this->errors[] = "There was an issue saving the details to the config file ".
-                              "I use. please ensure you completed the Permissions step of ".
-                              "this installer, if your interested the error was:" . $e;
+            $this->errors[] = "There was an issue saving the details to the configuration file ".
+                              "I use. Please ensure you have completed the permissions step of ".
+                              "this installer. If you're interested, the error was:" . $e;
             return false;
         }
 
@@ -114,9 +115,9 @@ class DBSetup implements IInstallStep {
         }
         catch (\Exception $e)
         {
-            $this->errors[] = "There was an issue saving the details to the config file ".
-                              "I use. please ensure you completed the Permissions step of ".
-                              "this installer, if your interested the error was:" . $e;
+            $this->errors[] = "There was an issue saving the details to the configuration file ".
+                              "I use. Please ensure you have completed the permissions step of ".
+                              "this installer. If your interested, the error was:" . $e;
             return false;
         }
 
@@ -126,7 +127,7 @@ class DBSetup implements IInstallStep {
 
             if(!$link)
             {
-                $this->errors[] = "I tried to connect to the data base using the 'mysql_connect' ".
+                $this->errors[] = "I tried to connect to the database using the 'mysql_connect' ".
                                   "function and the details you gave me but it didn't work.";
                 return false;
             }
@@ -136,7 +137,7 @@ class DBSetup implements IInstallStep {
             if(!$dbconnect)
             {
                 $this->errors[] = "I connected to the database server ok but when I tried to ".
-                                  "select the database you told me about using 'mysql_select_db' ".
+                                  "select the database you told me about, using 'mysql_select_db', ".
                                   "it didn't work.";
                 return false;
             }
@@ -156,8 +157,8 @@ class DBSetup implements IInstallStep {
         if(!$this->firstTime && count($this->errors) == 0)
         {
             return "<div class='message'>" .
-                    "<p>Thats great, all that worked out with no problems</p>".
-                    "<p>Lets move onto the next step.</p>".
+                    "<p>That's great, all that worked out with no problems</p>".
+                    "<p>Let's move onto the next step.</p>".
                    "</div>";
         }
 
@@ -178,7 +179,7 @@ class DBSetup implements IInstallStep {
                         "<input type='text' name='host' value='" . $_POST["host"] . "' />".
                     "</div>".
                     "<div class='form-row'>" .
-                        "<label>The user name that I should use:</label>".
+                        "<label>The username that I should use:</label>".
                         "<input type='text' name='username' value='" . $_POST["username"] . "' />".
                     "</div>".
                     "<div class='form-row'>" .
