@@ -1,6 +1,12 @@
 <?php
 namespace Swiftriver\Core\EventDistribution;
-class GenericEvent {
+/**
+ * Generic event class used to hold the name and event arguments that are
+ * to be distributed through the system.
+ * @author mg@swiftly.org
+ */
+class GenericEvent
+{
     /**
      * The name of the event, event handlers should be listening
      * to raised events and filtering only the ones they want
@@ -24,10 +30,12 @@ class GenericEvent {
 
     /**
      * The constructor for a generic event
+     * 
      * @param string $name
      * @param array() $arguments
      */
-    public function __construct($name, $arguments) {
+    public function __construct($name, $arguments)
+    {
         $this->name = $name;
         $this->arguments = $arguments;
     }

@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\EventDistribution;
-interface IEventHandler {
+/**
+ * Interface for all Event Handlers
+ * @author mg@swiftly.org
+ */
+interface IEventHandler
+{
     /**
      * This method should return the name of the event handler 
      * that you implement. This name should be unique across all
