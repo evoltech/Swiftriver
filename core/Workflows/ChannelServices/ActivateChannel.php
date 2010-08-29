@@ -1,6 +1,10 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
-class ActivateChannel extends ChannelServicesBase {
+/**
+ * @author mg@swiftly.org
+ */
+class ActivateChannel extends ChannelServicesBase
+{
     /**
      * Activates a Channel based on the Channel ID
      * encode in the JSON param
@@ -8,7 +12,8 @@ class ActivateChannel extends ChannelServicesBase {
      * @param string $json
      * @return string $json
      */
-    public function RunWorkflow($json, $key) {
+    public function RunWorkflow($json, $key)
+    {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::ActivateChannel::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
@@ -16,11 +21,13 @@ class ActivateChannel extends ChannelServicesBase {
         $logger->log("Core::Workflows::ChannelServices::ActivateChannel::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
         //try to parse the id from the JSON
-        try {
+        try
+        {
             //get the ID from the JSON
             $id = parent::ParseJSONToId($json);
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::ActivateChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -33,11 +40,13 @@ class ActivateChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelRepository();
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -50,11 +59,13 @@ class ActivateChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [START: Getting the Channel from the repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Get the channel from the repo
             $channel = reset($repository->GetChannelsById(array($id)));
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -67,14 +78,16 @@ class ActivateChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [START: Marking Channel as active and saving to the repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //set the active flag to true
             $channel->active = true;
 
             //save the channel back to the repo
             $repository->SaveChannels(array($channel));
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::ActivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

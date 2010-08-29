@@ -117,44 +117,59 @@ class PreProcessor
 
         $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Method invoked]", \PEAR_LOG_DEBUG);
 
+        //set up the array to hold the steps
         $steps = array();
 
+        //Get the path of the modules directory
         $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
 
+        //Create a recursive directory ittorator
         $dirItterator = new \RecursiveDirectoryIterator($modulesDirectory);
 
         $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
-        
+
+        //Itterate over all the files in all the directories
         foreach($iterator as $file)
         {
+            //If not a file continue
             if(!$file->isFile())
                 continue;
-            
+
+            //get the full file path
             $filePath = $file->getPathname();
 
+            //If not a pre processing step then continue
             if(!strpos($filePath, "PreProcessingStep.php"))
                 continue;
 
             try
             {
+                //Include the file
                 include_once($filePath);
 
+                //create a type string for the pre processing step
                 $typeString = "\\Swiftriver\\PreProcessingSteps\\".$file->getFilename();
 
+                //remove the .php extension
                 $type = str_replace(".php", "", $typeString);
 
+                //instanciate the pre processing step
                 $object = new $type();
-                
-                if($object instanceof IPreProcessingStep)
-                {
-                    $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Adding type $type]", \PEAR_LOG_DEBUG);
 
-                    $object->filePath = str_replace($modulesDirectory, "", $filePath);
+                //Check that the object implements the IPreProcessingStep
+                if(!($object instanceof IPreProcessingStep))
+                    continue;
 
-                    $object->type = $type;
+                $logger->log("Core::PreProcessing::PreProcessor::ListAllAvailablePreProcessingSteps [Adding type $type]", \PEAR_LOG_DEBUG);
 
-                    $steps[] = $object;
-                }
+                //Add the file name to the step element
+                $object->filePath = str_replace($modulesDirectory, "", $filePath);
+
+                //Add the type to the step element
+                $object->type = $type;
+
+                //Add the object to the array
+                $steps[] = $object;
             }
             catch(\Exception $e)
             {

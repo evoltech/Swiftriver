@@ -1,19 +1,26 @@
 <?php
 namespace Swiftriver\Core\Workflows\PreProcessingSteps;
-class SavePreProcessingStep extends PreProcessingStepsBase {
-
-    public function RunWorkflow($json, $key) {
+/**
+ * @author mg@swiftly.org
+ */
+class SavePreProcessingStep extends PreProcessingStepsBase
+{
+    public function RunWorkflow($json, $key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Call the parent to decode the json
             $preProcessingStepName = parent::ParseJsonToPreProcessingStepName($json);
             $configuration = parent::ParseJsonToPreProcessingStepConfiguration($json);
         }
-        catch(\Exception $e) {
+        catch(\Exception $e)
+        {
             //Catch and report the exception if one is thrown
             $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [$e]", \PEAR_LOG_ERR);
@@ -35,14 +42,13 @@ class SavePreProcessingStep extends PreProcessingStepsBase {
         $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [START: Looking for the pre processor to activate]", \PEAR_LOG_DEBUG);
 
         //Loop throught the steps looking for one with the same name as came from the JOSN
-        foreach($steps as $s) {
-            if($s->Name() == $preProcessingStepName) {
+        foreach($steps as $s)
+            if($s->Name() == $preProcessingStepName)
                 $step = $s;
-            }
-        }
 
         //If not found, return an error.
-        if(!isset($step) || $step == null) {
+        if(!isset($step) || $step == null)
+        {
             $logger->log("Core::Workflows::PreProcessingSteps::SavePreProcessingStep::RunWorkflow [No pre processor with a name matching $preProcessingStepName was found.]", \PEAR_LOG_DEBUG);
             return parent::FormatErrorMessage("No pre processor matching the name $preProcessingStepName could be found");
         }
@@ -53,12 +59,12 @@ class SavePreProcessingStep extends PreProcessingStepsBase {
 
         $thisConfig = array();
 
-        foreach($step->ReturnRequiredParameters() as $param) {
-            foreach($configuration as $key => $value) {
-                if($param->name == $key) {
+        foreach($step->ReturnRequiredParameters() as $param)
+        {
+            foreach($configuration as $key => $value) 
+                if($param->name == $key) 
                     $param->value = $value;
-                }
-            }
+
             $thisConfig[] = $param;
         }
 

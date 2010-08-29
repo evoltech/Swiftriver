@@ -1,24 +1,31 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
-class SaveChannel extends ChannelServicesBase {
+/**
+ * @author mg@swiftly.org
+ */
+class SaveChannel extends ChannelServicesBase
+{
     /**
      * Adds the pre processing job to the DAL
      *
      * @param string $json
      * @return string $json
      */
-    public function RunWorkflow($json, $key) {
+    public function RunWorkflow($json, $key)
+    {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Parse the JSON input
             $channel = parent::ParseJSONToChannel($json);
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -31,11 +38,13 @@ class SaveChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelRepository();
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -48,11 +57,13 @@ class SaveChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [START: Saving Channel]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Add the Channel to the repository
             $repository->SaveChannels(array($channel));
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::SaveChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

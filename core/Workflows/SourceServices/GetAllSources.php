@@ -1,24 +1,31 @@
 <?php
 namespace Swiftriver\Core\Workflows\SourceServices;
-class GetAllSources extends SourceServicesBase {
+/**
+ * @author mg@swiftly.org
+ */
+class GetAllSources extends SourceServicesBase
+{
     /**
      * List all Channel Processing Jobs in the Data Store
      *
      * @param string $json
      * @return string $json
      */
-    public function RunWorkflow($key) {
+    public function RunWorkflow($key)
+    {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\SourceRepository();
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -31,11 +38,13 @@ class GetAllSources extends SourceServicesBase {
 
         $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [START: Listing all sources]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Get all the sources
             $sources = $repository->ListAllSources();
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message 
             $message = $e->getMessage();
             $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -48,11 +57,13 @@ class GetAllSources extends SourceServicesBase {
 
         $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [START: Parsing channel processing jobs to JSON]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Parse the JSON input
             $json = parent::ParseSourcesToJSON($sources);
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::SourceServices::GetAllSources::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

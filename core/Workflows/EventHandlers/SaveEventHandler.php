@@ -1,17 +1,25 @@
 <?php
 namespace Swiftriver\Core\Workflows\EventHandlers;
-class SaveEventHandler extends EventHandlersBase {
-    public function RunWorkflow($json, $key) {
+/**
+ * @author mg@swiftly.org
+ */
+class SaveEventHandler extends EventHandlersBase
+{
+    public function RunWorkflow($json, $key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [START: Parsing the input JSON]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             $name = parent::ParseJsonToEventHandlerName($json);
             $config = parent::ParseJsonToEventHandlerConfiguration($json);
         }
-        catch(\Exception $e) {
+        catch(\Exception $e)
+        {
             $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [An Exception was thrown]", \PEAR_LOG_ERR);
             $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [$e]", \PEAR_LOG_ERR);
             return parent::FormatErrorMessage($e);
@@ -33,13 +41,12 @@ class SaveEventHandler extends EventHandlersBase {
 
         $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [START: Looking for an event handler with matching name]", \PEAR_LOG_DEBUG);
 
-        foreach($handlers as $handler) {
-            if($handler->Name() == $name) {
+        foreach($handlers as $handler)
+            if($handler->Name() == $name)
                 $thisHandler = $handler;
-            }
-        }
 
-        if(!isset($thisHandler) || $thisHandler == null) {
+        if(!isset($thisHandler) || $thisHandler == null)
+        {
             $logger->log("Core::Workflows::EventHandlers::SaveEventHandlers::RunWorkflow [No event handler was found matching the name $name]", \PEAR_LOG_DEBUG);
             return parent::FormatErrorMessage("No event handler was found matching the name $name");
         }
@@ -50,12 +57,12 @@ class SaveEventHandler extends EventHandlersBase {
 
         $thisConfig = array();
 
-        foreach($thisHandler->ReturnRequiredParameters() as $param) {
-            foreach($config as $key => $value) {
-                if($param->name == $key) {
+        foreach($thisHandler->ReturnRequiredParameters() as $param)
+        {
+            foreach($config as $key => $value)
+                if($param->name == $key)
                     $param->value = $value;
-                }
-            }
+
             $thisConfig[] = $param;
         }
 

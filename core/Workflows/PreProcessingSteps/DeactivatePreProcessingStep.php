@@ -1,18 +1,25 @@
 <?php
 namespace Swiftriver\Core\Workflows\PreProcessingSteps;
-class DeactivatePreProcessingStep extends PreProcessingStepsBase {
-
-    public function RunWorkflow($json, $key) {
+/**
+ * @author mg@swiftly.org
+ */
+class DeactivatePreProcessingStep extends PreProcessingStepsBase
+{
+    public function RunWorkflow($json, $key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Call the parent to decode the json
             $preProcessingStepName = parent::ParseJsonToPreProcessingStepName($json);
         }
-        catch(\Exception $e) {
+        catch(\Exception $e)
+        {
             //Catch and report the exception if one is thrown
             $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [$e]", \PEAR_LOG_ERR);
@@ -34,14 +41,13 @@ class DeactivatePreProcessingStep extends PreProcessingStepsBase {
         $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [START: Looking for the pre processor to activate]", \PEAR_LOG_DEBUG);
 
         //Loop throught the steps looking for one with the same name as came from the JOSN
-        foreach($steps as $s) {
-            if($s->Name() == $preProcessingStepName) {
+        foreach($steps as $s) 
+            if($s->Name() == $preProcessingStepName) 
                 $step = $s;
-            }
-        }
 
         //If not found, return an error.
-        if(!isset($step) || $step == null) {
+        if(!isset($step) || $step == null)
+        {
             $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [No pre processor with a name matching $preProcessingStepName was found.]", \PEAR_LOG_DEBUG);
             return parent::FormatErrorMessage("No pre processor matching the name $preProcessingStepName could be found");
         }
@@ -67,16 +73,13 @@ class DeactivatePreProcessingStep extends PreProcessingStepsBase {
         $numberOfPreProcessors = count($config->PreProcessingSteps);
 
         //See if this step is already in there
-        for($i=0; $i<$numberOfPreProcessors; $i++) {
-            if($config->PreProcessingSteps[$i]->name == $preProcessorStep->name) {
+        for($i=0; $i<$numberOfPreProcessors; $i++) 
+            if($config->PreProcessingSteps[$i]->name == $preProcessorStep->name) 
                 $index = $i;
-            }
-        }
 
         //Remove the step from the configuration framework
-        if(isset($index)) {
+        if(isset($index)) 
             $config->PreProcessingSteps[$index] = null;
-        }
         
         $logger->log("Core::Workflows::PreProcessingSteps::DeactivatePreProcessingStep::RunWorkflow [END: Removing the pre processor from the configuration]", \PEAR_LOG_DEBUG);
 

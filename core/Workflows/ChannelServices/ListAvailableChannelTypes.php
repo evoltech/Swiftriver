@@ -1,6 +1,10 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
-class ListAvailableChannelTypes extends ChannelServicesBase {
+/**
+ * @author mg@swiftly.org
+ */
+class ListAvailableChannelTypes extends ChannelServicesBase
+{
     /**
      * List all the Available types of Channels that can be configured in
      * the core
@@ -8,7 +12,8 @@ class ListAvailableChannelTypes extends ChannelServicesBase {
      * @param string $key
      * @return string $json
      */
-    public function RunWorkflow($key) {
+    public function RunWorkflow($key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ListAvailableChannelTypes::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
         
