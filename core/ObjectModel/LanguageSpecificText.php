@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class LanguageSpecificText {
+/**
+ * Object to hold text in a given language
+ * @author mg@swiftly.org
+ */
+class LanguageSpecificText
+{
     /**
      * The ISO 639-1 two letter language code
      * ref: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
@@ -28,7 +33,8 @@ class LanguageSpecificText {
      * @param string $title the title of the content
      * @param string[] $text the none-assositave array of the content text
      */
-    public function __construct($languageCode, $title, $text) {
+    public function __construct($languageCode, $title, $text)
+    {
         $this->languageCode = $languageCode;
         $this->title = $title;
         $this->text = $text;

@@ -1,6 +1,13 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class EventHandlerEntry {
+/**
+ * Class reprosenting a Event handler in the
+ * configuration system
+ * 
+ * @author mg@swiftly.org
+ */
+class EventHandlerEntry
+{
     /**
      * The name of this event handler
      * @var string
@@ -26,7 +33,8 @@ class EventHandlerEntry {
      * @param string $className
      * @param string $filePath
      */
-    public function __construct($name, $className, $filePath) {
+    public function __construct($name, $className, $filePath)
+    {
         $this->name = $name;
         $this->className = $className;
         $this->filePath = $filePath;

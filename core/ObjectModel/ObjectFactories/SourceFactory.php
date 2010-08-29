@@ -1,21 +1,39 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
-class SourceFactory {
-    public static function CreateSourceFromIdentifier($identifier) {
+/**
+ * Factory object used to build source objects
+ * @author mg@swiftly.org
+ */
+class SourceFactory
+{
+    /**
+     * Creats a new Source object from a unique id
+     *
+     * @param string $identifier
+     * @return \Swiftriver\Core\ObjectModel\Source
+     */
+    public static function CreateSourceFromIdentifier($identifier)
+    {
         $source = new \Swiftriver\Core\ObjectModel\Source();
         $source->id = md5($identifier);
         return $source;
     }
 
-    public static function CreateSourceFromJSON($json) {
+    /**
+     * Returns a new Source object from the JSON encoded string
+     * of a Source obejct
+     * 
+     * @param JSON $json
+     * @return \Swiftriver\Core\ObjectModel\Source 
+     */
+    public static function CreateSourceFromJSON($json)
+    {
         //decode the json
         $object = json_decode($json);
 
         //If there is an error in the JSON
-        if(!$object || $object == null) {
-            //throw an exception
+        if(!$object || $object == null)
             throw new \Exception("There was an error in the JSON passed in to the SourceFactory.");
-        }
 
         //create a new source
         $source = new \Swiftriver\Core\ObjectModel\Source();

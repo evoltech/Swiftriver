@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class Source {
+/**
+ * Source object
+ * @author mg@swiftly.org
+ */
+class Source
+{
     /**
      * The genuine unique ID of this source
      * @var string

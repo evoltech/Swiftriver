@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
-class ContentFactory {
+/**
+ * Factory used to build Content objects
+ * @author mg@swiftly.org
+ */
+class ContentFactory
+{
     /**
      * Given a source and optional content JSON, this factory method
      * creates a new content item associated with the given source.
@@ -11,9 +16,11 @@ class ContentFactory {
      * @param string $json
      * @return \Swiftriver\Core\ObjectModel\Content
      */
-    public static function CreateContent($source, $json = null) {
+    public static function CreateContent($source, $json = null)
+    {
         //If no JSON data passed in then create a new content item
-        if($json == null) {
+        if($json == null)
+        {
             //Create a new Id
             $id = md5(uniqid(rand(), true));
 
@@ -37,10 +44,8 @@ class ContentFactory {
         $object = json_decode($json);
 
         //If there is an error in the josn
-        if(!$object || $object == null) {
-            //trow an exception
+        if(!$object || $object == null) 
             throw new \Exception("There was an error in the JSON passed to the ContentFactory");
-        }
 
         //Create the content item
         $content = new \Swiftriver\Core\ObjectModel\Content();
@@ -53,58 +58,62 @@ class ContentFactory {
 
         //Sort out the language specific text
         $languages = $object->text;
-        if(isset($languages) && is_array($languages)) {
-            foreach($languages as $lang) {
+        if(isset($languages) && is_array($languages)) 
+            foreach($languages as $lang) 
                 $content->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
                         $lang->languageCode, 
                         $lang->title, 
                         $lang->text);
-            }
-        }
 
         //Set the source
         $content->source = $source;
 
         //Sort out the tags
         $tags = $object->tags;
-        if($tags != null && is_array($tags)) {
-            foreach($tags as $tag){
+        if($tags != null && is_array($tags))
+            foreach($tags as $tag)
                 $content->tags[] = new \Swiftriver\Core\ObjectModel\Tag($tag->text, $tag->type);
-            }
-        }
 
         //Sort out the difs
         $difCollections = $object->difs;
-        if($difCollections != null && is_array($difCollections)) {
+        if($difCollections != null && is_array($difCollections))
+        {
             $difCollectionsArray = array();
-            foreach($difCollections as $difCollection) {
+
+            foreach($difCollections as $difCollection)
+            {
                 $difs = $difCollection->difs;
-                if($difs != null && is_array($difs)) {
+                if($difs != null && is_array($difs))
+                {
                     $difArray = array();
-                    foreach($difs as $dif) {
+
+                    foreach($difs as $dif)
                         $difArray[] = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField($dif->type, $dif->value);
-                    }
+
                     $difCollectionsArray[] = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection($difCollection->name, $difArray);
                 }
             }
+
             $content->difs = $difCollectionsArray;
         }
 
         //Sort out the GIS Data
         $gisData = $object->gisData;
-        if($gisData != null && is_array($gisData)) {
-            foreach($gisData as $gis) {
+        if($gisData != null && is_array($gisData))
+        {
+            foreach($gisData as $gis)
+            {
                 $long = $gis->longitude;
                 $lat = $gis->latitude;
-                if($long != null && is_float($long) && $lat != null && is_float($lat)) {
+                if($long != null && is_float($long) && $lat != null && is_float($lat))
                     $content->gisData[] = new \Swiftriver\Core\ObjectModel\GisData($long, $lat);
-                }
             }
         }
 
         //sort out the extensions
         $extensions = $object->extensions;
-        if($extensions != null) {
+        if($extensions != null)
+        {
             //JSON code up the extensions again
             $jsonEncodedExtensions = json_encode($extensions);
 

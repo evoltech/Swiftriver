@@ -1,6 +1,13 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class GisData {
+/**
+ * Class to hold Global Positioning data associated
+ * with a content object
+ *
+ * @author mg@swiftly.org
+ */
+class GisData
+{
     /**
      * The longitude
      *
@@ -21,7 +28,8 @@ class GisData {
      * @param float $longitude
      * @param float $latitude
      */
-    public function __construct($longitude, $latitude) {
+    public function __construct($longitude, $latitude)
+    {
         $this->longitude = $longitude;
         $this->latitude = $latitude;
     }

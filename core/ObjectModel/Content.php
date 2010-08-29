@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class Content {
+/**
+ * Content object
+ * @author mg@swiftly.org
+ */
+class Content
+{
     /**
      * The unique Id of the content
      * @var sytring
