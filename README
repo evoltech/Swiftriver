@@ -1,12 +1,12 @@
-=========================
-SWIFTRIVER v0.5.0 - Benga
-=========================
+=============================
+SWIFTRIVER v0.5.0 - Cape Jazz
+=============================
  
-SwiftRiver is a FOSS platform for determining the veracity and accuracy of news related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about Swift Web Services at - http://swiftly.org
+SwiftRiver is a FOSS platform for determining the veracity and accuracy of crowdsourced information related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  This download is our flagship app utilizing the platform called The Sweeper.  You can find out more about Swift Web Services at - http://swiftly.org
 
 	Find us on Github - http://github.com/ushahidi/Swiftriver
 
-NOTE: This is a public beta software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
+NOTE: This is a public alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
 
 =========================
 SYSTEM REQUIREMENTS
@@ -18,12 +18,13 @@ SYSTEM REQUIREMENTS
 	MySQL 4.0 or higher
 	Supports IE7+, FireFox, Safari
 	
-Further details on this release can be found at - http://swift.ushahidi.com/doc/doku.php?id=batuque	
+Further details on this release can be found at - http://swift.ushahidi.com/doc/
 
 ===============
 RELEASE NOTES
 ===============
  
+	Redesign
 	Fixed Installer
 	User Roles
 	Turbine Plugin Architecture
@@ -35,7 +36,7 @@ RELEASE NOTES
 	Auto-refresh (Ajax/jQuery)
 	Admin Bar
 	
-Further details on this release can be found at - http://swift.ushahidi.com/doc/doku.php?id=benga	
+Further details on this release can be found at - http://swift.ushahidi.com/doc/	
 
 ===============
 DOCUMENTATION
@@ -43,8 +44,6 @@ DOCUMENTATION
 
 Documentation - http://swift.ushahidi.com/doc/ 
 Installation - http://swift.ushahidi.com/doc/doku.php?id=install
-Roadmap - http://swift.ushahidi.com/doc/doku.php?id=roadmap
-FAQ - http://swift.ushahidi.com/doc/doku.php?id=faq
 
 ======================
 PROJECT CONTRIBUTORS
@@ -52,8 +51,8 @@ PROJECT CONTRIBUTORS
 
 Core Developers
 
-	Jon Gosier (Director of Product, Swiftly)
-	Matthew Griffiths (Director of Platform, Swiftly) 
+	Jon Gosier (Director of Product, SwiftRiver)
+	Matthew Griffiths (Director of Platform, SwiftRiver) 
 
 Contributors
 
@@ -127,35 +126,33 @@ RELEASE SCHEDULE
 0.0.0	Rumba		(released 2010-03-31)
 0.1.0	Apala
 0.2.0	Batuque
-0.3.0	[ unreleased ]
-0.4.0	[ unreleased ]
-0.5.0	*Benga
-0.6.0	Bikutsi
-0.7.0	Cape Jazz
-0.8.0	Chimurenga
-0.9.0	Fuji music
-1.0.0	Harare
-1.1.0	Jit
-1.2.0	Jùjú		(Beta)
-1.3.0	Kizomba
-1.4.0	Kuduro
-1.5.0	Kwaito
-1.6.0	Kwela
-1.7.0	Makossa
-1.8.0	Malouf
-1.9.0	Maloya
-2.0.0	Marrabenta
-2.1.0	Museve
-2.2.0	Mbalax
-2.3.0	Mbaqanga	(Non-Beta)
-2.4.0	Mbube
-2.5.0	Morna
-2.6.0	Palm
-2.7.0	Raï
-2.8.0	Sakara
-2.9.0	Sega
-3.0.0	Soukous
-3.1.0	Taarab	
-3.2.0	Zouk
+0.3.0	Benga 	[ unreleased ]
+0.4.0	Bikutsi	[ unreleased ]
+0.5.0	Cape Jazz
+0.6.0	Chimurenga
+0.7.0	Fuji music
+0.8.0	Harare
+0.9.0	Jit
+1.0.0	Jùjú		(Beta)
+1.1.0	Kizomba
+1.2.0	Kuduro
+1.3.0	Kwaito
+1.4.0	Kwela
+1.5.0	Makossa
+1.6.0	Malouf
+1.7.0	Maloya
+1.8.0	Marrabenta
+1.9.0	Museve
+2.0.0	Mbalax
+2.1.0	Mbaqanga	(Non-Beta)
+2.2.0	Mbube
+2.3.0	Morna
+2.4.0	Palm
+2.5.0	Raï
+2.6.0	Sakara
+2.7.0	Sega
+3.8.0	Soukous
+3.9.0	Taarab	
+4.0.0	Zouk
 
 * = current release
