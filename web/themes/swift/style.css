@@ -190,6 +190,7 @@ body {
 	border-bottom: 1px solid #000 !important;
 	padding: 7px 0 9px 0 !important;
 	background: url('media/images/filter_bg.jpg') 0 bottom repeat-x #3C3C3C !important;
+        min-height: 66px !important;
 }
 
 #right-bar h2 {
@@ -980,7 +981,7 @@ button::-moz-focus-inner {
 }
 
 .modal-content .alert {
-	width: 253px !important;
+	width: 263px !important;
 	margin: 10px 0 !important;
 	border: 1px solid #dbdc81 !important;
 	padding: 10px !important;

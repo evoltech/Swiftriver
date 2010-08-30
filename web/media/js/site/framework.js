@@ -204,7 +204,7 @@ function ListController(baseUrl, subject, navContainer) {
      * @param contentId string
      */
     this.MarkContentAsAccurate = function(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
+        $("div#"+contentId).parent("li").slideUp("normal", function(){
             $(this).remove();
         });
         $.getJSON(this.baseUrl + "api/contentcuration/markasaccurate/" + contentId, function(data) {
@@ -220,7 +220,7 @@ function ListController(baseUrl, subject, navContainer) {
      * @param contentId string
      */
     this.MarkContentAsIrrelevant = function(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
+        $("div#"+contentId).parent("li").slideUp("normal", function(){
             $(this).remove();
         });
         $.getJSON(this.baseUrl + "api/contentcuration/markasirrelevant/" + contentId, function(data) {
@@ -236,7 +236,7 @@ function ListController(baseUrl, subject, navContainer) {
      * @param contentId string
      */
     this.MarkContentAsInaccurate = function(contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
+        $("div#"+contentId).parent("li").slideUp("normal", function(){
                 $(this).remove();
         });
         $.getJSON(this.baseUrl + "api/contentcuration/markasinaccurate/" + contentId, function(data) {
@@ -252,7 +252,7 @@ function ListController(baseUrl, subject, navContainer) {
      * @param contentId string
      */
     this.MarkContentAsCrossTalk = function (contentId) {
-        $("div#"+contentId).parent().slideUp("normal", function(){
+        $("div#"+contentId).parent("li").slideUp("normal", function(){
                 $(this).remove();
         });
         $.getJSON(this.baseUrl + "api/contentcuration/markascrosstalk/" + contentId, function(data) {
