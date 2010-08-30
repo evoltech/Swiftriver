@@ -22,8 +22,10 @@
     <div class="pagination">
         <p class="total-count"></p>
     </div>
-    <div id="no-results" style="display:none;">
-        <h2>Sorry, nothing to show</h2>
+    <div class="container">
+        <div id="no-results" style="display:none;">
+            <h2>Sorry, nothing to show</h2>
+        </div>
     </div>
     <ul>
     </ul>

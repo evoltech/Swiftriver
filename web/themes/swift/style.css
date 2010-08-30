@@ -12,6 +12,7 @@
 	padding: 0 !important;
 	font-size: 100% !important;
 	font-family: Arial, Helvetica, sans-serif !important;
+        outline: none !important;
  }
  
 .clearfix, #page, #header, #configuration, #admin-menu, #admin-menu ul, #admin-menu ul li, #admin-menu ul li a, #menu, #list-option, #menu ul, #menu ul li, #menu ul li a, #right-bar, #right-bar h2, #facet-groups li a,
@@ -109,7 +110,7 @@ body {
 #admin-menu ul li a span {
 	height: 23px !important;
 	padding: 8px 15px 0 0 !important;
-	float: right !important;
+	float: left !important;
 	background: url('media/images/buttons.png') right -64px no-repeat !important;
 	color: #F0F0F0 !important;
 	font-size: 100% !important;
@@ -202,7 +203,6 @@ body {
 	text-align: right !important;
 }
 
-
 #facet-groups {
 	height: 23px !important;
 	margin: 3px 0 0 0 !important;
@@ -230,7 +230,7 @@ body {
 #facet-groups li a span {
 	height: 18px !important;
 	padding: 5px 15px 0 0 !important;
-	float: right !important;
+	float: left !important;
 	background: url('media/images/buttons.png') right -346px no-repeat !important;
 	color: #F0F0F0 !important;
 	font-size: 70% !important;
@@ -268,6 +268,9 @@ body {
 	width: 301px !important;
 	height: 27px !important;
 	background: url('media/images/buttons.png') 0 -223px no-repeat !important;
+}
+
+.opera #veracity-slider .nav-inner {
 	overflow: hidden !important;
 }
 
@@ -303,6 +306,8 @@ body {
 #label-container p {
 	margin: 0 auto !important;
 	float: none !important;
+        font-size: 70% !important;
+        font-weight: bold !important;4184
 }
 
 #label-container p span {
@@ -420,9 +425,13 @@ display: none !important;
 }
 
 #right-bar .notch {
-	left: -28px !important;
+	left: -23px !important;
 	top: auto !important;
-	bottom: -25px !important;
+	bottom: -49px !important;
+}
+
+.opera #right-bar .notch {
+	bottom: -64px !important;
 }
 
 #content ul li .notch {
@@ -862,7 +871,6 @@ p#more_content a:hover {
 	background: #FFF !important;
 	color: #333 !important;
 	font-size: 85% !important;
-	box-shadow: -10px -10px 0px #000 !important;
 	border-radius: 4px !important;
 	-moz-border-radius: 4px !important;
 	-webkit-border-radius: 4px !important;
@@ -872,6 +880,7 @@ p#more_content a:hover {
 	position: absolute !important;
 	top: 10px !important;
 	right: 10px !important;
+        z-index:1100 !important;
 	width: 15px !important;
 	height: 15px !important;
 	float: left !important;
@@ -915,12 +924,9 @@ button::-moz-focus-inner {
 	cursor: pointer !important;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	/* Safari and Google Chrome only - fix margins */
-	.modal-content button span {
-		top: -1px !important;
-		left: -3px !important;
-	}
+.safari .modal-content button span {
+        top: -1px !important;
+        left: -3px !important;
 }
 
 .modal-content button.cancel span {
@@ -1103,8 +1109,6 @@ button::-moz-focus-inner {
 
 #turbine-list li {
 	font-size: 100% !important;
-        padding-bottom: 5px !important;
-        border-bottom: 1px solid #555 !important;
 }
 
 #turbine-list p.active {
@@ -1277,14 +1281,13 @@ button::-moz-focus-inner {
 }
 
 #no-results h2 {
-	width: 760px !important;
-        text-align: center !important;
 	padding: 15px 88px 15px 0 !important;
 	clear: both !important;
 	color: #333 !important;
-	font-size: 150% !important;
+	font-size: 120% !important;
 	font-family: Arial, Helvetica, sans-serif !important;
 	font-weight: normal !important;
 	letter-spacing: -0.02em;
 	line-height: 120% !important;
+        margin-left: 100px !important;
 }
