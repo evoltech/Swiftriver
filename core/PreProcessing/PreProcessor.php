@@ -4,7 +4,7 @@ namespace Swiftriver\Core\PreProcessing;
  * Class that manages the process of passing all content 
  * through the configured stack of pre processors
  * 
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class PreProcessor
 {

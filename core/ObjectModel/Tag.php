@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\ObjectModel;
 /**
  * Tag object
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class Tag
 {

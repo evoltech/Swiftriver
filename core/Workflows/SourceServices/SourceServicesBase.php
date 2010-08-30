@@ -1,7 +1,7 @@
 <?php
 namespace Swiftriver\Core\Workflows\SourceServices;
 /**
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
 {

@@ -3,7 +3,7 @@ namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 /**
  * Base Configuration handler that provides functions that can
  * be utalised by an inheriting class
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class BaseConfigurationHandler
 {

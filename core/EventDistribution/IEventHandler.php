@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\EventDistribution;
 /**
  * Interface for all Event Handlers
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 interface IEventHandler
 {

@@ -5,7 +5,7 @@ namespace Swiftriver\Core\StateTransition;
  * list of alowable states and the transition of states
  * of an item of content
  *
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class StateController
 {

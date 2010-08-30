@@ -4,7 +4,7 @@ namespace Swiftriver\Core\ObjectModel;
  * Class reprosenting a Event handler in the
  * configuration system
  * 
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class EventHandlerEntry
 {

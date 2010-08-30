@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
 /**
  * Factory used to build Content objects
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class ContentFactory
 {

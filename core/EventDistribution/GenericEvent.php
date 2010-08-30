@@ -3,7 +3,7 @@ namespace Swiftriver\Core\EventDistribution;
 /**
  * Generic event class used to hold the name and event arguments that are
  * to be distributed through the system.
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class GenericEvent
 {

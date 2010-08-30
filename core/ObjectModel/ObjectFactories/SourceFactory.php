@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
 /**
  * Factory object used to build source objects
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class SourceFactory
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
 /**
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class ActivateChannel extends ChannelServicesBase
 {

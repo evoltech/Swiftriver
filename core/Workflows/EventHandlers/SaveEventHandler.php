@@ -1,7 +1,7 @@
 <?php
 namespace Swiftriver\Core\Workflows\EventHandlers;
 /**
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class SaveEventHandler extends EventHandlersBase
 {

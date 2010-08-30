@@ -3,7 +3,7 @@ namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 /**
  * Configuration handler to hold the configuration relating to the which
  * Event Handlers are active in the system
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class EventDistributionConfigurationHandler extends BaseConfigurationHandler {
 

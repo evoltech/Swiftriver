@@ -3,7 +3,7 @@ namespace Swiftriver\Core\EventDistribution;
 /**
  * Class that handles the distribution of system events to configured
  * event handlers.
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class EventDistributor 
 {

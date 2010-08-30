@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\ObjectModel;
 /**
  * Object to hold text in a given language
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class LanguageSpecificText
 {

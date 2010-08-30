@@ -10,7 +10,7 @@ namespace Swiftriver\Core\ObjectModel;
  * can the content of the tweet parsed to remove
  * common additions – such as r/t. 
  *
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class DuplicationIdentificationField
 {

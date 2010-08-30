@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 /**
  * Configuration access to the switchable IDataContext type
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class DALConfigurationHandler extends BaseConfigurationHandler
 {

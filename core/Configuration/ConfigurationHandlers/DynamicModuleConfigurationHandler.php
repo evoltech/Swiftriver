@@ -5,7 +5,7 @@ namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
  * Configuration handler that manages the dynamic storage of module
  * specific configuration details by damically creating configuration 
  * property groups.
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class DynamicModuleConfigurationHandler extends BaseConfigurationHandler {
 

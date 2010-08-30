@@ -3,7 +3,7 @@ namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 /**
  * Configuration handler to hold the configuration relating to which Pre 
  * Processors are to be used by the system
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class PreProcessingStepsConfigurationHandler extends BaseConfigurationHandler
 {

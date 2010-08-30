@@ -4,7 +4,7 @@ namespace Swiftriver\Core\ObjectModel;
  * Class to hold a collection of DuplicationIdentificationField
  * objects.
  * 
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class DuplicationIdentificationFieldCollection
 {

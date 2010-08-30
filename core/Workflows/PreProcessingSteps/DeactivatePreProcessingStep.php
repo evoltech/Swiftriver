@@ -1,7 +1,7 @@
 <?php
 namespace Swiftriver\Core\Workflows\PreProcessingSteps;
 /**
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class DeactivatePreProcessingStep extends PreProcessingStepsBase
 {

@@ -4,7 +4,7 @@ namespace Swiftriver\Core\ObjectModel;
  * Class to hold Global Positioning data associated
  * with a content object
  *
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class GisData
 {

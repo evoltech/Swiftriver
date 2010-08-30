@@ -3,7 +3,7 @@ namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 
 /**
  * The configuration handler for all the core configuration
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class CoreConfigurationHandler extends BaseConfigurationHandler
 {

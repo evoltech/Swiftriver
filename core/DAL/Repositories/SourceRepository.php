@@ -2,7 +2,7 @@
 namespace Swiftriver\Core\DAL\Repositories;
 /**
  * The Repository for the Sources
- * @author mg@swiftly.org
+ * @author mg[at]swiftly[dot]org
  */
 class SourceRepository
 {
