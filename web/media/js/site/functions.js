@@ -1,5 +1,5 @@
 /* ========= VARIABLES ========= */
-var debug = false; //Set this to true to prevent content from loading
+var debug = true; //Set this to true to prevent content from loading
 
 
 
@@ -136,11 +136,11 @@ function SubmitForm(id) {
                  '"subType":"'+subType+'",'+
                  '"name":"'+name+'",'+
                  '"updatePeriod":'+updatePeriod+','+
-                 '"parameters":';
+                 '"parameters":{';
              $(formId + " input[type=text]").not("[name=name]").each(function(){
-                 json += '{"'+this.name+'":"'+$(this).val()+'"},';
+                 json += '"'+this.name+'":"'+$(this).val()+'",';
              })
-             json = json.substring(0, json.length - 1) + '}';
+             json = json.substring(0, json.length - 1) + '}}';
              $(formId + " input[type=text]").each(function(){
                 this.value = "";
              });
