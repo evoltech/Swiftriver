@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\DAL\Repositories;
-class SourceRepository {
+/**
+ * The Repository for the Sources
+ * @author mg[at]swiftly[dot]org
+ */
+class SourceRepository
+{
     /**
      * The fully qualified type of the ISourceDataContext implemting
      * data context for this repository

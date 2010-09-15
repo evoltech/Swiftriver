@@ -1,6 +1,10 @@
 <?php
 namespace Swiftriver\Core\Workflows\ContentServices;
-class GetContent extends ContentServicesBase {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class GetContent extends ContentServicesBase
+{
     /**
      * Given a JSON string describing the pagination and state
      * required, this method will return a set of content items
@@ -8,7 +12,8 @@ class GetContent extends ContentServicesBase {
      * @param string $json
      * @return string
      */
-    public function RunWorkflow($json, $key) {
+    public function RunWorkflow($json, $key)
+    {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
@@ -17,7 +22,8 @@ class GetContent extends ContentServicesBase {
 
         $parameters = parent::ParseJSONToLooseParameters($json);
 
-        if(!isset($parameters)) {
+        if(!isset($parameters))
+        {
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [ERROR: Method ParseJSONToPagedContentByStateParameters returned null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [ERROR: Getting paged content by state]", \PEAR_LOG_INFO);
             parent::FormatErrorMessage("There was an error in the JSON supplied, please consult the API documentation and try again.");
@@ -33,18 +39,10 @@ class GetContent extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [START: Querying repository]", \PEAR_LOG_DEBUG);
 
-        $results = $repository->GetContentList(
-                $parameters["state"],
-                $parameters["minVeracity"],
-                $parameters["maxVeracity"],
-                $parameters["type"],
-                $parameters["subType"],
-                $parameters["source"],
-                $parameters["pageSize"],
-                $parameters["pageStart"],
-                $parameters["orderBy"]);
+        $results = $repository->GetContentList($parameters);
 
-        if(!isset($results) || !is_array($results) || !isset($results["totalCount"]) || !isset($results["contentItems"]) || !is_numeric($results["totalCount"]) || $results["totalCount"] < 1) {
+        if(!isset($results) || !is_array($results) || !isset($results["totalCount"]) || !isset($results["contentItems"]) || !is_numeric($results["totalCount"]) || $results["totalCount"] < 1)
+        {
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [No results were returned from the repository]", \PEAR_LOG_DEBUG);
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [END: Querying repository with supplied parameters]", \PEAR_LOG_DEBUG);
             $logger->log("Core::ServiceAPI::ContentServices::GetContent::RunWorkflow [Method finished]", \PEAR_LOG_INFO);

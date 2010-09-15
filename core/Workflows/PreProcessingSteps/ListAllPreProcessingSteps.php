@@ -1,9 +1,14 @@
 <?php
 namespace Swiftriver\Core\Workflows\PreProcessingSteps;
-class ListAllPreProcessingSteps extends PreProcessingStepsBase {
-
-    public function RunWorkflow($key) {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class ListAllPreProcessingSteps extends PreProcessingStepsBase
+{
+    public function RunWorkflow($key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::PreProcessingSteps::ListAllPreProcessingSteps::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::PreProcessingSteps::ListAllPreProcessingSteps::RunWorkflow [START: Constructing the PreProcessor]", \PEAR_LOG_DEBUG);
@@ -24,15 +29,11 @@ class ListAllPreProcessingSteps extends PreProcessingStepsBase {
         $config = \Swiftriver\Core\Setup::PreProcessingStepsConfiguration();
         $activeSteps = $config->PreProcessingSteps;
 
-        if($activeSteps != null && is_array($activeSteps) && $steps != null && is_array($steps)){
-            foreach($activeSteps as $activeStep) {
-                foreach($steps as $step) {
-                    if($step->Name() == $activeStep->name) {
+        if($activeSteps != null && is_array($activeSteps) && $steps != null && is_array($steps))
+            foreach($activeSteps as $activeStep) 
+                foreach($steps as $step) 
+                    if($step->Name() == $activeStep->name) 
                         $step->active = true;
-                    }
-                }
-            }
-        }
 
         $logger->log("Core::Workflows::PreProcessingSteps::ListAllPreProcessingSteps::RunWorkflow [END: Finding out which are active]", \PEAR_LOG_DEBUG);
 

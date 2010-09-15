@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\DAL\Repositories;
-class ChannelRepository {
+/**
+ * The Repository for the Channels
+ * @author mg[at]swiftly[dot]org
+ */
+class ChannelRepository
+{
     /**
      * The fully qualified type of the IChannelDataContext implemting
      * data context for this repository
@@ -15,10 +20,13 @@ class ChannelRepository {
      *
      * @param string $dataContext
      */
-    public function __construct($dataContext = null) {
+    public function __construct($dataContext = null)
+    {
         if(!isset($dataContext))
             $dataContext = \Swiftriver\Core\Setup::DALConfiguration()->DataContextType;
+
         $classType = (string) $dataContext;
+
         $this->dataContext = new $classType();
     }
 
@@ -29,25 +37,36 @@ class ChannelRepository {
      * @param string[] $ids
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
-    public function GetChannelsById($ids) {
+    public function GetChannelsById($ids)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::GetChannelsById [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = $this->dataContext;
-        $Channels = $dc::GetChannelsById($ids);
+        
+        $channels = $dc::GetChannelsById($ids);
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::GetChannelsById [Method Finished]", \PEAR_LOG_DEBUG);
-        return $Channels;
+        
+        return $channels;
     }
 
     /**
      * Adds a list of new Channels to the data store
      *
-     * @param \Swiftriver\Core\ObjectModel\Channel[] $Channels
+     * @param \Swiftriver\Core\ObjectModel\Channel[] $channels
      */
-    public function SaveChannels($Channels){
+    public function SaveChannels($channels)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::SaveChannels [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = $this->dataContext;
-        $dc::SaveChannels($Channels);
+        
+        $dc::SaveChannels($channels);
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::SaveChannels [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
@@ -57,11 +76,16 @@ class ChannelRepository {
      *
      * @param string[] $ids
      */
-    public function RemoveChannels($ids){
+    public function RemoveChannels($ids)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::RemoveChannels [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = $this->dataContext;
+
         $dc::RemoveChannels($ids);
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::RemoveChannels [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
@@ -72,25 +96,37 @@ class ChannelRepository {
      * @param DateTime $time
      * @return \Swiftriver\Core\ObjectModel\Channel
      */
-    public function SelectNextDueChannel($time){
+    public function SelectNextDueChannel($time)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::SelectNextDueChannel [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = $this->dataContext;
-        $Channel = $dc::SelectNextDueChannel($time);
+        
+        $channel = $dc::SelectNextDueChannel($time);
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::SelectNextDueChannel [Method Finished]", \PEAR_LOG_DEBUG);
-        return $Channel;
+        
+        return $channel;
     }
 
     /**
      * Lists all the current Channel in the core
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
-    public function ListAllChannels(){
+    public function ListAllChannels()
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::ListAllChannels [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = $this->dataContext;
+
         $channels = $dc::ListAllChannels();
+
         $logger->log("Core::DAL::Repositories::ChannelRepository::ListAllChannels [Method Finished]", \PEAR_LOG_DEBUG);
+
         return $channels;
     }
 }

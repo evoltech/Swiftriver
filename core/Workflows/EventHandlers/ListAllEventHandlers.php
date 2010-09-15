@@ -1,8 +1,14 @@
 <?php
 namespace Swiftriver\Core\Workflows\EventHandlers;
-class ListAllEventHandlers extends EventHandlersBase {
-    public function RunWorkflow($key) {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class ListAllEventHandlers extends EventHandlersBase
+{
+    public function RunWorkflow($key)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::EventHandlers::ListAllEventHandlers::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::Workflows::EventHandlers::ListAllEventHandlers::RunWorkflow [START: Constructing the Event Distributor]", \PEAR_LOG_DEBUG);
@@ -23,15 +29,11 @@ class ListAllEventHandlers extends EventHandlersBase {
 
         $activeHandlers = $config->EventHandlers;
 
-        if($activeHandlers != null && is_array($activeHandlers) && $handlers != null && is_array($handlers)){
-            foreach($activeHandlers as $activeHandler) {
-                foreach($handlers as $handler) {
-                    if($handler->Name() == $activeHandler->name) {
+        if($activeHandlers != null && is_array($activeHandlers) && $handlers != null && is_array($handlers))
+            foreach($activeHandlers as $activeHandler)
+                foreach($handlers as $handler)
+                    if($handler->Name() == $activeHandler->name)
                         $handler->active = true;
-                    }
-                }
-            }
-        }
 
         $logger->log("Core::Workflows::EventHandlers::ListAllEventHandlers::RunWorkflow [END: Finding out which event handlers are active]", \PEAR_LOG_DEBUG);
 

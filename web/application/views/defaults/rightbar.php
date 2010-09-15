@@ -1,4 +1,3 @@
 <?php ?>
-<div id="channel-tree-container"></div>
+<h2>Filters:</h2>
 <div id="nav-container"></div>
-<div id="veracity-slider"></div>

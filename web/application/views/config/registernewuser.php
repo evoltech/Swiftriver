@@ -1,4 +1,5 @@
 <div id="register-new-user">
+    <div class="icon"></div>
     <div class="form">
         <div class="alert" style="display:none;">
             <ul></ul>
@@ -20,7 +21,8 @@
             </select>
         </div>
         <div class="form-row">
-            <input type="submit" value="Add this user" onclick="ValidateAndTryRegister()" />
+            <button type="submit" onclick="ValidateAndTryRegister()" class="submit"><span>Add user</span></button>
+            <button type="submit" onclick="Shadowbox.close()" class="cancel"><span>Cancel</span></button>
         </div>
     </div>
 </div>

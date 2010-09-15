@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class ConfigurationElement {
+/**
+ * ConfigurationElement object
+ * @author mg[at]swiftly[dot]org
+ */
+class ConfigurationElement
+{
     /**
      * The name of this element
      * @var string
@@ -33,7 +38,8 @@ class ConfigurationElement {
      * @param string $description The text description of the element
      * @param object $value
      */
-    public function __construct($name, $type, $description, $value = null) {
+    public function __construct($name, $type, $description, $value = null)
+    {
         $this->name = $name;
         $this->type = $type;
         $this->description = $description;

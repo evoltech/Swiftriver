@@ -1,43 +1,81 @@
-<?php include_once("header.php"); ?>
 <?php
-    
-    $message = 
-             "Welcome to the SwiftRiver installer for Version 0.2 Batuque. If you've ".
-             "received this message then pat yourself on the back. You are not only ".
-             "one of the first people in the world to begin using this version of Swift ".
-             "but you have also correctly uploaded the package to your server. ".
-             "During the next few minutes we'll run through some ".
-             "basic tests and setup steps in an attempt to get you up and running.";
+//Turn off the error display
+ini_set("display_errors", 0);
+
+//get this directory
+$thisDirectory = dirname(__FILE__);
+
+//Include the IInstallStep interface
+include_once($thisDirectory."/steps/IInstallStep.php");
+
+//Include the introduction step
+include_once($thisDirectory."/Introduction.php");
+
+//Loop through the steps directory including all the steps
+foreach(new DirectoryIterator($thisDirectory . "/steps") as $fileInfo)
+    if(strpos($fileInfo->getFilename(), ".php") !== false)
+        include_once($fileInfo->getPathname());
+
+//steps array with the steps to run in it
+$steps = array(
+    new Introduction(),
+    new Environment(),
+    new ReadWriteAccess(),
+    new DBSetup(),
+    new UserCreation(),
+    new FileRewriting()
+);
+
+//get the current step postion
+$position = (int) ($_GET["position"] != null ? $_GET["position"] : "0");
+
+//get the current step
+$step = $steps[$position];
+
+//Run all the checks and see if they suceed
+$sucess = $step->RunChecks($_POST);
 ?>
-<div id="index">
-    <script language="javascript" type="text/javascript">
-        $(document).ready(function(){
-            var time = GetTime("<?php echo($message); ?>");
-            DoWriteMessage(
-                "div#baloon div.mid div.message",
-                "<?php echo($message); ?>",
-                time
-            );
-            setTimeout("$('div.action').show()", (time * 1000) + 500)
-        });
-    </script>
-    <img id="logo-callout" src="assets/images/logo-callout.png" />
-    <div id="baloon">
-        <div class="top">&nbsp;</div>
-        <div class="mid">
-            <div id="messages">
-                <div class="skip"><a href="#" onclick="$('div.action').show(); return false;">skip</a></div>
-                <div class="message"></div>
-                <div class="action" style="display:none;">
-                    <p>Are you ready? Then...</p>
-                    <form action="step-php-checks.php" method="GET">
-                        <input type="submit" value="Let's Go!" class="button" />
-                    </form>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>SwiftRiver Installer</title>
+        <link rel="stylesheet" media="screen" href="assets/styles/master.css" />
+    </head>
+    <body>
+        <div id="head">
+            <table id="steps">
+                <tr>
+                    <?php for($i = 0; $i < count($steps); $i++) : ?>
+                        <td class="<?php echo($position == $i ? 'selected' : ''); ?>">
+                            <a href="?position=<?php echo($i); ?>">
+                                <?php echo(($i+1) . ": " . $steps[$i]->GetName()); ?>
+                            </a>
+                        </td>
+                    <?php endfor; ?>
+                </tr>
+            </table>
+        </div>
+        <div id="page">
+            <img id="logo-callout" src="assets/images/logo-callout.png" />
+            <div id="baloon">
+                <div class="top">&nbsp;</div>
+                <div class="mid">
+                    <h2>Step: <?php echo($step->GetName()); ?></h2>
+                    <p class="description"><?php echo($step->GetDescription()); ?></p>
+                    <?php if($sucess === true) : ?>
+                        <img src="assets/images/sucess-large.png" />
+                    <?php elseif ($sucess === false) : ?>
+                        <img src="assets/images/fail-large.png" />
+                    <?php endif; ?>
+                    <?php echo($step->Render()); ?>
+                    <?php if($sucess) : ?>
+                        <a href="<?php echo(($position + 1 != count($steps)) ? "?position=".($position + 1) : "../index.php"); ?>">
+                            <img src="assets/images/button-nextstep.png" />
+                        </a>
+                    <?php endif; ?>
                 </div>
+                <div class="bottom">&nbsp;</div>
             </div>
         </div>
-        <div class="bottom">&nbsp;</div>
-    </div>
-
-</div>
-<?php include_once("footer.php"); ?>
+    </body>
+</html>

@@ -1,10 +1,25 @@
 <?php
 namespace Swiftriver\Core\EventDistribution;
-class EventDistributor {
+/**
+ * Class that handles the distribution of system events to configured
+ * event handlers.
+ * @author mg[at]swiftly[dot]org
+ */
+class EventDistributor 
+{
+    /**
+     * Array to hold all the configured Event Handlers
+     * @var IEventHandler[]
+     */
     private $eventHandlers;
     
-    public function __construct() {
+    /**
+     * The constructor for the EventDistributor class
+     */
+    public function __construct() 
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+        
         $logger->log("Core::EventDistribution::EventDistributor::__construct [Method invoked]", \PEAR_LOG_DEBUG);
         
         $logger->log("Core::EventDistribution::EventDistributor::__construct [START: Adding configured event handlers]", \PEAR_LOG_DEBUG);
@@ -17,18 +32,25 @@ class EventDistributor {
     }
 
     /**
-     *
+     * Function to Raise system events and distribute them to the configured 
+     * Event handlers.
+     * 
      * @param GenericEvent $event
      */
-    public function RaiseAndDistributeEvent($event) {
+    public function RaiseAndDistributeEvent($event) 
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+        
         $logger->log("Core::EventDistribution::EventDistributor [Method invoked]", \PEAR_LOG_DEBUG);
 
         $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+        
         $configuration = \Swiftriver\Core\Setup::Configuration();
 
-        if(isset($this->eventHandlers) && count($this->eventHandlers) > 0) {
-            foreach($this->eventHandlers as $eventHandler) {
+        if(isset($this->eventHandlers) && count($this->eventHandlers) > 0) 
+        {
+            foreach($this->eventHandlers as $eventHandler) 
+            {
                 //Get the class name from config
                 $className = $eventHandler->className;
 
@@ -44,14 +66,17 @@ class EventDistributor {
 
                 $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [START: Instanciating event handler: $className]", \PEAR_LOG_DEBUG);
 
-                try {
+                try 
+                {
                     //Instanciate the event handlerr
                     $handler = new $className();
                 }
-                catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$message]", \PEAR_LOG_ERR);
+                catch (\Exception $e) 
+                {
+                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$e]", \PEAR_LOG_ERR);
+                    
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Unable to run event distribution for event handler: $className]", \PEAR_LOG_ERR);
+                    
                     continue;
                 }
 
@@ -59,28 +84,28 @@ class EventDistributor {
 
                 $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [START: Run event distribution for $className]", \PEAR_LOG_DEBUG);
 
-                try {
+                try 
+                {
                     //Loop throught the events that this handler subscribes to
-                    foreach($handler->ReturnEventNamesToHandle() as $eventName) {
-                        //If we have a match
-                        if($eventName == $event->name) {
-                            //Run the handle event method
+                    foreach($handler->ReturnEventNamesToHandle() as $eventName) 
+                    {
+                        //If we have a match run the handle event method
+                        if($eventName == $event->name) 
                             $handler->HandleEvent($event, $configuration, $logger);
-                        }
                     }
                 }
-                catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$message]", \PEAR_LOG_ERR);
+                catch (\Exception $e)
+                {
+                    $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [$e]", \PEAR_LOG_ERR);
                     $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Unable to run event distribution for event handler: $className]", \PEAR_LOG_ERR);
                 }
 
                 $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [END: Run event distribution for $className]", \PEAR_LOG_DEBUG);
             }
-        } else {
-
+        } 
+        else
+        {
             $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [No event handlers found to run]", \PEAR_LOG_DEBUG);
-
         }
 
         $logger->log("Core::EventDistribution::EventDistributor::RaiseAndDistributeEvent [Method finished]", \PEAR_LOG_DEBUG);
@@ -91,37 +116,58 @@ class EventDistributor {
      * IEventHandler interface.
      * @return IEventHandler[]
      */
-    public function ListAllAvailableEventHandlers() {
+    public function ListAllAvailableEventHandlers()
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Method invoked]", \PEAR_LOG_DEBUG);
 
         $handlers = array();
 
         $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+
         $dirItterator = new \RecursiveDirectoryIterator($modulesDirectory);
+
         $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
-        foreach($iterator as $file) {
-            if($file->isFile()) {
-                $filePath = $file->getPathname();
-                if(strpos($filePath, "EventHandler.php")) {
-                    try {
-                        include_once($filePath);
-                        $typeString = "\\Swiftriver\\EventHandlers\\".$file->getFilename();
-                        $type = str_replace(".php", "", $typeString);
-                        $object = new $type();
-                        if($object instanceof IEventHandler) {
-                            $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Adding type $type]", \PEAR_LOG_DEBUG);
-                            $object->filePath = str_replace($modulesDirectory, "", $filePath);
-                            $object->type = $type;
-                            $handlers[] = $object;
-                        }
-                    }
-                    catch(\Exception $e) {
-                        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [error adding type $type]", \PEAR_LOG_DEBUG);
-                        $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [$e]", \PEAR_LOG_ERR);
-                        continue;
-                    }
+
+        foreach($iterator as $file)
+        {
+            if(!$file->isFile())
+                continue;
+
+            $filePath = $file->getPathname();
+            
+            if(!strpos($filePath, "EventHandler.php"))
+                continue;
+
+            try
+            {
+                include_once($filePath);
+
+                $typeString = "\\Swiftriver\\EventHandlers\\".$file->getFilename();
+
+                $type = str_replace(".php", "", $typeString);
+
+                $object = new $type();
+                
+                if($object instanceof IEventHandler)
+                {
+                    $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [Adding type $type]", \PEAR_LOG_DEBUG);
+
+                    $object->filePath = str_replace($modulesDirectory, "", $filePath);
+
+                    $object->type = $type;
+
+                    $handlers[] = $object;
                 }
+            }
+            catch(\Exception $e)
+            {
+                $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [error adding type $type]", \PEAR_LOG_DEBUG);
+
+                $logger->log("Core::EventDistribution::EventDistributor::ListAllAvailableEventHandlers [$e]", \PEAR_LOG_ERR);
+
+                continue;
             }
         }
 

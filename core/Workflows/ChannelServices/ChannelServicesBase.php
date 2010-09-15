@@ -1,7 +1,12 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
-class ChannelServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
-    public function ParseParsersToJSON($parsers) {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class ChannelServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
+{
+    public function ParseParsersToJSON($parsers)
+    {
         $return;
 
         $return->channelTypes  = array();
@@ -18,7 +23,8 @@ class ChannelServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
         return json_encode($return);
     }
 
-    public function ParseJSONToId($json){
+    public function ParseJSONToId($json)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToId [Method invoked]", \PEAR_LOG_DEBUG);
 
@@ -28,36 +34,31 @@ class ChannelServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
         $object = json_decode($json);
 
         //check to see if the object decoded
-        if(!$object || $object == null) {
-            $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToId [Failed to parse the JSON]", \PEAR_LOG_ERR);
+        if(!$object || $object == null) 
             throw new \InvalidArgumentException("The json passed to the method did not decode");
-        }
 
         //get the id from the object
         $id = $object->id;
 
         //Check that the ID is there
-        if(!$id || $id == null || !is_string($id)) {
-            $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToId [Failed to extract the ID from the JSON]", \PEAR_LOG_ERR);
+        if(!$id || $id == null || !is_string($id))
             throw new \InvalidArgumentException("The JSON did not contain a valid ID string");
-        }
 
         $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToId [END: Decoding JSON]", \PEAR_LOG_DEBUG);
 
         return $id;
     }
 
-    public function ParseChannelsToJSON($channels) {
+    public function ParseChannelsToJSON($channels)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseChannelsToJSON [Method invoked]", \PEAR_LOG_INFO);
 
         $json = '{"channels":[';
 
-        if(isset($channels) && is_array($channels) && count($channels) > 0) {
-            foreach($channels as $channel) {
+        if(isset($channels) && is_array($channels) && count($channels) > 0) 
+            foreach($channels as $channel) 
                 $json .= json_encode($channel).",";
-            }
-        }
 
         $json = rtrim($json, ",").']}';
 
@@ -66,16 +67,20 @@ class ChannelServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
         return $json;
     }
 
-    public function ParseJSONToChannel($json) {
+    public function ParseJSONToChannel($json)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToChannel [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Workflows::ChannelServices::ChannelServicesBase::ParseJSONToChannel [START: Creating new Channel]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Try and get a Channel from the factory
             $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannelFromJSON($json);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e)
+        {
             //If exception, get the mesasge
             $message = $e->getMessage();
 

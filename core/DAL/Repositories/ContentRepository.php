@@ -1,9 +1,14 @@
 <?php
 namespace Swiftriver\Core\DAL\Repositories;
+/**
+ * The Repository for the Content
+ * @author mg[at]swiftly[dot]org
+ */
 class ContentRepository {
     /**
      * The fully qualified type of the IContentDataContext implemting
      * data context for this repository
+     *
      * @var \Swiftriver\Core\DAL\DataContextInterfaces\IDataContext
      */
     private $dataContext;
@@ -15,10 +20,13 @@ class ContentRepository {
      *
      * @param string $dataContext
      */
-    public function __construct($dataContext = null) {
+    public function __construct($dataContext = null)
+    {
         if(!isset($dataContext))
             $dataContext = \Swiftriver\Core\Setup::DALConfiguration()->DataContextType;
+
         $classType = (string) $dataContext;
+
         $this->dataContext = new $classType();
     }
 
@@ -29,11 +37,16 @@ class ContentRepository {
      *
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
-    public function SaveContent($content) {
+    public function SaveContent($content)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ContentRepository::SaveContent [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = new $this->dataContext();
+
         $dc::SaveContent($content);
+
         $logger->log("Core::DAL::Repositories::ContentRepository::SaveContent [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
@@ -44,16 +57,24 @@ class ContentRepository {
      * @param string[] $ids
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function GetContent($ids) {
-        try {
+    public function GetContent($ids)
+    {
+        try
+        {
             $logger = \Swiftriver\Core\Setup::GetLogger();
+
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
+
             $dc = new $this->dataContext();
+
             $content = $dc::GetContent($ids);
+
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method finished]", \PEAR_LOG_DEBUG);
+
             return $content;
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             return array();
         }
     }
@@ -61,81 +82,46 @@ class ContentRepository {
     /**
      * Given an array of content items, this method removes them
      * from the data store.
+     *
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
-    public function DeleteContent($content) {
+    public function DeleteContent($content)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::DAL::Repositories::ContentRepository::DeleteContent [Method invoked]", \PEAR_LOG_DEBUG);
+
         $dc = new $this->dataContext();
+
         $dc::DeleteContent($content);
+
         $logger->log("Core::DAL::Repositories::ContentRepository::DeleteContent [Method finshed]", \PEAR_LOG_DEBUG);
     }
 
     /**
-     * Given a status, pagesize, page start index and possibly
-     * an order by calse, this method will return a page of content.
+     * Returns an array of Swiftriver\ObjectModel\Content items based on the
+     * supplied parameters.
      *
-     * @param int $state
-     * @param int $pagesize
-     * @param int $pagestart
-     * @param string $orderby
-     * @return array("totalCount" => int, "contentItems" => Content[])
+     * @param string[] $parameters
      */
-    public function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = new $this->dataContext();
-        $content = $dc::GetPagedContentByState($state, $pagesize, $pagestart, $orderby);
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method finished]", \PEAR_LOG_DEBUG);
-        return $content;
-    }
-
-    /**
-     * Given the correct parameters, this method will reatun a page of content
-     * in the correct state for whome the source of that content has a veracity
-     * score in between the $minVeracity and $maxVeracity supplied.
-     *
-     * @param int $state
-     * @param int $pagesize
-     * @param int $pagestart
-     * @param int $minVeracity 0 - 100
-     * @param int $maxVeracity 0 - 100
-     * @param string $orderby
-     * @return array("totalCount" => int, "contentItems" => Content[])
-     */
-    public function GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby = null) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByStateAndSourceVeracity [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = new $this->dataContext();
-        $content = $dc::GetPagedContentByStateAndSourceVeracity($state, $pagesize, $pagestart, $minVeracity, $maxVeracity, $orderby);
-        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByStateAndSourceVeracity [Method finished]", \PEAR_LOG_DEBUG);
-        return $content;
-    }
-
-    /**
-     *
-     * @param string $state - The state of the content
-     * @param int $minVeracity - The minimum veracity of the source
-     * @param int $maxVeracity - The maximum veracity of the source
-     * @param string $type - The type of the source
-     * @param string $subType - The subtype of the source
-     * @param string $source - the ID of the source
-     * @param int $pageSize - the number of results to show on the page
-     * @param int $pageStart - the 0 based page start index
-     * @param string $orderBy - the order by clause
-     */
-    public function GetContentList(
-            $state, $minVeracity, $maxVeracity, $type, $subType, $source,
-            $pageSize, $pageStart, $orderBy) {
-        try {
+    public function GetContentList($parameters)
+    {
+        try
+        {
             $logger = \Swiftriver\Core\Setup::GetLogger();
+
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
+
             $dc = new $this->dataContext();
-            $content = $dc::GetContentList($state, $minVeracity, $maxVeracity, $type, $subType, $source, $pageSize, $pageStart, $orderBy);
+
+            $content = $dc::GetContentList($parameters);
+
             $logger->log("Core::DAL::Repositories::ContentRepository::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
+
             return $content;
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             return array();
         }
     }

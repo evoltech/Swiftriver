@@ -1,25 +1,38 @@
 <?php
 namespace Swiftriver\Core\Workflows\SourceServices;
-class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
-    public function ParseParsersToJSON($parsers) {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
+{
+    public function ParseParsersToJSON($parsers)
+    {
         $return;
 
         $return->sourceTypes  = array();
 
-        foreach($parsers as $parser) {
+        foreach($parsers as $parser)
+        {
             $sourceType;
+
             $sourceType->type = $parser->ReturnType();
+
             $sourceType->subTypes = $parser->ListSubTypes();
+
             $sourceType->configurationProperties = $parser->ReturnRequiredParameters();
+
             $return->sourceTypes[] = $sourceType;
+
             unset($sourceType);
         }
 
         return json_encode($return);
     }
 
-    public function ParseJSONToId($json){
+    public function ParseJSONToId($json)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToId [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToId [START: Decodeing JSON]", \PEAR_LOG_DEBUG);
@@ -28,36 +41,32 @@ class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
         $object = json_decode($json);
 
         //check to see if the object decoded
-        if(!$object || $object == null) {
-            $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToId [Failed to parse the JSON]", \PEAR_LOG_ERR);
+        if(!$object || $object == null)
             throw new \InvalidArgumentException("The json passed to the method did not decode");
-        }
 
         //get the id from the object
         $id = $object->id;
 
         //Check that the ID is there
-        if(!$id || $id == null || !is_string($id)) {
-            $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToId [Failed to extract the ID from the JSON]", \PEAR_LOG_ERR);
+        if(!$id || $id == null || !is_string($id)) 
             throw new \InvalidArgumentException("The JSON did not contain a valid ID string");
-        }
 
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToId [END: Decoding JSON]", \PEAR_LOG_DEBUG);
 
         return $id;
     }
 
-    public function ParseSourcesToJSON($sources) {
+    public function ParseSourcesToJSON($sources)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseSourcesToJSON [Method invoked]", \PEAR_LOG_INFO);
 
         $json = '{"sources":[';
 
-        if(isset($sources) && is_array($sources) && count($sources) > 0) {
-            foreach($sources as $channel) {
+        if(isset($sources) && is_array($sources) && count($sources) > 0) 
+            foreach($sources as $channel) 
                 $json .= json_encode($channel).",";
-            }
-        }
 
         $json = rtrim($json, ",").']}';
 
@@ -66,16 +75,21 @@ class SourceServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase{
         return $json;
     }
 
-    public function ParseJSONToSource($json) {
+    public function ParseJSONToSource($json)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
+
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToSource [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Workflows::SourceServices::SourceServicesBase::ParseJSONToSource [START: Creating new source]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Try and get a source from the factory
             $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e)
+        {
             //If exception, get the mesasge
             $message = $e->getMessage();
 

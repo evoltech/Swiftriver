@@ -1,21 +1,31 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
-class ChannelFactory {
-    public static function CreateChannelFromIdentifier($identifier) {
+/**
+ * Factory used to build Channel objects
+ * @author mg[at]swiftly[dot]org
+ */
+class ChannelFactory 
+{
+    /**
+     * Creates a new Channel obejct from an id string
+     * @param string $identifier
+     * @return \Swiftriver\Core\ObjectModel\Channel 
+     */
+    public static function CreateChannelFromIdentifier($identifier) 
+    {
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
         $channel->id = md5($identifier, true);
         return $channel;
     }
 
-    public static function CreateChannelFromJSON($json) {
+    public static function CreateChannelFromJSON($json) 
+    {
         //decode the json
         $object = json_decode($json);
 
         //If there is an error in the JSON
-        if(!$object || $object == null) {
-            //throw an exception
+        if(!$object || $object == null) 
             throw new \Exception("There was an error in the JSON passed in to the ChannelFactory.");
-        }
 
         //create a new Channel
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
@@ -32,17 +42,12 @@ class ChannelFactory {
         $channel->inprocess =        isset($object->inprocess) ? $object->inprocess : false;
         $channel->timesrun =         isset($object->timesrun) ? $object->timesrun : 0;
         $channel->deleted =          isset($object->deleted) ? $object->deleted : false;
-
-        if(isset($object->parameters)) {
-            $params = array();
-            foreach($object->parameters as $key => $value) {
-                $params[$key] = $value;
-            }
-            $channel->parameters = $params;
-        }
-        else {
-            $channel->parameters = array();
-        }
+        $channel->parameters =       array();
+        
+        //If te parameters collection is set move tem to the channel
+        if(isset($object->parameters))
+            foreach($object->parameters as $key => $value)
+                $channel->parameters[$key] = $value;
 
         //return the Channel
         return $channel;

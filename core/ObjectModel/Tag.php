@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class Tag {
+/**
+ * Tag object
+ * @author mg[at]swiftly[dot]org
+ */
+class Tag
+{
     /**
      * The type of the tag. 
      * @var string (who|what|where)
@@ -13,7 +18,8 @@ class Tag {
      */
     public $text;
 
-    public function __construct($text, $type = "General") {
+    public function __construct($text, $type = "General")
+    {
         $this->type = $type;
         $this->text = $text;
     }

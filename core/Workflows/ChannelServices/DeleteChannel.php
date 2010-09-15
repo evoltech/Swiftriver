@@ -1,13 +1,18 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelServices;
-class DeleteChannel extends ChannelServicesBase {
+/**
+ * @author mg[at]swiftly[dot]org
+ */
+class DeleteChannel extends ChannelServicesBase
+{
     /**
      * Removes a Channel from the DAL
      * 
      * @param string $json
      * @return string 
      */
-    public function RunWorkflow($json, $key) {
+    public function RunWorkflow($json, $key)
+    {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);
@@ -15,11 +20,13 @@ class DeleteChannel extends ChannelServicesBase {
         $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
         //try to parse the id from the JSON
-        try {
+        try
+        {
             //get the ID from the JSON
             $id = parent::ParseJSONToId($json);
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -32,11 +39,13 @@ class DeleteChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelRepository();
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -49,11 +58,13 @@ class DeleteChannel extends ChannelServicesBase {
 
         $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [START: Deleting the Channel]", \PEAR_LOG_DEBUG);
 
-        try {
+        try
+        {
             //Delete the Channel from the data store
             $repository->RemoveChannels(array($id));
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::Workflows::ChannelServices::DeleteChannel::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

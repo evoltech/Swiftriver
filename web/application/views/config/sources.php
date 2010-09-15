@@ -1,4 +1,5 @@
 <div id="sources">
+    <div class="icon"></div>
     <?php $counter = 1; ?>
     <?php foreach($channels->channelTypes as $channelType) : ?>
         <h3><a href="javascript:ShowChannel('<?php echo($counter); ?>')"><?php echo($channelType->type); ?></a></h3>
@@ -10,7 +11,7 @@
                         <li>
                             <?php echo($subType->type); ?>
                             <ul>
-                                <li id="node_<?php echo($counter); ?>_<?php echo($innerCounter); ?>">
+                                <li id="node_<?php echo($counter); ?>_<?php echo($innerCounter); ?>" class="add-source">
                                     Add new <?php echo($subType->type); ?>
                                     <ul>
                                         <form id="form_<?php echo($counter); ?>_<?php echo($innerCounter); ?>">
@@ -33,7 +34,7 @@
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
                                                 <div class="form-row">
-                                                    <input type="submit" value="Add to this channel" onclick="SubmitForm('<?php echo($counter); ?>_<?php echo($innerCounter); ?>')" />
+                                                    <button type="submit" onclick="SubmitForm('<?php echo($counter); ?>_<?php echo($innerCounter); ?>')" class="submit"><span>Add to this channel</span></button>
                                                 </div>
                                             </fieldset>
                                         </form>
@@ -43,10 +44,10 @@
                                 <?php if(count($subType->sources) > 0 ) : ?>
                                     <?php foreach($subType->sources as $source) : ?>
                                         <li id="<?php echo($source->id); ?>" class="source-actions">
-                                            <?php echo($source->name); ?>
-                                            <span><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')"><?php echo(Html::image("media/images/button-markas-inaccurate.png")); ?>delete?</a></span>
-                                            <span class="active" style="<?php echo($source->active ? "display:inline" : "display:none"); ?>" id="active_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><?php echo(Html::image("media/images/button-activate.png", array())); ?><a href="javascript:DeactivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">deactivate?</a></span>
-                                            <span class="active" style="<?php echo(!$source->active ? "display:inline" : "display:none"); ?>" id="inactive_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><?php echo(Html::image("media/images/button-deactivate.png", array())); ?><a href="javascript:ActivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">actiavte?</a></span>
+                                            <span>&nbsp;&rarr;<?php echo($source->name); ?>&nbsp;</span>
+                                            <span><a href="javascript:DeleteChannel('<?php echo($source->id); ?>')">delete?</a></span>
+                                            <span class="active" style="<?php echo($source->active ? "display:inline" : "display:none"); ?>" id="active_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><a href="javascript:DeactivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">deactivate?</a></span>
+                                            <span class="active" style="<?php echo(!$source->active ? "display:inline" : "display:none"); ?>" id="inactive_<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>"><a href="javascript:ActivateSource('<?php echo($counter."_".$innerCounter."_".$innerInnerCounter); ?>', '<?php echo($source->id); ?>')">actiavte?</a></span>
                                         </li>
                                     <?php $innerInnerCounter++; ?>
                                     <?php endforeach; ?>

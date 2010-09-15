@@ -1,6 +1,11 @@
 <?php
 namespace Swiftriver\Core\ObjectModel;
-class Channel {
+/**
+ * Channel object
+ * @author mg[at]swiftly[dot]org
+ */
+class Channel
+{
     /**
      * The genuine unique ID of this Channel
      * 
