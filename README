@@ -2,12 +2,15 @@
 SWIFTRIVER v0.5.0 - Cape Jazz
 =============================
  
-SwiftRiver is a FOSS platform for determining the veracity and accuracy of crowdsourced information related to an event or topic. SwiftRiver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  This download contains our flagship app utilizing the platform called The Sweeper.  You can find out more about Swift Web Services at - http://swiftly.org
+SwiftRiver is a FOSS platform offering open source intelligence products for monitoring streams of data. Use of the platform varies, for example, one use might be to use one of our apps for determining the accuracy of crowdsourced information related to an event or topic.  This download is not 'SwiftRiver' it contains a PHP core that accesses a number of SwiftRiver APIs.  The combination of some or all of these APIs working together is our platform.
+
+Swift is extremely modular with plug-ins and API services.  Different apps are built on this platform. This download contains our flagship app, called The Sweeper, designed to help users of tools like Ushahidi manage large amounts of realtime information. You can find out more about Swift Web Services at - http://swiftly.org
 
 	Find us on Github - http://github.com/ushahidi/Swiftriver
 	Find us on IRC - irc://irc.freenode.net#swiftriver
 
 NOTE: This is a public alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jg [at] swiftly.org with additional questions or feedback.
+
 
 =========================
 SERVER REQUIREMENTS
@@ -20,6 +23,7 @@ SERVER REQUIREMENTS
 	Supports IE7+, FireFox, Safari, Chrome
 	
 Further details on this release can be found at - http://swift.ushahidi.com/doc/
+
 
 ===============
 RELEASE NOTES
@@ -39,12 +43,27 @@ RELEASE NOTES
 	
 Further details on this release can be found at - http://swift.ushahidi.com/doc/	
 
+========================
+AVAILABLE APPLICATIONS 
+========================
+
+Other applications and products that were built on the SwiftRiver platform.
+
+	Sweeper
+	SwiftMail*
+	Triage*
+	Monitor*
+	
+* coming soon	
+
+
 ===============
 DOCUMENTATION
 ===============
 
 Documentation - http://swift.ushahidi.com/doc/ 
 Installation - http://swift.ushahidi.com/doc/doku.php?id=install
+
 
 ======================
 PROJECT CONTRIBUTORS
@@ -84,16 +103,17 @@ Contributing Organizations
 	Geo Commons
 	Meedan
 
+
 ============
 CHANGE LOG
 ============
-2010-08-30  Beta, Sweeper App
+2010-08-30	Beta, Sweeper App
 2010-08-14	User Roles
 2010-06-01	Simpletube.inc
 2010-05-31	Writable Cache
 2010-05-28	Installer, .htaccess
 2010-05-22	Redesigned default theme, logo
-2010-05-20  Adding Parsers, New Theme Engine, Ajax refresh 
+2010-05-20	Adding Parsers, New Theme Engine, Ajax refresh 
 2010-05-10	Complete Rebuild, Migration to Kohana 3.x.x
 2010-04-30	Merge New Core, New Installer
 2010-04-03	Theming Admin, Auto Logo Styles
@@ -108,7 +128,7 @@ CHANGE LOG
 2010-03-14	Design, CSS and UI
 2010-03-11	Debug Installer, README, Added Rumba Theme, Sweeper Panel Icons
 2010-03-10	User Roles & Tagging, UI fixes
-2010-03-01  Announced Release Schedule
+2010-03-01	Announced Release Schedule
 2010-02-28	Fixed Installer and .htaccess file
 2010-02-26	Veracity Slider and Analytics
 2010-02-25	Fixes to Scoring Algorithm
@@ -121,6 +141,7 @@ CHANGE LOG
 2010-02-11	Update
 2010-02-10	Early Build
 2010-01-27	Initial Push, README
+
 
 ==================
 RELEASE SCHEDULE
