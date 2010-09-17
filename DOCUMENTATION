@@ -10,7 +10,7 @@ OVERVIEW
 
 The application core is responsible for doing all the heavy lifting involved with the operation of the product. It is the place where content is collected, where sources are aggregated and where communication with all of the SwiftRiver Web Services is managed. This core has been designed to allow developers to easily incorporate local code or cloud services, allowing applications to be 'remixed' to suit specific workflows or tasks.
 
-Each app offers two places for users to extend the processing of the SwiftRiver core. In short, you can add value to the content that is collected by Swiftriver (Impulse Turbines) and you can act on user interactions with the core (Reaction Turbines).
+Each app offers two places for users to extend the processing of the SwiftRiver core. In short, you can add value to the content that is collected by SwiftRiver (Impulse Turbines) and you can act on user interactions with the core (Reactor Turbines).
 
 
 ============
