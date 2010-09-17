@@ -10,9 +10,8 @@ class ReadWriteAccess implements IInstallStep
 
     public function GetDescription() 
     {
-        return "In this step I have checked that I have the correct ".
-               "permissions to alter the folders and files that I need ".
-               "to during my installation.";
+        return "Let's make sure that you have the correct ".
+               "file permissions for the files needed. ";
     }
 
     public function RunChecks($postVar)
@@ -21,7 +20,7 @@ class ReadWriteAccess implements IInstallStep
         $htaccessCheck->result = is_writeable(dirname(__FILE__)."/../../web/.htaccess");
         $htaccessCheck->text = $htaccessCheck->result
                 ? "Your .htaccess file is there and writable."
-                : "I could not find or write to the .htaccess file in the [root]/web/ ".
+                : "We couldn't find or write to the .htaccess file in the [root]/web/ ".
                   "directory.";
         $this->checks[] = $htaccessCheck;
 
@@ -29,7 +28,7 @@ class ReadWriteAccess implements IInstallStep
         $bootstrapCheck->result = is_writeable(dirname(__FILE__)."/../../web/application/bootstrap.php");
         $bootstrapCheck->text = $bootstrapCheck->result
                 ? "Your bootstrap.php file is there and writable."
-                : "I could not find or write to the bootstrap.php file in the ".
+                : "We couldn't find or write to the bootstrap.php file in the ".
                   "[root]/web/application/ directory";
         $this->checks[] = $bootstrapCheck;
 
@@ -37,7 +36,7 @@ class ReadWriteAccess implements IInstallStep
         $indexCheck->result = is_writeable(dirname(__FILE__)."/../../index.php");
         $indexCheck->text = $indexCheck->result
                 ? "Your index.php file is there and writable."
-                : "I could not find or write to the index.php file in the ".
+                : "We couldn't find or write to the index.php file in the ".
                   "[root] directory";
         $this->checks[] = $indexCheck;
 
@@ -48,7 +47,7 @@ class ReadWriteAccess implements IInstallStep
                                     is_writable(dirname(__FILE__)."/../../web/application/cache") &&
                                     is_writable(dirname(__FILE__)."/../../web/modules");
         $directoriesCheck->text = $directoriesCheck->result
-                ? "All the directories I need to write to are ok!"
+                ? "All the directories have the correct permissions!"
                 : "Thats a shame, one of the following directories is not writable: <br/>".
                   "[root]/core/Configuration/ConfigurationFiles<br />".
                   "[root]/core/Modules<br />".

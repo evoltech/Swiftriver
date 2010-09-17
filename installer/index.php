@@ -38,7 +38,7 @@ $sucess = $step->RunChecks($_POST);
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>SwiftRiver Installer</title>
+        <title>SwiftRiver | Sweeper Application Installer</title>
         <link rel="stylesheet" media="screen" href="assets/styles/master.css" />
     </head>
     <body>

@@ -192,7 +192,7 @@ The above code sample will work within the SwiftRiver Impulse Turbines framework
 
 So, clearly we are not adding much value to the content that is passed into the Process method but, we are doing something and this simple example gives you a good introduction it what is possible with the Impulse Turbine framework.
 
-In the above example, on lines 03. to 05. we are looping through all the content items and adding a new Tag to each ones collection of tags. The net result of running a Swiftriver instance with this kind of Impulse Turbine would be that each and every content item shown in the user interface would have a tag with the text "Tagged by my first Impulse Turbine".
+In the above example, on lines 03. to 05. we are looping through all the content items and adding a new Tag to each ones collection of tags. The net result of running a SwiftRiver instance with this kind of Impulse Turbine would be that each and every content item shown in the user interface would have a tag with the text "Tagged by my first Impulse Turbine".
 
 Using this as a template, you can perform any kind of action you can think of on each content item. Inside this Process function, you have access to all the properties of the Swiftriver\ObjectModel\Content object.
 
