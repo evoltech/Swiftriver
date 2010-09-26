@@ -76,7 +76,7 @@ class Channel
      *
      * @var time
      */
-    public $lastSucess;
+    public $lastSuccess;
 
     /**
      * A boolean indicating if the Channel is

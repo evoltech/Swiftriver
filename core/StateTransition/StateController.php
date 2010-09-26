@@ -78,7 +78,7 @@ class StateController
      */
     public static function IsValidInacurateReason($reason)
     {
-        return ($reason == "falsehood" || $reason == "inaccuracy" || $reason != "biased");
+        return ($reason == "falsehood" || $reason == "inaccuracy" || $reason == "biased");
     }
 
 }

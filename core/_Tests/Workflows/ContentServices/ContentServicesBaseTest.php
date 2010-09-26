@@ -102,21 +102,21 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
    }
 
    /**
-    * @expectedException InvalidArgumentException
+    * @expectedException \InvalidArgumentException
     */
    public function testParseJSONToInacurateReasonWithBadJSON() {
         $this->object->ParseJSONToInacurateReason("some bad json");
    }
 
    /**
-    * @expectedException InvalidArgumentException
+    * @expectedException \InvalidArgumentException
     */
    public function testParseJSONToInacurateReasonWithMissingReason() {
        $this->object->ParseJSONToInacurateReason('{"good":"json","this":"is"}');
    }
 
    /**
-    * @expectedException InvalidArgumentException
+    * @expectedException \InvalidArgumentException
     */
    public function testParseJSONToInacurateReasonWithBadReason() {
        $this->object->ParseJSONToInacurateReason('{"reason":"youSmell"}');

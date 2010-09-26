@@ -35,7 +35,7 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $dif1 = new ObjectModel\DuplicationIdentificationField("unique_tweet_id", "d87f8d7fdsg7dfgdfgfd89g7as");
         $dif2 = new ObjectModel\DuplicationIdentificationField("tweet_text", "jdhjsdfy jhfjdsf ksjhf kdjf ksdjfhsd ");
         $c1->difs = array(new ObjectModel\DuplicationIdentificationFieldCollection("collection1", array($dif1, $dif2)));
-        $s = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromID("thisisatestidforatestsource");
+        $s = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier("thisisatestidforatestsource");
         $s->score = 10;
         $c1->source = $s;
         Modules\DataContext\MySql_V1\DataContext::SaveContent(array($c1));
@@ -88,7 +88,7 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(true, isset($sId));
 
         $state = StateTransition\StateController::$defaultState;
-        $array = Modules\DataContext\MySql_V1\DataContext::GetPagedContentByState($state, 10, 0);
+        $array = Modules\DataContext\MySql_V1\DataContext::GetContentList(array("state" => $state, "pagesize" => 10, "pagestart" => 0));
         $this->assertEquals(true, is_array($array));
         $totalCout = $array["totalCount"];
         $this->assertEquals(true, $totalCout > 0);

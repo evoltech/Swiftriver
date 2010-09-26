@@ -36,7 +36,7 @@ class Setup {
                     updateperiod INT NOT NULL ,
                     nextrun DATETIME NOT NULL,
                     lastrun DATETIME NULL ,
-                    lastsucess DATETIME NULL ,
+                    lastSuccess DATETIME NULL ,
                     timesrun INT NOT NULL,
                     active TINYINT NOT NULL
                     ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ";

@@ -12,7 +12,7 @@ class ServiceInterfaceTest extends \PHPUnit_Framework_TestCase {
         $config = \Swiftriver\Core\Setup::COnfiguration();
         $json = $service->InterafceWithService($uri, $text, $config);
         $this->assertEquals(
-                '["crack", "commando", "unit", "prison", "court", "crime", "commit", "maximum", "security", "stockade", "Los", "Angeles", "underground", "Today", "government", "soldiers", "fortune", "problem", "one", "Team"]',
+                '["crack", "commando", "unit", "prison", "court", "crime", "commit", "maximum", "security", "stockade", "Los", "Angeles", "underground", "Today", "government", "soldier", "fortune", "problem", "A-Team"]',
                 $json
         );
     }

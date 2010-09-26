@@ -58,7 +58,7 @@ class TwitterParser implements IParser {
      * Given a set of parameters, this method should
      * fetch content from a channel and parse each
      * content into the Swiftriver object model :
-     * Content Item. The $lastsucess datetime is passed
+     * Content Item. The $lastSuccess datetime is passed
      * to the function to ensure that content that has
      * already been parsed is not duplicated.
      *
@@ -158,11 +158,11 @@ class TwitterParser implements IParser {
         foreach($tweets as $tweet) {
             //Extract the date of the content
             $contentdate = strtotime($tweet->get_date('c'));
-            if(isset($channel->lastSucess) && is_numeric($channel->lastSucess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $channel->lastSucess) {
+            if(isset($channel->lastSuccess) && is_numeric($channel->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $channel->lastSuccess) {
                     $textContentDate = date("c", $contentdate);
-                    $textLastSucess = date("c", $channel->lastSucess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
+                    $textlastSuccess = date("c", $channel->lastSuccess);
+                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
@@ -255,11 +255,11 @@ class TwitterParser implements IParser {
         foreach($tweets as $tweet) {
             //Extract the date of the content
             $contentdate = strtotime($tweet->get_date());
-            if(isset($source->lastSucess) && is_numeric($source->lastSucess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $source->lastSucess) {
+            if(isset($source->lastSuccess) && is_numeric($source->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $source->lastSuccess) {
                     $textContentDate = date("c", $contentdate);
-                    $textLastSucess = date("c", $source->lastSucess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
+                    $textlastSuccess = date("c", $source->lastSuccess);
+                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
@@ -311,11 +311,11 @@ class TwitterParser implements IParser {
         {
             //Extract the date of the content
             $contentdate = strtotime($tweet->{'created_at'});
-            if(isset($source->lastSucess) && is_numeric($source->lastSucess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $source->lastSucess) {
+            if(isset($source->lastSuccess) && is_numeric($source->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $source->lastSuccess) {
                     $textContentDate = date("c", $contentdate);
-                    $textLastSucess = date("c", $source->lastSucess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
+                    $textlastSuccess = date("c", $source->lastSuccess);
+                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
