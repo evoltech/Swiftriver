@@ -1,5 +1,8 @@
 <?php
 namespace Swiftriver\Core\Modules\SiSPS\Parsers;
+/**
+ * @author ultimateprogramer@gmail.com
+ */
 class IMAPParser implements IParser {
     /**
      * Gets IMAP content
@@ -14,7 +17,12 @@ class IMAPParser implements IParser {
     private function GetIMAPContent($imapHost, $imapUser, $imapPassword, $channel) {
         $imapResource = imap_open("{".$imapHost."}INBOX", $imapUser, $imapPassword);
         //Open up unseen messages
-        $imapEmails = imap_search($imapResource, strtoupper($channel->subType));
+
+        $search = ($channel->lastSuccess == null)
+            ? "UNSEEN"
+            : "UNSEEN SINCE " . \date("Y-m-d", $channel->lastSuccess);
+
+        $imapEmails = imap_search($imapResource, $search);
 
         $contentItems = array();
 
@@ -25,7 +33,12 @@ class IMAPParser implements IParser {
             foreach($imapEmails as $Email) {
                 //Loop through each email and return the content
                 $email_overview = imap_fetch_overview($imapResource, $Email, 0);
-                $email_message = imap_fetchbody($imapResource, $Email, 2);
+
+                if(strtotime(reset($email_overview)->date) < $channel->lastSuccess)
+                    continue;
+
+                $email_header_info = imap_header($imapResource, $Email);
+                $email_message = imap_fetchbody($imapResource, $Email, 1);
 
                 $source_name = \reset($email_overview)->from;
                 $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
@@ -43,70 +56,75 @@ class IMAPParser implements IParser {
                         array($email_message)); //the message
 
                 $item->link = null;
-                $item->date = $email_overview[0]->date;
+                $item->date = $email_header_info->udate;
 
                 $contentItems[] = $item;
             }
-
-            imap_close($imapResource);
-
-            return $contentItems;
         }
 
         imap_close($imapResource);
-        
-        return null;
+
+        return $contentItems;
     }
 
     /**
      * Implementation of IParser::GetAndParse
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     * @param datetime $lassucess
      */
     public function GetAndParse($channel) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Extract the IMAP parameters
 
-        $imapHostName = $channel->parameters["IMAPHostName"];
-        $imapUserName = $channel->parameters["IMAPUserName"];
-        $imapPassword = $channel->parameters["IMAPPassword"];
+        if(\array_key_exists("Host", $channel->parameters))
+            $imapHostName = $channel->parameters["Host"];
+        elseif ($channel->subType == "Gmail")
+            $imapHostName = "imap.gmail.com:993/imap/ssl/novalidate-cert";
+        else
+        {
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [the parameter 'IMAPHostName' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+            return null;
+        }
+
+        $imapUserName = $channel->parameters["UserName"];
+        $imapPassword = $channel->parameters["Password"];
 
         if(!isset($imapHostName) || ($imapHostName == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [the parameter 'IMAPHostName' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [the parameter 'IMAPHostName' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
 
         if(!isset($imapUserName) || ($imapUserName == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [the parameter 'IMAPUserName' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [the parameter 'IMAPUserName' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
 
         if(!isset($imapPassword) || ($imapPassword == "")) {
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [the parameter 'IMAPPassword' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [the parameter 'IMAPPassword' was not supplied. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }
 
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Create the Content array
         $contentItems = array();
 
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [START: Parsing IMAP items]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [START: Parsing IMAP items]", \PEAR_LOG_DEBUG);
 
         //Get information regarding the source
 
         $contentItems = $this->GetIMAPContent($imapHostName, $imapUserName, $imapPassword, $channel);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [END: Parsing IMAP items]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [END: Parsing IMAP items]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::IMAPParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::EmailParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
 
         //return the content array
         return $contentItems;
@@ -120,11 +138,8 @@ class IMAPParser implements IParser {
      */
     public function ListSubTypes() {
         return array(
-            "Unseen",
-            "Seen",
-            "Recent",
-            "Answered",
-            "All",
+            "Gmail",
+            "Any Other Mail Account"
         );
     }
 
@@ -149,27 +164,29 @@ class IMAPParser implements IParser {
      * @return array()
      */
     public function ReturnRequiredParameters(){
-        $return = array();
-        foreach($this->ListSubTypes() as $subType){
-            $return[$subType] = array(
+        return array (
+            "Gmail" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
-                    "IMAPHostName",
-                    "string",
-                    "Host URL (you may need to look this up, for example, GMail's URL is: imap.gmail.com:993/imap/ssl/novalidate-cert - not so intuitive, right)"
-                ),
+                        "UserName",
+                        "string",
+                        "Your Gmail user name (including the @gmail bit)"),
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
-                    "IMAPUserName",
-                    "string",
-                    "IMAP login user name"
-                ),
+                        "Password",
+                        "string",
+                        "The password you use to log into this account")),
+            "Any Other Mail Account" => array (
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
-                    "IMAPPassword",
+                    "Host",
                     "string",
-                    "IMAP login password"
-                )
-            );
-        }
-        return $return;
+                    "Host URL (you may need to look this up, for example, GMail's URL is: imap.gmail.com:993/imap/ssl/novalidate-cert - not so intuitive, right)"),
+                new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                    "UserName",
+                    "string",
+                    "IMAP login user name"),
+                new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                    "Password",
+                    "string",
+                    "IMAP login password")));
     }
 }
 ?>
