@@ -60,7 +60,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnAllAvailableParsers() {
         $parsers = Modules\SiSPS\ParserFactory::ReturnAllAvailableParsers();
-        $this->assertEquals(2, count($parsers));
+        $this->assertEquals(3, count($parsers));
         $RSSTypes = $parsers[0]->ListSubTypes();
         $this->assertEquals("Blogs", $RSSTypes[0]);
     }
