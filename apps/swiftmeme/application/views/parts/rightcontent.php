@@ -1,0 +1,2 @@
+Content for right panel
+ 

@@ -1,0 +1,2 @@
+Content for left panel
+ 
