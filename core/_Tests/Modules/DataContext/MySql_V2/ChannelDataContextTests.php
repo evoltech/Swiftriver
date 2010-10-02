@@ -269,5 +269,34 @@ class ChannelDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(101, $channels[1]->nextrun);
     }
+
+    /*
+     * RemoveChannels Tests
+     */
+
+    public function testRemoveChannelsWithOneChannel()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId', '', '', 1, 0, 1, '{\"id\":\"testId\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $pdo = null;
+
+        $channels = Modules\DataContext\MySql_V2\DataContext::GetChannelsById(array("testId"));
+
+        $this->assertEquals(true, is_array($channels));
+
+        $this->assertEquals(1, count($channels));
+
+        $this->assertEquals("testId", $channels[0]->id);
+
+        Modules\DataContext\MySql_V2\DataContext::RemoveChannels(array("testId"));
+
+        $channels = Modules\DataContext\MySql_V2\DataContext::GetChannelsById(array("testId"));
+
+        $this->assertEquals(true, is_array($channels));
+
+        $this->assertEquals(0, count($channels));
+    }
 }
 ?>

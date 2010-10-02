@@ -235,9 +235,58 @@ class DataContext implements
      *
      * @param string[] $ids
      */
-    public static function RemoveChannels($id)
+    public static function RemoveChannels($ids)
     {
-        
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        if(!\is_array($ids) || count($ids) < 1)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [No ids supplied]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [Method finished]", \PEAR_LOG_DEBUG);
+
+            return;
+        }
+
+        $sql = "CALL SC_DeleteChannel ( :id )";
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [START: Connecting to db via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Connecting to db via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [START: Preparing PDO statment]", \PEAR_LOG_DEBUG);
+
+            $statement = $db->prepare($sql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Preparing PDO statment]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [START: Looping through ids]", \PEAR_LOG_DEBUG);
+
+            foreach($ids as $id)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [START: Executing PDO statement for channel]", \PEAR_LOG_DEBUG);
+
+                $statement->execute(array("id" => $id));
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Executing PDO statement for channel]", \PEAR_LOG_DEBUG);
+            }
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Looping through ids]", \PEAR_LOG_DEBUG);
+        }
+        catch(\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [An exception was thrown]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
