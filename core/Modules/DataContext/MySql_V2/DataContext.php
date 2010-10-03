@@ -218,6 +218,8 @@ class DataContext implements
             }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveChannels [END: Looping through channels]", \PEAR_LOG_DEBUG);
+
+            $db = nulll;
         }
         catch(\PDOException $e)
         {
@@ -278,6 +280,8 @@ class DataContext implements
             }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Looping through ids]", \PEAR_LOG_DEBUG);
+
+            $db = null;
         }
         catch(\PDOException $e)
         {
@@ -350,6 +354,8 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Looping over results]", \PEAR_LOG_DEBUG);
             }
+
+            $db = null;
         }
         catch(\PDOException $e)
         {
@@ -369,7 +375,66 @@ class DataContext implements
      */
     public static function ListAllChannels()
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        $channels = array();
+
+        $sql = "CALL SC_ListAllChannels()";
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Connecting via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Connecting via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Preparing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $statement = $db->prepare($sql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Preparing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $result = $statement->execute();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
+            if(isset($result) && $result != null && $result !== 0)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Looping over results]", \PEAR_LOG_DEBUG);
+
+                foreach($statement->fetchAll() as $row)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Constructing Channel Object from json]", \PEAR_LOG_DEBUG);
+
+                    $json = $row['json'];
+
+                    $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannelFromJSON($json);
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Constructing Channel Object from json]", \PEAR_LOG_DEBUG);
+
+                    $channels[] = $channel;
+                }
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Looping over results]", \PEAR_LOG_DEBUG);
+            }
+
+            $db = null;
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [Method Finished]", \PEAR_LOG_DEBUG);
+
+        return $channels;
     }
 
     /**
