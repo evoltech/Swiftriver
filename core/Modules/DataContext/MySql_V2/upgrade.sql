@@ -131,11 +131,15 @@ DELIMITER $$
 CREATE PROCEDURE SC_SelectNextDueChannel (IN dueBeforeTime INT)
     BEGIN
         SELECT
-            id, type, subType, active, inProcess, nextRun, json
+            json
         FROM
             SC_Channels
         WHERE
-            nextRun < dueBeforeTime
+            nextRun <= dueBeforeTime
+        AND
+            active = 1
+        AND
+            inProcess = 0
         ORDER BY
             nextRun ASC
         LIMIT

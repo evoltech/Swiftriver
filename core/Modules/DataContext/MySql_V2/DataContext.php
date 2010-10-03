@@ -298,7 +298,69 @@ class DataContext implements
      */
     public static function SelectNextDueChannel($time)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        $channel = null;
+
+        if(!isset($time) || $time == null)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [No time supplied, setting time to now]", \PEAR_LOG_DEBUG);
+
+            $time = time();
+        }
+
+        $sql = "CALL SC_SelectNextDueChannel ( :time )";
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Connecting to db via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Connecting to db via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Preparing PDO statment]", \PEAR_LOG_DEBUG);
+
+            $statement = $db->prepare($sql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Preparing PDO statment]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Executing PDO statment]", \PEAR_LOG_DEBUG);
+
+            $result = $statement->execute(array("time" => $time));
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Executing PDO statment]", \PEAR_LOG_DEBUG);
+
+            if(isset($result) && $result != null && $result !== 0)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Looping over results]", \PEAR_LOG_DEBUG);
+
+                foreach($statement->fetchAll() as $row)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Constructing Channel Object from json]", \PEAR_LOG_DEBUG);
+
+                    $json = $row['json'];
+
+                    $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannelFromJSON($json);
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Constructing Channel Object from json]", \PEAR_LOG_DEBUG);
+                }
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Looping over results]", \PEAR_LOG_DEBUG);
+            }
+        }
+        catch(\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [An exception was thrown]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [Method Finished]", \PEAR_LOG_DEBUG);
+
+        return $channel;
     }
 
     /**

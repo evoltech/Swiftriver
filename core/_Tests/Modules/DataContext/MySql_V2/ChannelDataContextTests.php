@@ -298,5 +298,166 @@ class ChannelDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, count($channels));
     }
+
+    public function testRemoveChannelsWithTwoChannels()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId1', '', '', 1, 0, 1, '{\"id\":\"testId1\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId2', '', '', 1, 0, 1, '{\"id\":\"testId2\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $pdo = null;
+
+        $channels = Modules\DataContext\MySql_V2\DataContext::GetChannelsById(array("testId1", "testId2"));
+
+        $this->assertEquals(true, is_array($channels));
+
+        $this->assertEquals(2, count($channels));
+
+        $this->assertEquals("testId1", $channels[0]->id);
+
+        $this->assertEquals("testId2", $channels[1]->id);
+
+        Modules\DataContext\MySql_V2\DataContext::RemoveChannels(array("testId1", "testId2"));
+
+        $channels = Modules\DataContext\MySql_V2\DataContext::GetChannelsById(array("testId1", "testId2"));
+
+        $this->assertEquals(true, is_array($channels));
+
+        $this->assertEquals(0, count($channels));
+    }
+
+    /*
+     * SelectNextDueChannel Tests
+     */
+    
+    public function testSelectNextDueChannelBasic()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $time = time();
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId1', '', '', 1, 0, $time, '{\"id\":\"testId1\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $channel = Modules\DataContext\MySql_V2\DataContext::SelectNextDueChannel($time);
+        
+        $this->assertEquals(true, isset($channel));
+        
+        $this->assertEquals(false, $channel == null);
+        
+        $this->assertEquals("testId1", $channel->id);
+
+        $pdo->exec("DELEET FROM SC_Channels WHERE id = 'testId1'");
+
+        $pdo = null;
+    }
+
+    public function testSelectNextDueChannelWithTwoChannels()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $time = time();
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId1', '', '', 1, 0, $time, '{\"id\":\"testId1\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $secondTime = $time - 100;
+
+        $pdo->exec("INSERT INTO SC_Channels VALUES ('testId2', '', '', 1, 0, $secondTime, '{\"id\":\"testId2\",\"name\":\"Stupit search\",\"type\":\"Twitter\",\"subType\":\"Search\",\"parameters\":{\"SearchKeyword\":\"hjdkfhsdkjfhsdkjhfsdkh\"},\"updatePeriod\":1,\"nextrun\":1280953609,\"lastrun\":null,\"lastSucess\":null,\"inprocess\":false,\"timesrun\":0,\"active\":true,\"deleted\":true}')");
+
+        $channel = Modules\DataContext\MySql_V2\DataContext::SelectNextDueChannel($time);
+
+        $this->assertEquals(true, isset($channel));
+
+        $this->assertEquals(false, $channel == null);
+
+        $this->assertEquals("testId2", $channel->id);
+
+        $pdo->exec("DELEET FROM SC_Channels WHERE id in ('testId1', 'testId2')");
+
+        $pdo = null;
+    }
+
+    public function testSelectNextDueChannelWithTwoChannelsAndActiveFlag()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $time = time();
+
+        $channel = new ObjectModel\Channel();
+
+        $channel->id = "testId1";
+
+        $channel->type = "test";
+
+        $channel->subType = "test";
+
+        $channel->active = true;
+
+        $channel->inprocess = false;
+
+        $channel->nextrun = $time;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveChannels(array($channel));
+
+        $channel->id = "testId2";
+
+        $channel->active = false;
+
+        $channel->nextrun = $time - 100;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveChannels(array($channel));
+
+        $channel = Modules\DataContext\MySql_V2\DataContext::SelectNextDueChannel($time);
+
+        Modules\DataContext\MySql_V2\DataContext::RemoveChannels(array("testId1", "testId2"));
+
+        $this->assertEquals(true, isset($channel));
+
+        $this->assertEquals(false, $channel == null);
+
+        $this->assertEquals("testId1", $channel->id);
+    }
+
+    public function testSelectNextDueChannelWithTwoChannelsAndInProcessFlag()
+    {
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $time = time();
+
+        $channel = new ObjectModel\Channel();
+
+        $channel->id = "testId1";
+
+        $channel->type = "test";
+
+        $channel->subType = "test";
+
+        $channel->active = true;
+
+        $channel->inprocess = false;
+
+        $channel->nextrun = $time;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveChannels(array($channel));
+
+        $channel->id = "testId2";
+
+        $channel->inprocess = true;
+
+        $channel->nextrun = $time - 100;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveChannels(array($channel));
+
+        $channel = Modules\DataContext\MySql_V2\DataContext::SelectNextDueChannel($time);
+
+        Modules\DataContext\MySql_V2\DataContext::RemoveChannels(array("testId1", "testId2"));
+
+        $this->assertEquals(true, isset($channel));
+
+        $this->assertEquals(false, $channel == null);
+
+        $this->assertEquals("testId1", $channel->id);
+    }
 }
 ?>
