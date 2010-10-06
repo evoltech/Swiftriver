@@ -33,11 +33,15 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $content->date = time();
 
+        $content->tags = array (
+            new ObjectModel\Tag("testText1", "testType1"),
+            new ObjectModel\Tag("testText2", "testType2"));
+
         $source = new ObjectModel\Source();
 
         $source->id = "testId1";
 
-        $source->parent = "";
+        $source->parent = "testParentId";
 
         $source->score = 1;
 
@@ -49,7 +53,7 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $content->source = $source;
 
-        Modules\DataContext\MySql_V2\DataContext::SaveContent($content);
+        Modules\DataContext\MySql_V2\DataContext::SaveContent(array($content));
 
         //@todo - working here 
     }

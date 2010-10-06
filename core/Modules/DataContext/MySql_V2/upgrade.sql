@@ -42,11 +42,12 @@ CREATE TABLE IF NOT EXISTS SC_Content (
     json TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
     PRIMARY KEY ( id )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 -- Create the Tags Table
 CREATE TABLE IF NOT EXISTS SC_Tags (
-    id VARCHAR (48) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-    type VARCHAR (48) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-    text VARCHAR (256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+    id VARCHAR ( 48 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+    type VARCHAR ( 48 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+    text VARCHAR ( 256 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
     PRIMARY KEY ( id )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -221,4 +222,78 @@ DELIMITER ;
 -- Source Related Stored Procedures
 -- *****************************************************************************
 
--- Create the GetSourceById Stored procedure
+-- Create the SaveSource Stored procedure
+DROP PROCEDURE IF EXISTS SC_SaveSource;
+DELIMITER $$
+CREATE PROCEDURE SC_SaveSource (
+        IN sourceId VARCHAR ( 48 ),
+        IN sourceChannelId VARCHAR ( 48 ),
+        IN sourceScore INT,
+        IN sourceName VARCHAR ( 256 ),
+        IN sourceType VARCHAR ( 48 ),
+        IN sourceSubType VARCHAR ( 48 ),
+        IN sourceJson TEXT)
+    BEGIN
+        DECLARE count INT DEFAULT 0;
+        SET count = (SELECT count(id) FROM SC_Content WHERE id = contentID);
+        IF (count > 0) THEN
+            UPDATE
+                SC_Content
+            SET
+                channelId = sourceChannelId,
+                score = sourceScore,
+                name = sourceName,
+                type = sourceType,
+                subType = sourceSubType,
+                json = sourceJson
+            WHERE
+                id = sourceId;
+        ELSE
+            INSERT
+                INTO SC_Content
+            VALUES (
+                sourceId,
+                sourceChannelId,
+                sourceScore,
+                sourceName,
+                sourceType,
+                sourceSubType,
+                sourceJson);
+        END IF;
+    END $$
+DELIMITER ;
+
+-- *****************************************************************************
+-- Tag Related Stored Procedures
+-- *****************************************************************************
+
+-- Create the AddTag stored procedure
+DROP PROCEDURE IF EXISTS SC_AddTag;
+DELIMITER $$
+CREATE PROCEDURE SC_AddTag (
+        IN contentId VARCHAR ( 48 ),
+        IN tagId VARCHAR ( 48 ),
+        IN tagType VARCHAR ( 48 ),
+        IN tagText VARCHAR ( 256 ))
+    BEGIN
+        DECLARE count INT DEFAULT 0;
+        SET count = (SELECT COUNT(*) FROM SC_Tags WHERE id = tagId);
+        IF ( count < 1 ) THEN
+            INSERT
+                INTO SC_Tags
+            VALUES (
+                tagId,
+                tagType,
+                tagText);
+        END IF;
+        SET count = (SELECT COUNT(*) FROM SC_Content_Tags WHERE contentId = contentId);
+        IF ( count < 1 ) THEN
+            INSERT
+                INTO SC_Content_Tags
+            VALUES (
+                contentId,
+                tagId);
+        END IF;
+    END $$
+DELIMITER ;
+

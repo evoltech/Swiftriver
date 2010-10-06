@@ -446,7 +446,109 @@ class DataContext implements
      */
     public static function SaveContent($content)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        if( !\is_array($content) || \count($content) < 1 )
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [No Content Supplied]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [Mrethod Finished]", \PEAR_LOG_DEBUG);
+
+            return;
+        }
+
+        $saveContentSql = "CALL SC_SaveContent ( :id, :sourceId, :state, :date, :json )";
+
+        $saveSourceSql = "CALL SC_SaveSource ( :id, :channelId, :score, :name, :type, :subType, :json )";
+
+        $saveTagSql = "CALL SC_AddTag ( :contentId, :tagId, :tagType, :tagText )";
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Connecting to the DB via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Connecting to the DB via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Preparing PDO Statements]", \PEAR_LOG_DEBUG);
+
+            $contentStatement = $db->prepare($saveContentSql);
+
+            $sourceStatement = $db->prepare($saveSourceSql);
+
+            $tagStatament = $db->prepare($saveTagSql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Preparing PDO Statements]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Looping through content]", \PEAR_LOG_DEBUG);
+
+            foreach($content as $item)
+            {
+                $source = $item->source;
+
+                $sourceParams = array (
+                    "id" => $source->id,
+                    "channelId" => $source->parent,
+                    "score" => $source->score,
+                    "name" => $source->name,
+                    "type" => $source->type,
+                    "subType" => $source->subType,
+                    "json" => \json_encode($source));
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving content source]", \PEAR_LOG_DEBUG);
+
+                $result = $sourceStatement->execute($sourceParams);
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving content source]", \PEAR_LOG_DEBUG);
+
+                $contentParams = array (
+                    "id" => $item->id,
+                    "sourceId" => $source->id,
+                    "state" => $item->state,
+                    "date" => $item->date,
+                    "json" => \json_encode($item));
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving content]", \PEAR_LOG_DEBUG);
+
+                $contentStatement->execute($contentParams);
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving content]", \PEAR_LOG_DEBUG);
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Looping through content tags]", \PEAR_LOG_DEBUG);
+
+                foreach($item->tags as $tag)
+                {
+                    $tagParams = array (
+                        "contentId" => $item->id,
+                        "tagId" => \md5(\strtolower($tag->text)),
+                        "tagType" => $tag->type,
+                        "tagText" => \strtolower($tag->text));
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving Tag]", \PEAR_LOG_DEBUG);
+
+                    $tagStatament->execute($tagParams);
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving Tag]", \PEAR_LOG_DEBUG);
+                }
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Looping through content tags]", \PEAR_LOG_DEBUG);
+            }
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Looping through content]", \PEAR_LOG_DEBUG);
+
+            $db = null;
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
