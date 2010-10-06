@@ -1,5 +1,5 @@
 =============================
-SWIFTRIVER v0.5.2 - Cape Jazz
+SWIFTRIVER v0.5.5 - Cape Jazz
 =============================
  
 SwiftRiver is a FOSS platform offering open source intelligence products for monitoring streams of data. Use of the platform varies, for example, one use might be to use one of our apps for determining the accuracy of crowdsourced information related to an event or topic.  This download is not 'SwiftRiver' it contains a PHP core that accesses a number of SwiftRiver APIs.  The combination of some or all of these APIs working together is our platform.
@@ -107,6 +107,8 @@ Contributing Organizations
 ============
 CHANGE LOG
 ============
+2010-10-02	SwiftMeme
+2010-10-01	IMAP, Frontline:SMS
 2010-09-17	Added Web Services
 2010-08-30	Beta, Sweeper App
 2010-08-14	User Roles
