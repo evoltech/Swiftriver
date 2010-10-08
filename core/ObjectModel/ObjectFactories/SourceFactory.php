@@ -44,8 +44,9 @@ class SourceFactory
         $source->name =             isset($object->name) ? $object->name : null;
         $source->type =             isset($object->type) ? $object->type : null;
         $source->subType =          isset($object->subType) ? $object->subType : null;
-        $source->email =            isset($object->email) ?$object->email : null;
-        $source->link =             isset($object->link) ?$object->link : null;
+        $source->email =            isset($object->email) ? $object->email : null;
+        $source->link =             isset($object->link) ? $object->link : null;
+        $source->parent =           isset($object->parent) ? $object->parent : null;
 
         //return the source
         return $source;

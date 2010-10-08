@@ -465,6 +465,8 @@ class DataContext implements
 
         $saveTagSql = "CALL SC_AddTag ( :contentId, :tagId, :tagType, :tagText )";
 
+        $removeTagsSql = "CALL SC_RemoveAllTags ( :id )";
+
         try
         {
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Connecting to the DB via PDO]", \PEAR_LOG_DEBUG);
@@ -479,7 +481,9 @@ class DataContext implements
 
             $sourceStatement = $db->prepare($saveSourceSql);
 
-            $tagStatament = $db->prepare($saveTagSql);
+            $tagStatement = $db->prepare($saveTagSql);
+
+            $removeTagsStatement = $db->prepare($removeTagsSql);
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Preparing PDO Statements]", \PEAR_LOG_DEBUG);
 
@@ -500,7 +504,7 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving content source]", \PEAR_LOG_DEBUG);
 
-                $result = $sourceStatement->execute($sourceParams);
+                $sourceStatement->execute($sourceParams);
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving content source]", \PEAR_LOG_DEBUG);
 
@@ -519,19 +523,24 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Looping through content tags]", \PEAR_LOG_DEBUG);
 
-                foreach($item->tags as $tag)
+                if(is_array($item->tags) && count($item->tags) > 0)
                 {
-                    $tagParams = array (
-                        "contentId" => $item->id,
-                        "tagId" => \md5(\strtolower($tag->text)),
-                        "tagType" => $tag->type,
-                        "tagText" => \strtolower($tag->text));
+                    $removeTagsStatement->execute(array("id" => $item->id));
 
-                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving Tag]", \PEAR_LOG_DEBUG);
+                    foreach($item->tags as $tag)
+                    {
+                        $tagParams = array (
+                            "contentId" => $item->id,
+                            "tagId" => \md5(\strtolower($tag->text)),
+                            "tagType" => $tag->type,
+                            "tagText" => \strtolower($tag->text));
 
-                    $tagStatament->execute($tagParams);
+                        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving Tag]", \PEAR_LOG_DEBUG);
 
-                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving Tag]", \PEAR_LOG_DEBUG);
+                        $tagStatement->execute($tagParams);
+
+                        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving Tag]", \PEAR_LOG_DEBUG);
+                    }
                 }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Looping through content tags]", \PEAR_LOG_DEBUG);
@@ -560,7 +569,117 @@ class DataContext implements
      */
     public static function GetContent($ids, $orderby = null)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        $content = array();
+
+        if(!\is_array($ids) || \count($ids) < 1)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [No Ids supplied]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [Method Finished]", \PEAR_LOG_DEBUG);
+
+            return $content;
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Building SQL Statment]", \PEAR_LOG_DEBUG);
+
+        $getContentSql = "CALL SC_GetContent( :ids )";
+
+        $idsArray = "(";
+
+        foreach($ids as $id)
+            $idsArray .= "'$id',";
+
+        $idsArray = \rtrim($idsArray, ",") . ")";
+
+        $getTagsSql = "CALL SC_SelectTags ( :id )";
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Building SQL Statment]", \PEAR_LOG_DEBUG);
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Connecting via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Connecting via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Preparing PDO statements]", \PEAR_LOG_DEBUG);
+
+            $getContentStatement = $db->prepare($getContentSql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Preparing PDO statements]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $result = $getContentStatement->execute(array(":ids" => $idsArray));
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
+            if(isset($result) && $result != null && $result !== 0)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Looping over results]", \PEAR_LOG_DEBUG);
+
+                foreach($getContentStatement->fetchAll() as $row)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Constructing content Object from json]", \PEAR_LOG_DEBUG);
+
+                    $sourcejson = $row["sourcejson"];
+                    
+                    $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($sourcejson);
+
+                    $contentjson = $row["contentjson"];
+
+                    $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source, $contentjson);
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Constructing content Object from json]", \PEAR_LOG_DEBUG);
+
+                    $content[] = $item;
+                }
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Looping over results]", \PEAR_LOG_DEBUG);
+            }
+
+            $db = null;
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Getting Content Tags]", \PEAR_LOG_DEBUG);
+
+            foreach($content as $item)
+            {
+                $db = self::PDOConnection();
+
+                $getTagsStatement = $db->prepare($getTagsSql);
+
+                $result = $getTagsStatement->execute(array("id" => $item->id));
+
+                if(isset($result) && $result != null && $result !== 0)
+                {
+                    $item->tags = array();
+
+                    foreach($getTagsStatement->fetchAll() as $row)
+                    {
+                        $item->tags[] = new \Swiftriver\Core\ObjectModel\Tag($row["text"], $row["type"]);
+                    }
+                }
+
+                $db = null;
+            }
+            
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [START: Getting Content Tags]", \PEAR_LOG_DEBUG);
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [Method Finished]", \PEAR_LOG_DEBUG);
+
+        return $content;
     }
 
     /**
@@ -569,7 +688,131 @@ class DataContext implements
      */
     public static function GetContentList($parameters)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySql_V2::DataContext::GetContentList [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $baseSql = "from SC_Content content left join SC_Sources source on content.sourceId = source.id";
+
+        $filters = array();
+
+        $state = (key_exists("state", $parameters)) ? $parameters["state"] : null;
+        if($state != null)
+            $filters[] = "content.state = '$state'";
+
+        $minVeracity = (key_exists("minVeracity", $parameters)) ? $parameters["minVeracity"] : null;
+        if($minVeracity != null || $minVeracity === 0)
+            $filters[] = ($minVeracity === 0)
+                ? "(source.score >= $minVeracity OR source.score IS NULL)"
+                : "source.score >= $minVeracity";
+
+        $maxVeracity = (key_exists("maxVeracity", $parameters)) ? $parameters["maxVeracity"] : null;
+        if($maxVeracity != null)
+            $filters[] = ($minVeracity === 0)
+                ? "(source.score <= $maxVeracity OR source.score IS NULL)"
+                : "source.score <= $maxVeracity";
+
+        $type = (key_exists("type", $parameters)) ? $parameters["type"] : null;
+        if($type != null)
+            $filters[] = "source.type = '$type'";
+
+        $subType = (key_exists("subType", $parameters)) ? $parameters["subType"] : null;
+        if($subType != null)
+            $filters[] = "source.subType = '$subType'";
+
+        $source = (key_exists("source", $parameters)) ? $parameters["source"] : null;
+        if($source != null)
+            $filters[] = "source.id = '$source'";
+
+        $pageSize = (key_exists("pageSize", $parameters)) ? $parameters["pageSize"] : null;
+
+        $pageStart = (key_exists("pageStart", $parameters)) ? $parameters["pageStart"] : null;
+
+        $pagination = ($pageSize != null)
+            ? "limit " . (($pageStart == null) ? "0" : $pageStart) . ", $pageSize"
+            : "";
+
+
+        $orderBy = "date desc";
+
+        $sql = $baseSql;
+        for($i = 0; $i < count($filters); $i++) {
+            $addition = ($i == 0) ? "WHERE" : "AND";
+            $sql .= " " . $addition . " " . $filters[$i];
+        }
+
+        $countSql = "select count(content.id) " . $sql;
+
+        try
+        {
+            $db = self::PDOConnection();
+
+            $countStatement = $db->prepare($countSql);
+
+            $countStatement->execute();
+
+            $totalCount = (int) $countStatement->fetchColumn();
+
+            $selectSql = "select content.id " . $sql . " order by content." . $orderBy . " " . $pagination;
+
+            $navigation = array();
+
+            if($subType == null) {
+                $typeSql = "select source.type as name, source.type as id, count(source.type) as count " . $sql . " group by source.type order by count desc";
+                $typeStatement = $db->prepare($typeSql);
+                $typeStatement->execute();
+                $results = $typeStatement->fetchAll(\PDO::FETCH_ASSOC);
+                $types = array(
+                    "type" => "list",
+                    "key" => "type",
+                    "selected" => $type != null,
+                    "facets" => null);
+                $navigation["Channels"] = $types;
+            }
+
+            if($type != null && $source == null) {
+                $subTypeSql = "select source.subType as name, source.subType as id, count(source.subType) as count " . $sql . " group by source.subType order by count desc";
+                $subTypeStatement = $db->prepare($subTypeSql);
+                $subTypes = array(
+                    "type" => "list",
+                    "key" => "subType",
+                    "selected" => $subType != null,
+                    "facets" => $subTypeStatement->fetchAll(\PDO::FETCH_ASSOC));
+                $navigation["Sub Channels"] = $subTypes;
+            }
+
+            if($subType != null && $type != null) {
+                $sourceSql = "select source.name as name, source.textId as id, count(source.name) as count " .$sql . " group by source.name order by count desc";
+                $sourceStatement = $db->prepare($sourceSql);
+                $sources = array(
+                    "type" => "list",
+                    "key" => "source",
+                    "selected" => $source != null,
+                    "facets" => $sourceStatement->fetchAll(\PDO::FETCH_ASSOC));
+                $navigation["Sources"] = $sources;
+            }
+
+            $ids = array();
+
+            foreach($db->query($selectSql) as $row)
+                $ids[] = $row[0];
+
+            $content = self::GetContent($ids, $orderBy);
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContentList [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContentList [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySql_V2::DataContext::GetContentList [Method finished]", \PEAR_LOG_DEBUG);
+
+        return array (
+            "totalCount" => $totalCount,
+            "contentItems" => $content,
+            "navigation" => $navigation
+        );
     }
 
     /**

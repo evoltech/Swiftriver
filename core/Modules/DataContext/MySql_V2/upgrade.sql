@@ -169,17 +169,19 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS SC_SaveContent;
 DELIMITER $$
 CREATE PROCEDURE SC_SaveContent (
-        contentId VARCHAR (48),
-        contentType VARCHAR (48),
+        contentId VARCHAR ( 48 ),
+        contentSourceId VARCHAR ( 48 ),
+        contentType VARCHAR ( 48 ),
         contentDate INT,
         contentJson TEXT)
     BEGIN
         DECLARE count INT DEFAULT 0;
-        SET count = (SELECT count(id) FROM SC_Content WHERE id = contentID);
+        SET count = (SELECT count(id) FROM SC_Content WHERE id = contentId);
         IF (count > 0) THEN
             UPDATE
                 SC_Content
             SET
+                sourceId = contentSourceId,
                 type = contentType,
                 date = contentDate,
                 json = contentJson
@@ -190,6 +192,7 @@ CREATE PROCEDURE SC_SaveContent (
                 INTO SC_Content
             VALUES (
                 contentId,
+                contentSourceId,
                 contentType,
                 contentDate,
                 contentJson);
@@ -202,7 +205,7 @@ DROP PROCEDURE IF EXISTS SC_GetContent;
 DELIMITER $$
 CREATE PROCEDURE SC_GetContent (contentIdsAsInArray VARCHAR (48))
     BEGIN
-        SET @queryText = CONCAT('SELECT c.id, s.type, c.date, c.json FROM SC_Content c JOIN SC_Sources s ON c.sourceId = s.id WHERE c.id in ', contentIdsAsInArray);
+        SET @queryText = CONCAT('SELECT c.json as contentjson, s.json as sourcejson FROM SC_Content c JOIN SC_Sources s ON c.sourceId = s.id WHERE c.id in ', contentIdsAsInArray);
         PREPARE query FROM @queryText;
         EXECUTE query;
     END $$
@@ -235,10 +238,10 @@ CREATE PROCEDURE SC_SaveSource (
         IN sourceJson TEXT)
     BEGIN
         DECLARE count INT DEFAULT 0;
-        SET count = (SELECT count(id) FROM SC_Content WHERE id = contentID);
+        SET count = (SELECT count(id) FROM SC_Sources WHERE id = sourceId);
         IF (count > 0) THEN
             UPDATE
-                SC_Content
+                SC_Sources
             SET
                 channelId = sourceChannelId,
                 score = sourceScore,
@@ -250,7 +253,7 @@ CREATE PROCEDURE SC_SaveSource (
                 id = sourceId;
         ELSE
             INSERT
-                INTO SC_Content
+                INTO SC_Sources
             VALUES (
                 sourceId,
                 sourceChannelId,
@@ -271,29 +274,55 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS SC_AddTag;
 DELIMITER $$
 CREATE PROCEDURE SC_AddTag (
-        IN contentId VARCHAR ( 48 ),
-        IN tagId VARCHAR ( 48 ),
-        IN tagType VARCHAR ( 48 ),
-        IN tagText VARCHAR ( 256 ))
+        IN tagContentId VARCHAR ( 48 ),
+        IN tagTagId VARCHAR ( 48 ),
+        IN tagTagType VARCHAR ( 48 ),
+        IN tagTagText VARCHAR ( 256 ))
     BEGIN
         DECLARE count INT DEFAULT 0;
-        SET count = (SELECT COUNT(*) FROM SC_Tags WHERE id = tagId);
+        SET count = (SELECT COUNT(*) FROM SC_Tags WHERE id = tagTagId);
         IF ( count < 1 ) THEN
             INSERT
                 INTO SC_Tags
             VALUES (
-                tagId,
-                tagType,
-                tagText);
+                tagTagId,
+                tagTagType,
+                tagTagText);
         END IF;
-        SET count = (SELECT COUNT(*) FROM SC_Content_Tags WHERE contentId = contentId);
+        SET count = (SELECT COUNT(*) FROM SC_Content_Tags WHERE contentId = tagContentId AND tagId = tagTagId);
         IF ( count < 1 ) THEN
             INSERT
                 INTO SC_Content_Tags
             VALUES (
-                contentId,
-                tagId);
+                tagContentId,
+                tagTagId);
         END IF;
     END $$
 DELIMITER ;
 
+-- Create GetTags Stored Procedure
+DROP PROCEDURE IF EXISTS SC_SelectTags;
+DELIMITER $$
+CREATE PROCEDURE SC_SelectTags ( IN contentTagId VARCHAR ( 48 ) )
+    BEGIN
+        SELECT
+            t.type, t.text
+        FROM
+            SC_Tags t JOIN SC_Content_Tags ct
+                ON t.id = ct.tagId
+        WHERE
+            ct.contentId = contentTagId;
+    END $$
+DELIMITER ;
+
+-- Create the Remove All Tags Procedure
+DROP PROCEDURE IF EXISTS SC_RemoveAllTags;
+DELIMITER $$
+CREATE PROCEDURE SC_RemoveAllTags ( IN contentTagId VARCHAR ( 48 ) )
+    BEGIN
+        DELETE FROM
+            SC_Content_Tags
+        WHERE
+            contentId = contentTagId;
+    END $$
+DELIMITER ;
