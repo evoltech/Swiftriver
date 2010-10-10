@@ -198,6 +198,10 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals("testtext1", $t[0]->text);
     }
 
+    /*
+     * GetContent Tests
+     */
+
     public function testGetContentWithOneIdAndNoOrderBy()
     {
         $content = new ObjectModel\Content();
@@ -412,6 +416,9 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals("testSubType", $s->subType);
     }
 
+    /*
+     * GetContentList
+     */
 
     public function testGetContentListBasic()
     {
@@ -615,6 +622,107 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($navigation));
 
+        $this->assertEquals(true, \is_array($navigation["Channels"]));
+
+        $facets = $navigation["Channels"]["facets"];
+
+        $this->assertEquals(true, \is_array($facets));
+
+        $this->assertEquals(2, \count($facets));
+
+        $this->assertEquals(true, $facets[0]["name"] == "testType1" || $facets[0]["name"] == "testType2");
+
+        $this->assertEquals(true, $facets[1]["name"] == "testType1" || $facets[0]["name"] == "testType2");
+    }
+
+    
+    /*
+     * DeleteContent Tests
+     */
+    
+    public function testDeleteContentWithOneContent()
+    {
+        $content = new ObjectModel\Content();
+
+        $content->id = "testId1";
+
+        $content->state = "new_content";
+
+        $content->date = time();
+
+        $content->tags = array (
+            new ObjectModel\Tag("testText1", "testType1"),
+            new ObjectModel\Tag("testText2", "testType2"));
+
+        $source = new ObjectModel\Source();
+
+        $source->id = "testId1";
+
+        $source->parent = "testParentId";
+
+        $source->score = 1;
+
+        $source->name = "testName";
+
+        $source->type = "testType";
+
+        $source->subType = "testSubType";
+
+        $content->source = $source;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveContent(array($content));
+
+        Modules\DataContext\MySql_V2\DataContext::DeleteContent(array($content));
+                
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $found = false;
+
+        foreach ($pdo->query("SELECT * FROM SC_Content WHERE id = 'testId1'") as $row)
+        {
+            $found = true;
+        }
+
+        $this->assertEquals(false, $found);
+
+        $found = false;
+
+        foreach ($pdo->query("SELECT * FROM SC_Sources WHERE id = 'testId1'") as $row)
+        {
+            $found = true;
+
+            $this->assertEquals("testId1", $row["id"]);
+        }
+
+        $this->assertEquals(true, $found);
+
+        $count = 0;
+
+        foreach ($pdo->query("SELECT type, text FROM SC_Tags") as $row)
+        {
+            $count++;
+
+            $this->assertEquals(true, $row["type"] == "testType1" || $row["type"] == "testType2" );
+
+            $this->assertEquals(true, $row["text"] == "testtext1" || $row["text"] == "testtext2" );
+        }
+
+        $this->assertEquals(2, $count);
+
+        $pdo->exec("DELETE FROM SC_Content");
+
+        $pdo->exec("DELETE FROM SC_Sources");
+
+        $pdo->exec("DELETE FROM SC_Content_Tags");
+
+        $pdo->exec("DELETE FROM SC_Tags");
+
+        $pdo = null;
+    }
+
+    
+    public function testDeleteContentWithTwoContentItems()
+    {
         $this->assertEquals("working", "here");
     }
 }

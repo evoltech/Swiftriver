@@ -326,3 +326,17 @@ CREATE PROCEDURE SC_RemoveAllTags ( IN contentTagId VARCHAR ( 48 ) )
             contentId = contentTagId;
     END $$
 DELIMITER ;
+
+-- Create the Select Source stored procedure
+DROP PROCEDURE IF EXISTS SC_GetSource;
+DELIMITER $$
+CREATE PROCEDURE SC_GetSource ( IN sourceId VARCHAR ( 48 ) )
+    BEGIN
+        SELECT
+            json
+        FROM
+            SC_Sources
+        WHERE
+            id = sourceId;
+    END $$
+DELIMITER ;

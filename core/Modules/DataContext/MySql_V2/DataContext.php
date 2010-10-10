@@ -766,29 +766,33 @@ class DataContext implements
                     "type" => "list",
                     "key" => "type",
                     "selected" => $type != null,
-                    "facets" => null);
+                    "facets" => $results);
                 $navigation["Channels"] = $types;
             }
 
             if($type != null && $source == null) {
                 $subTypeSql = "select source.subType as name, source.subType as id, count(source.subType) as count " . $sql . " group by source.subType order by count desc";
                 $subTypeStatement = $db->prepare($subTypeSql);
+                $subTypeStatement->execute();
+                $results = $subTypeStatement->fetchAll(\PDO::FETCH_ASSOC);
                 $subTypes = array(
                     "type" => "list",
                     "key" => "subType",
                     "selected" => $subType != null,
-                    "facets" => $subTypeStatement->fetchAll(\PDO::FETCH_ASSOC));
+                    "facets" => $results);
                 $navigation["Sub Channels"] = $subTypes;
             }
 
             if($subType != null && $type != null) {
                 $sourceSql = "select source.name as name, source.textId as id, count(source.name) as count " .$sql . " group by source.name order by count desc";
                 $sourceStatement = $db->prepare($sourceSql);
+                $sourceStatement->execute();
+                $results = $sourceStatement->fetchAll(\PDO::FETCH_ASSOC);
                 $sources = array(
                     "type" => "list",
                     "key" => "source",
                     "selected" => $source != null,
-                    "facets" => $sourceStatement->fetchAll(\PDO::FETCH_ASSOC));
+                    "facets" => $results);
                 $navigation["Sources"] = $sources;
             }
 
@@ -822,7 +826,52 @@ class DataContext implements
      */
     public static function DeleteContent($content)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [Method Invoked]", \PEAR_LOG_DEBUG);
+
+        if (!\is_array($content) || \count($content) < 1)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [No content provided]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [Method Finished]", \PEAR_LOG_DEBUG);
+
+            return;
+        }
+
+        $deleteContentSql = "CALL SC_DeleteContent( :id )";
+
+        try
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [START: COnnecting to the db via PDO]", \PEAR_LOG_DEBUG);
+
+            $db = self::PDOConnection();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [END: COnnecting to the db via PDO]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [START: Preparing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $deleteContentStatement = $db->prepare($deleteContentSql);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [END: Preparing PDO statement]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [START: Looping through content]", \PEAR_LOG_DEBUG);
+
+            foreach ($content as $item)
+                $deleteContentStatement->execute(array("id" => $item->id));
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [END: Looping through content]", \PEAR_LOG_DEBUG);
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [Method Finished]", \PEAR_LOG_DEBUG);
+
+        $db = null;
     }
 
     /**
@@ -834,7 +883,43 @@ class DataContext implements
      */
     public static function GetSourcesById($ids)
     {
+        $sources = array();
 
+        if (!\is_array($ids) || \count($ids) < 1)
+        {
+            return $sources;
+        }
+
+        $getSourceSql = "CALL SC_GetSource( :id )";
+
+        try
+        {
+            foreach($ids as $id)
+            {
+                $db = self::PDOConnection();
+
+                $getSourceStatement = $db->prepare($getSourceSql);
+
+                $getSourceStatement->execute(array("id" => $id));
+
+                foreach($getSourceStatement->fetchAll() as $row)
+                {
+                    $json = $row["json"];
+
+                    $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+
+                    $sources[] = $source;
+                }
+
+                $db = null;
+            }
+        }
+        catch (\PDOException $e)
+        {
+
+        }
+
+        return $sources;
     }
 
     /**
@@ -858,7 +943,8 @@ class DataContext implements
      */
     public static function RecordSourceScoreChange($sourceId, $markerId, $change, $reason = null)
     {
-        
+        //This function is no loger supported.
+        return;
     }
 }
 ?>
