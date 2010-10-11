@@ -95,5 +95,52 @@ class SourceDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("testSubType", $sources[1]->subType);
     }
+
+    /*
+     * LstAllSource Test
+     */
+    
+    public function testListAllSources()
+    {
+        $db = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId2', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId2\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        
+        $sources = Modules\DataContext\MySql_V2\DataContext::ListAllSources();
+
+        $db->exec("DELETE FROM SC_Sources");
+
+        $db = null;
+
+        $this->assertEquals(true, \is_array($sources));
+
+        $this->AssertEquals(2, \count($sources));
+
+        $this->assertEquals("testId1", $sources[0]->id);
+
+        $this->assertEquals("testParentId", $sources[0]->parent);
+
+        $this->assertEquals(10, $sources[0]->score);
+
+        $this->assertEquals("testName", $sources[0]->name);
+
+        $this->assertEquals("testType", $sources[0]->type);
+
+        $this->assertEquals("testSubType", $sources[0]->subType);
+
+        $this->assertEquals("testId2", $sources[1]->id);
+
+        $this->assertEquals("testParentId", $sources[1]->parent);
+
+        $this->assertEquals(10, $sources[1]->score);
+
+        $this->assertEquals("testName", $sources[1]->name);
+
+        $this->assertEquals("testType", $sources[1]->type);
+
+        $this->assertEquals("testSubType", $sources[1]->subType);
+    }
 }
 ?>

@@ -340,3 +340,15 @@ CREATE PROCEDURE SC_GetSource ( IN sourceId VARCHAR ( 48 ) )
             id = sourceId;
     END $$
 DELIMITER ;
+
+-- Create the Select All Source stored procedure
+DROP PROCEDURE IF EXISTS SC_SelectAllSources;
+DELIMITER $$
+CREATE PROCEDURE SC_SelectAllSources ()
+    BEGIN
+        SELECT
+            json
+        FROM
+            SC_Sources;
+    END $$
+DELIMITER ;

@@ -620,7 +620,7 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, \is_array($navigation));
 
-        $this->assertEquals(1, count($navigation));
+        $this->assertEquals(2, count($navigation));
 
         $this->assertEquals(true, \is_array($navigation["Channels"]));
 
@@ -632,7 +632,19 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $facets[0]["name"] == "testType1" || $facets[0]["name"] == "testType2");
 
-        $this->assertEquals(true, $facets[1]["name"] == "testType1" || $facets[0]["name"] == "testType2");
+        $this->assertEquals(true, $facets[1]["name"] == "testType1" || $facets[1]["name"] == "testType2");
+
+        $this->assertEquals(true, \is_array($navigation["Tags"]));
+
+        $facets = $navigation["Tags"]["facets"];
+
+        $this->assertEquals(true, \is_array($facets));
+
+        $this->assertEquals(2, \count($facets));
+
+        $this->assertEquals(true, $facets[0]["name"] == "testtext1" || $facets[0]["name"] == "testtext2");
+
+        $this->assertEquals(true, $facets[1]["name"] == "testtext1" || $facets[1]["name"] == "testtext2");
     }
 
     
@@ -723,7 +735,96 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
     
     public function testDeleteContentWithTwoContentItems()
     {
-        $this->assertEquals("working", "here");
+        $content1 = new ObjectModel\Content();
+
+        $content1->id = "testId1";
+
+        $content1->state = "new_content";
+
+        $content1->date = time();
+
+        $content1->tags = array (
+            new ObjectModel\Tag("testText1", "testType1"),
+            new ObjectModel\Tag("testText2", "testType2"));
+
+        $content2 = new ObjectModel\Content();
+
+        $content2->id = "testId2";
+
+        $content2->state = "new_content";
+
+        $content2->date = time();
+
+        $content2->tags = array (
+            new ObjectModel\Tag("testText1", "testType1"),
+            new ObjectModel\Tag("testText2", "testType2"));
+
+        $source = new ObjectModel\Source();
+
+        $source->id = "testId1";
+
+        $source->parent = "testParentId";
+
+        $source->score = 1;
+
+        $source->name = "testName";
+
+        $source->type = "testType";
+
+        $source->subType = "testSubType";
+
+        $content1->source = $source;
+
+        $content2->source = $source;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveContent(array($content1, $content2));
+
+        Modules\DataContext\MySql_V2\DataContext::DeleteContent(array($content1, $content2));
+
+        $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $found = false;
+
+        foreach ($pdo->query("SELECT * FROM SC_Content WHERE id in ('testId1', 'testId2')") as $row)
+        {
+            $found = true;
+        }
+
+        $this->assertEquals(false, $found);
+
+        $found = false;
+
+        foreach ($pdo->query("SELECT * FROM SC_Sources WHERE id = 'testId1'") as $row)
+        {
+            $found = true;
+
+            $this->assertEquals("testId1", $row["id"]);
+        }
+
+        $this->assertEquals(true, $found);
+
+        $count = 0;
+
+        foreach ($pdo->query("SELECT type, text FROM SC_Tags") as $row)
+        {
+            $count++;
+
+            $this->assertEquals(true, $row["type"] == "testType1" || $row["type"] == "testType2" );
+
+            $this->assertEquals(true, $row["text"] == "testtext1" || $row["text"] == "testtext2" );
+        }
+
+        $this->assertEquals(2, $count);
+
+        $pdo->exec("DELETE FROM SC_Content");
+
+        $pdo->exec("DELETE FROM SC_Sources");
+
+        $pdo->exec("DELETE FROM SC_Content_Tags");
+
+        $pdo->exec("DELETE FROM SC_Tags");
+
+        $pdo = null;
     }
 }
 ?>

@@ -757,6 +757,18 @@ class DataContext implements
 
             $navigation = array();
 
+            $tagsSql = "SELECT t.text as name, t.text as id, count(t.text) as count FROM SC_tags t join SC_Content_Tags ct ON t.id = ct.tagId WHERE ct.contentId in (SELECT content.id " . $sql . ") GROUP BY t.text ORDER BY count DESC";
+            $tagsStatement = $db->prepare($tagsSql);
+            $tagsStatement->execute();
+            $results = $tagsStatement->fetchAll(\PDO::FETCH_ASSOC);
+            $types = array(
+                "type" => "list",
+                "key" => "tags",
+                "selected" => $type != null,
+                "facets" => $results);
+            $navigation["Tags"] = $types;
+
+
             if($subType == null) {
                 $typeSql = "select source.type as name, source.type as id, count(source.type) as count " . $sql . " group by source.type order by count desc";
                 $typeStatement = $db->prepare($typeSql);
@@ -883,10 +895,18 @@ class DataContext implements
      */
     public static function GetSourcesById($ids)
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [Method Invoked]", \PEAR_LOG_DEBUG);
+
         $sources = array();
 
         if (!\is_array($ids) || \count($ids) < 1)
         {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [No ids supplied]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [Method Finished]", \PEAR_LOG_DEBUG);
+
             return $sources;
         }
 
@@ -894,30 +914,54 @@ class DataContext implements
 
         try
         {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Looping through ids]", \PEAR_LOG_DEBUG);
+
             foreach($ids as $id)
             {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Connecting to the db via PDO]", \PEAR_LOG_DEBUG);
+
                 $db = self::PDOConnection();
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Connecting to the db via PDO]", \PEAR_LOG_DEBUG);
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Preparing PDO statement]", \PEAR_LOG_DEBUG);
 
                 $getSourceStatement = $db->prepare($getSourceSql);
 
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Preparing PDO statement]", \PEAR_LOG_DEBUG);
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
                 $getSourceStatement->execute(array("id" => $id));
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
                 foreach($getSourceStatement->fetchAll() as $row)
                 {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Constructing source obejct]", \PEAR_LOG_DEBUG);
+
                     $json = $row["json"];
 
                     $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
 
                     $sources[] = $source;
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Constructing source obejct]", \PEAR_LOG_DEBUG);
                 }
 
                 $db = null;
             }
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Looping through ids]", \PEAR_LOG_DEBUG);
         }
         catch (\PDOException $e)
         {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [An Exception was thrown:]", \PEAR_LOG_ERR);
 
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [$e]", \PEAR_LOG_ERR);
         }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [Method Finished]", \PEAR_LOG_DEBUG);
 
         return $sources;
     }
@@ -928,7 +972,49 @@ class DataContext implements
      */
     public static function ListAllSources()
     {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [Method initiated]", \PEAR_LOG_DEBUG);
+
+        $sources = array();
+
+        $selectAllSourcesSql = "CALL SC_SelectAllSources ()";
+
+        try
+        {
+            $db = self::PDOConnection();
+
+            $selectAllSourcesStatment = $db->prepare($selectAllSourcesSql);
+
+            $selectAllSourcesStatment->execute();
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
+
+            foreach($selectAllSourcesStatment->fetchAll() as $row)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [START: Constructing source obejct]", \PEAR_LOG_DEBUG);
+
+                $json = $row["json"];
+
+                $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+
+                $sources[] = $source;
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [END: Constructing source obejct]", \PEAR_LOG_DEBUG);
+            }
+
+            $db = null;
+        }
+        catch (\PDOException $e)
+        {
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [An Exception was thrown:]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [$e]", \PEAR_LOG_ERR);
+        }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $sources;
     }
 
     /**
