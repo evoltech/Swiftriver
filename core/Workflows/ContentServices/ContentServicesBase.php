@@ -201,5 +201,53 @@ class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
         //return the id
         return $reason;
     }
+
+    /**
+     * @param string $json
+     * @param string $action
+     * @return \Swiftriver\Core\ObjectModel\Tag[] $tags
+     */
+    public function ParseJSONToTags($json, $action)
+    {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [START: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null)
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [END: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [START: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        //Extract the required field ID
+        if(\property_exists($object, $action))
+            $tags = $object->$action;
+
+        //Check that the id is set and is a string
+        if(!$tags || !isset($tags) || $tags == null || !\is_array($tags))
+            return array();
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [END: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [START: Mapping json data to ag objects]", \PEAR_LOG_DEBUG);
+
+        $return = array();
+
+        foreach($tags as $tag)
+            $return[] = new \Swiftriver\Core\ObjectModel\Tag($tag->text, $tag->type);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [END: Mapping json data to ag objects]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [Method finished]", \PEAR_LOG_DEBUG);
+
+        return $return;
+    }
 }
 ?>

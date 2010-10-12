@@ -171,7 +171,7 @@ DELIMITER $$
 CREATE PROCEDURE SC_SaveContent (
         contentId VARCHAR ( 48 ),
         contentSourceId VARCHAR ( 48 ),
-        contentType VARCHAR ( 48 ),
+        contentState VARCHAR ( 48 ),
         contentDate INT,
         contentJson TEXT)
     BEGIN
@@ -182,7 +182,7 @@ CREATE PROCEDURE SC_SaveContent (
                 SC_Content
             SET
                 sourceId = contentSourceId,
-                type = contentType,
+                state = contentState,
                 date = contentDate,
                 json = contentJson
             WHERE
@@ -193,7 +193,7 @@ CREATE PROCEDURE SC_SaveContent (
             VALUES (
                 contentId,
                 contentSourceId,
-                contentType,
+                contentState,
                 contentDate,
                 contentJson);
         END IF;

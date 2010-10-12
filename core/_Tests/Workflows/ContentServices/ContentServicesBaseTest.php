@@ -3,7 +3,8 @@ namespace Swiftriver\Core;
 
 require_once 'PHPUnit/Framework.php';
 
-class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
+class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase
+{
     private $object;
 
     protected function setUp() {
@@ -11,7 +12,7 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $this->object = new Workflows\ContentServices\ContentServicesBase();
     }
 
-   public function testParseContentToJSONWithOneContentItem() {
+    public function testParseContentToJSONWithOneContentItem() {
         $c1 = new ObjectModel\Content();
         $c1->id = "testid1";
         $c1->title = "testtitle1";
@@ -126,5 +127,56 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
        $reason = $this->object->ParseJSONToInacurateReason('{"reason":"falsehood"}');
        $this->assertEquals("falsehood", $reason);
    }
+
+   /*
+    * ParseJSONToTags Tests
+    */
+   
+    /**
+    * @expectedException \InvalidArgumentException
+    */
+    public function testParseJSONToTagsWithNullJson()
+    {
+       $this->object->ParseJSONToTags(null, null);
+    }
+
+    /**
+    * @expectedException \InvalidArgumentException
+    */
+    public function testParseJSONToTagsWithBadJson()
+    {
+        $this->object->ParseJSONToTags("{some rubbish json'}", null);
+    }
+
+    public function testParseJSONToTagsWithInvalidAction()
+    {
+        $this->assertEquals(0, \count($this->object->ParseJSONToTags('{"some":"thing"}', "codswallop")));
+    }
+
+    public function testParseJSONToTagsWithValidTagsRemoved()
+    {
+        $result = $this->object->ParseJSONToTags('{"tagsRemoved":[{"text":"text1","type":"type1"}]}', "tagsRemoved");
+
+        $this->assertEquals(true, \is_array($result));
+
+        $this->assertEquals(1, \count($result));
+
+        $this->assertEquals("text1", $result[0]->text);
+
+        $this->assertEquals("type1", $result[0]->type);
+    }
+
+    public function testParseJSONToTagsWithValidTagsAdded()
+    {
+        $result = $this->object->ParseJSONToTags('{"tagsAdded":[{"text":"text1","type":"type1"}]}', "tagsAdded");
+
+        $this->assertEquals(true, \is_array($result));
+
+        $this->assertEquals(1, \count($result));
+
+        $this->assertEquals("text1", $result[0]->text);
+
+        $this->assertEquals("type1", $result[0]->type);
+    }
 }
 ?>

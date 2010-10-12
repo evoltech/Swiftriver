@@ -121,6 +121,9 @@ class MarkContentAsAcurate extends ContentServicesBase
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [END: Saving the content and source]", \PEAR_LOG_DEBUG);
 
+        /*
+            This is depricated after 0.5.0
+
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [START: Recording the transaction]", \PEAR_LOG_DEBUG);
 
         try
@@ -145,6 +148,8 @@ class MarkContentAsAcurate extends ContentServicesBase
         }
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [END: Recording the transaction]", \PEAR_LOG_DEBUG);
+
+        */
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [START: Event Distribution]", \PEAR_LOG_DEBUG);
 
