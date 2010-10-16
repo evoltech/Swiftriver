@@ -48,6 +48,30 @@ class SourceFactory
         $source->link =             isset($object->link) ? $object->link : null;
         $source->parent =           isset($object->parent) ? $object->parent : null;
 
+        //Sort out the GIS Data
+        if(\property_exists($object, "gisData"))
+        {
+            $gisData = $object->gisData;
+
+            if($gisData != null && is_array($gisData))
+            {
+                foreach($gisData as $gis)
+                {
+                    $long = $gis->longitude;
+                    $lat = $gis->latitude;
+                    $name = $gis->name;
+                    
+                    if($long == null || (!\is_int($long) && !\is_float($long)))
+                        continue;
+
+                    if($lat == null || (!\is_int($lat) && !\is_float($lat)))
+                        continue;
+
+                    $source->gisData[] = new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name);
+                }
+            }
+        }
+
         //return the source
         return $source;
     }

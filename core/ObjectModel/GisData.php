@@ -23,15 +23,24 @@ class GisData
     public $latitude;
 
     /**
+     * The name of this location
+     * 
+     * @var string
+     */
+    public $name;
+
+    /**
      * Constructor for the GisData object
      * 
      * @param float $longitude
      * @param float $latitude
+     * @param string $name
      */
-    public function __construct($longitude, $latitude)
+    public function __construct($longitude, $latitude, $name = null)
     {
         $this->longitude = $longitude;
         $this->latitude = $latitude;
+        $this->name = $name;
     }
 }
 ?>

@@ -55,5 +55,12 @@ class Source
      * @var string
      */
     public $subType;
+
+    /**
+     * The array of location data
+     *
+     * @var GisData[]
+     */
+    public $gisData = array();
 }
 ?>
