@@ -60,5 +60,47 @@ class SourceFacoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $gis1->latitude);
         $this->assertEquals("test two", $gis1->name);
     }
+
+    public function testCreateSourceFromIdentifyerWithNewSourceNotTrusted()
+    {
+        $id = "thisisatest";
+
+        $source = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($id);
+
+        $this->assertEquals(md5($id), $source->id);
+
+        $this->assertEquals(null, $source->score);
+    }
+
+    public function testCreateSourceFromIdentifyerWithNewSourceTrusted()
+    {
+        $id = "thisisatest";
+
+        $source = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($id, true);
+
+        $this->assertEquals(md5($id), $source->id);
+
+        $this->assertEquals(100, $source->score);
+    }
+
+    public function testCreateSourceFromIdentifyerWithExistingSourceTrusted()
+    {
+        $db = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
+
+        $id = md5("testId");
+
+        $db->exec("INSERT INTO SC_Sources VALUES ('$id', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"$id\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+
+        $s = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier("testId", true);
+
+        $db->exec("DELETE FROM SC_Sources");
+
+        $db = null;
+
+        $this->assertEquals($id, $s->id);
+
+        $this->assertEquals(10, $s->score);
+    }
+
 }
 ?>

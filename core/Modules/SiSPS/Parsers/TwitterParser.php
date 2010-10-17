@@ -355,8 +355,7 @@ class TwitterParser implements IParser {
     /**
      * Parses the simplepie item to a content item
      * @param \SimplePie_Item $tweet
-     * @param \Swiftriver\Core\ObjectModel\Source
-     * @return \Swiftriver\Core\ObjectModel\Content
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     private function ParseTweetFromATOMItem($tweet, $channel)
     {
@@ -369,7 +368,7 @@ class TwitterParser implements IParser {
         //Create the source
         $author = $tweet->get_author();
         $source_name = ($author != null) ? $author->get_name() : $channel->name;
-        $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
+        $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
         $source->name = $source_name;
         $source->email = ($author != null) ? $tweet->get_author()->get_email() : null;
         $source->link = ($author != null) ? $tweet->get_author()->get_link() : null;

@@ -42,6 +42,7 @@ class ChannelFactory
         $channel->inprocess =        isset($object->inprocess) ? $object->inprocess : false;
         $channel->timesrun =         isset($object->timesrun) ? $object->timesrun : 0;
         $channel->deleted =          isset($object->deleted) ? $object->deleted : false;
+        $channel->trusted =          isset($object->trusted) ? $object->trusted : false;
         $channel->parameters =       array();
         
         //If te parameters collection is set move tem to the channel

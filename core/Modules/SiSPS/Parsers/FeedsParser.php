@@ -74,7 +74,8 @@ class FeedsParser implements IParser {
         $lastSuccess = $channel->lastSuccess;
 
         //Loop through the Feed Items
-        foreach($feeditems as $feedItem) {
+        foreach($feeditems as $feedItem)
+        {
 	
             //Extract the date of the content
             $contentdate =  strtotime($feedItem->get_date());
@@ -92,7 +93,7 @@ class FeedsParser implements IParser {
             //Get source data
             $source_name = $feedItem->get_author()->name;
             $source_name = ($source_name == null || $source_name == "") ? $feedUrl : $source_name . " @ " . $feedUrl;
-            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
+            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
             $source->name = $source_name;
             $source->email = $feedItem->get_author()->email;
             $source->parent = $channel->id;

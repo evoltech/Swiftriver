@@ -41,7 +41,7 @@ class IMAPParser implements IParser {
                 $email_message = imap_fetchbody($imapResource, $Email, 1);
 
                 $source_name = \reset($email_overview)->from;
-                $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
+                $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
 
                 $source->name = $source_name;
                 $source->parent = $channel->id;

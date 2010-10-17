@@ -12,16 +12,32 @@ class SourceFactory
      * @param string $identifier
      * @return \Swiftriver\Core\ObjectModel\Source
      */
-    public static function CreateSourceFromIdentifier($identifier)
+    public static function CreateSourceFromIdentifier($identifier, $trusted = false)
     {
         $source = new \Swiftriver\Core\ObjectModel\Source();
+        
         $source->id = md5($identifier);
+
+        $repository = new \Swiftriver\Core\DAL\Repositories\SourceRepository();
+
+        $sources = $repository->GetSourcesById(array($source->id));
+
+        if(\count($sources) < 1)
+        {
+            if($trusted)
+                $source->score = 100;
+        }
+        else
+        {
+            $source = \reset($sources);
+        }
+
         return $source;
     }
 
     /**
      * Returns a new Source object from the JSON encoded string
-     * of a Source obejct
+     * of a Source object
      * 
      * @param JSON $json
      * @return \Swiftriver\Core\ObjectModel\Source 
