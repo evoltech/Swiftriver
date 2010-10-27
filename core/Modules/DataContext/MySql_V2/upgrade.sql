@@ -203,7 +203,7 @@ DELIMITER ;
 -- Create the GetContent stored procedure
 DROP PROCEDURE IF EXISTS SC_GetContent;
 DELIMITER $$
-CREATE PROCEDURE SC_GetContent (contentIdsAsInArray VARCHAR (48))
+CREATE PROCEDURE SC_GetContent (contentIdsAsInArray VARCHAR (2560))
     BEGIN
         SET @queryText = CONCAT('SELECT c.json as contentjson, s.json as sourcejson FROM SC_Content c JOIN SC_Sources s ON c.sourceId = s.id WHERE c.id in ', contentIdsAsInArray);
         PREPARE query FROM @queryText;

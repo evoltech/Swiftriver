@@ -422,15 +422,27 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
     public function testGetContentListBasic()
     {
-        $item = new ObjectModel\Content();
+        $item1 = new ObjectModel\Content();
 
-        $item->id = "testId1";
+        $item1->id = "testId1";
 
-        $item->state = "new_content";
+        $item1->state = "new_content";
 
-        $item->date = time();
+        $item1->date = time();
 
-        $item->tags = array (
+        $item1->tags = array (
+            new ObjectModel\Tag("testText1", "testType1"),
+            new ObjectModel\Tag("testText2", "testType2"));
+
+        $item2 = new ObjectModel\Content();
+
+        $item2->id = "testId2";
+
+        $item2->state = "new_content";
+
+        $item2->date = time();
+
+        $item2->tags = array (
             new ObjectModel\Tag("testText1", "testType1"),
             new ObjectModel\Tag("testText2", "testType2"));
 
@@ -448,11 +460,13 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
 
         $source->subType = "testSubType";
 
-        $item->source = $source;
+        $item1->source = $source;
 
-        Modules\DataContext\MySql_V2\DataContext::SaveContent(array($item));
+        $item2->source = $source;
+
+        Modules\DataContext\MySql_V2\DataContext::SaveContent(array($item1, $item2));
         
-        $content = Modules\DataContext\MySql_V2\DataContext::GetContentList(array());
+        $result = Modules\DataContext\MySql_V2\DataContext::GetContentList(array());
         
         $pdo = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
         
@@ -465,6 +479,8 @@ class ContentDataContextTests extends \PHPUnit_Framework_TestCase
         $pdo->exec("DELETE FROM SC_Tags");
 
         $pdo = null;
+
+        $this->assertEquals(2, \count($result["contentItems"]));
     }
 
     public function testGetContentListWithBasicParams()

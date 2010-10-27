@@ -219,7 +219,7 @@ class DataContext implements
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveChannels [END: Looping through channels]", \PEAR_LOG_DEBUG);
 
-            $db = nulll;
+            $db = null;
         }
         catch(\PDOException $e)
         {

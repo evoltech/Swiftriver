@@ -23,7 +23,7 @@ class ParserFactory{
         $logger->log("Core::Modules::SiSPS::ParserFactory::GetParser [Method invoked]", \PEAR_LOG_DEBUG);
 
         //Append the word Parser to the type
-        $type = $type."Parser";
+        $type = \str_replace(" ", "", $type) . "Parser";
 
         //If the class is not defined, return null
         $type = "\\Swiftriver\\Core\\Modules\\SiSPS\\Parsers\\".$type;
