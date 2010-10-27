@@ -23,7 +23,7 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
     public function testReturnAllAvailableParsers() {
         $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $parsers = $service->ListAvailableParsers();
-        $this->assertEquals(3, count($parsers));
+        $this->assertTrue(count($parsers) > 3);
         $RSSTypes = $parsers[0]->ListSubTypes();
         $this->assertEquals("Blogs", $RSSTypes[0]);
     }

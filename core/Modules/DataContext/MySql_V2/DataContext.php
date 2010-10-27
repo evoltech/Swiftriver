@@ -724,6 +724,10 @@ class DataContext implements
         if($source != null)
             $filters[] = "source.id = '$source'";
 
+        $tag = (\key_exists("tag", $parameters)) ? $parameters["tag"] : null;
+        if($tag != null)
+            $filters[] = "content.id in (select ct.contentId from sc_content_tags ct join sc_tags t on ct.tagId = t.id where t.text = '$tag')";
+
         $pageSize = (key_exists("pageSize", $parameters)) ? $parameters["pageSize"] : null;
 
         $pageStart = (key_exists("pageStart", $parameters)) ? $parameters["pageStart"] : null;
@@ -757,19 +761,23 @@ class DataContext implements
 
             $navigation = array();
 
-            $tagsSql = "SELECT t.text as name, t.text as id, count(t.text) as count FROM SC_tags t join SC_Content_Tags ct ON t.id = ct.tagId WHERE ct.contentId in (SELECT content.id " . $sql . ") GROUP BY t.text ORDER BY count DESC";
-            $tagsStatement = $db->prepare($tagsSql);
-            $tagsStatement->execute();
-            $results = $tagsStatement->fetchAll(\PDO::FETCH_ASSOC);
-            $types = array(
-                "type" => "list",
-                "key" => "tags",
-                "selected" => $type != null,
-                "facets" => $results);
-            $navigation["Tags"] = $types;
+            if($tag == null)
+            {
+                $tagsSql = "SELECT t.text as name, t.text as id, count(t.text) as count FROM SC_tags t join SC_Content_Tags ct ON t.id = ct.tagId WHERE ct.contentId in (SELECT content.id " . $sql . ") GROUP BY t.text ORDER BY count DESC";
+                $tagsStatement = $db->prepare($tagsSql);
+                $tagsStatement->execute();
+                $results = $tagsStatement->fetchAll(\PDO::FETCH_ASSOC);
+                $types = array(
+                    "type" => "list",
+                    "key" => "tags",
+                    "selected" => $type != null,
+                    "facets" => $results);
+                $navigation["Tags"] = $types;
+            }
 
 
-            if($subType == null) {
+            if($subType == null)
+            {
                 $typeSql = "select source.type as name, source.type as id, count(source.type) as count " . $sql . " group by source.type order by count desc";
                 $typeStatement = $db->prepare($typeSql);
                 $typeStatement->execute();
@@ -782,7 +790,8 @@ class DataContext implements
                 $navigation["Channels"] = $types;
             }
 
-            if($type != null && $source == null) {
+            if($type != null && $source == null)
+            {
                 $subTypeSql = "select source.subType as name, source.subType as id, count(source.subType) as count " . $sql . " group by source.subType order by count desc";
                 $subTypeStatement = $db->prepare($subTypeSql);
                 $subTypeStatement->execute();
@@ -795,7 +804,8 @@ class DataContext implements
                 $navigation["Sub Channels"] = $subTypes;
             }
 
-            if($subType != null && $type != null) {
+            if($subType != null && $type != null)
+            {
                 $sourceSql = "select source.name as name, source.textId as id, count(source.name) as count " .$sql . " group by source.name order by count desc";
                 $sourceStatement = $db->prepare($sourceSql);
                 $sourceStatement->execute();
