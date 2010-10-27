@@ -23,6 +23,10 @@
                                                     <label for="name">The name of the <?php echo($channelType->type); ?> <?php echo($subType->type); ?>:</label>
                                                     <input type="text" name="name" class="required" />
                                                 </div>
+                                                <div class="form-row">
+                                                    <label for="trusted">Trusted source?:</label>
+                                                    <input type="checkbox" name="trusted" />
+                                                </div>
                                                 <?php foreach($subType->configurationProperties as $key => $properties) : ?>
                                                     <?php if($subType->type == $key) : ?>
                                                         <?php foreach($properties as $property) : ?>
