@@ -231,7 +231,7 @@ class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
             $tags = $object->$action;
 
         //Check that the id is set and is a string
-        if(!$tags || !isset($tags) || $tags == null || !\is_array($tags))
+        if(!isset($tags) || !$tags || $tags == null || !\is_array($tags))
             return array();
 
         $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToTags [END: Extracting required data]", \PEAR_LOG_DEBUG);
