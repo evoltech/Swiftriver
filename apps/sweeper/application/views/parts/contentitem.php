@@ -78,7 +78,10 @@
                         <?php if($type != 'where' && count($tags) > 0) : ?>
                             <ol class="tag-list"><li><strong><?php echo($type); ?>:</strong></li>
                                 <?php foreach($tags as $key => $tag) : ?>
-                                    <li><?php echo strtolower($tag); ?></li>
+                                <li id="<?php echo($content->id); ?>-<?php echo(str_replace(" ", "", strtolower($tag))); ?>">
+                                        <a href="JavaScript:RemoveContentTag('<?php echo($content->id); ?>', '<?php echo($type); ?>', '<?php echo($tag); ?>', '<?php echo($content->id); ?>-<?php echo(str_replace(" ", "", strtolower($tag))); ?>');" title="Remove this tag">x</a>
+                                        <?php echo strtolower($tag); ?>
+                                    </li>
                                 <?php endforeach; ?>
                             </ol>
                         <?php endif; ?>

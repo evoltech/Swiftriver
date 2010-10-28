@@ -1,5 +1,6 @@
 <?php
-class Content_API {
+class Content_API
+{
 
     /**
      * The core API key
@@ -78,6 +79,18 @@ class Content_API {
 
         //return the json
         return $json;
+    }
+
+    public function update_content_tags($json_encoded_parameters)
+    {
+        //Instanciate the workflow
+        $workflow = new \Swiftriver\Core\Workflows\ContentServices\UpdateContentTagging();
+
+        //run the workflow
+        $json = $workflow->RunWorkflow($json_encoded_parameters, $this->apiKey);
+
+        //return the json
+        return $json;    
     }
 }
 ?>

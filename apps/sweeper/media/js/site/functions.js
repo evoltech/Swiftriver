@@ -116,13 +116,11 @@ function ShowChannel(counter) {
     });
     $("div#channel-type_" + counter).slideDown("slow");
 }
-
 function DeleteChannel(id) {
     $.getJSON(baseurl + "api/channels/deletechannel/"+id, function(data){
         $("div#sources li#" + id).remove();
     });
 }
-
 function SubmitForm(id) {
     var formId = "#form_" + id;
     $(formId).validate({
@@ -171,7 +169,6 @@ function SubmitForm(id) {
         }
     });
 }
-
 function ActivateSource(number, id) {
     $("span#inactive_" + number).css("display", "none");
     $("span#active_" + number).css("display", "inline");
@@ -199,7 +196,6 @@ function Update() {
     var url = baseurl.replace("/web", "");
     $.post(url + "core/ServiceAPI/ChannelServices/RunNextChannel.php",{ key : "swiftriver_dev" });
 }
-
 function ShowAddChannelModal(type, subType) {
     $.get(baseurl + "parts/addchannel/" + type + "/" + subType, function(data) {
         Shadowbox.open({
@@ -210,7 +206,6 @@ function ShowAddChannelModal(type, subType) {
         });
     });
 }
-
 function RepaintChannelTree() {
     $.get(baseurl + "parts/channeltree/render", function(data){
         var treeContainer = $("div#channel-tree-container");
@@ -220,7 +215,6 @@ function RepaintChannelTree() {
         TreeViewChannelTree();
     });
 }
-
 function ConfigureTheme() {
     $.get(baseurl + "config/themes", function(data) {
         Shadowbox.open({
@@ -231,7 +225,6 @@ function ConfigureTheme() {
         });
     });
 }
-
 function ConfigureImpulseTurbines() {
     $.get(baseurl + "config/impulseturbines", function(data) {
         Shadowbox.open({
@@ -242,7 +235,6 @@ function ConfigureImpulseTurbines() {
         });
     });
 }
-
 function ConfigureReactorTurbines() {
     $.get(baseurl + "config/reactorturbines", function(data) {
         Shadowbox.open({
@@ -253,7 +245,6 @@ function ConfigureReactorTurbines() {
         });
     });
 }
-
 function LogIn() {
     $.get(baseurl + "config/loginandregister/login", function(data) {
         Shadowbox.open({
@@ -264,7 +255,6 @@ function LogIn() {
         });
     });
 }
-
 function RegisterNewUser() {
     $.get(baseurl + "config/loginandregister/register", function(data) {
         Shadowbox.open({
@@ -275,11 +265,9 @@ function RegisterNewUser() {
         });
     });
 }
-
 function LogOut() {
     window.location = baseurl + "config/user/logout";
 }
-
 function ConfigureSources() {
     $.get(baseurl + "config/sources", function(data) {
         Shadowbox.open({
@@ -299,7 +287,6 @@ function ConfigureSources() {
         });
     });
 }
-
 function FilterByType(type) {
     nav_type = type;
     nav_subType = "null";
@@ -308,7 +295,6 @@ function FilterByType(type) {
     render_firstload = true;
     AddContent(new Array());
 }
-
 function FilterBySubType(subType) {
     nav_type = "null";
     nav_subType = subType;
@@ -317,7 +303,6 @@ function FilterBySubType(subType) {
     render_firstload = true;
     AddContent(new Array());
 }
-
 function FilterBySource(source) {
     nav_type = "null";
     nav_subType = "null";
@@ -326,19 +311,16 @@ function FilterBySource(source) {
     render_firstload = true;
     AddContent(new Array());
 }
-
 function ClearList() {
     $("div#content-list ul li").each(function(){
         $(this).remove();
     })
 }
-
 function MoreContent(pagesize) {
     pagesize = pagesize + 10;
     $("#more_content a").attr("href", "javascript:MoreContent("+ pagesize + ")");
     listController.NavigationStateChange(new NavigationState(nav_state, nav_minVeracity, nav_maxVeracity, nav_type, nav_subType, nav_source, pagesize, nav_pageStart, nav_orderBy));
 }
-
 function ConfigureFacetGroup() {
     $.get(baseurl + "config/facetgroup", function(data) {
         Shadowbox.open({
@@ -349,7 +331,6 @@ function ConfigureFacetGroup() {
         });
     });
 }
-
 function Rating(type, id) {
     $.get(
         baseurl + "config/rating/rating",
@@ -364,7 +345,6 @@ function Rating(type, id) {
             }
     );
 }
-
 function Content(name, type, ratings, score, sourcelink, contentlink) {
     $.get(
         baseurl + "config/content/content",
@@ -379,4 +359,12 @@ function Content(name, type, ratings, score, sourcelink, contentlink) {
         }
     );
 }
-
+function RemoveContentTag(contentId, tagType, tagText, liId)
+{
+    $("#"+liId).hide();
+    $.post(
+        baseurl + "api/contentcuration/removetag/",
+        { contentId: contentId, tagType: tagType, tagText: tagText},
+        function(data){}
+    )
+}

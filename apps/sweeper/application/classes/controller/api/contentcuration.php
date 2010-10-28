@@ -46,4 +46,22 @@ class Controller_Api_ContentCuration extends Controller
 
         $this->request->response = $json;
     }
+
+    public function action_removetag()
+    {
+        $contentId = $_POST["contentId"];
+        $tagType = $_POST["tagType"];
+        $tagText = $_POST["tagText"];
+
+        $tag->type = $tagType;
+        $tag->text = $tagText;
+
+        $json_encoded_parameters = json_encode(array(
+            "id" => $contentId,
+            "tagsRemoved" => array($tag)));
+
+        $json = API::content_api()->update_content_tags($json_encoded_parameters);
+
+        $this->request->response = $json;
+    }
 }
