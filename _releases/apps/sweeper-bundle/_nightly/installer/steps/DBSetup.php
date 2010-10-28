@@ -51,9 +51,9 @@ class DBSetup implements IInstallStep {
         try
         {
             include_once(dirname(__FILE__)."/../../core/Configuration/ConfigurationHandlers/BaseConfigurationHandler.php");
-            include_once(dirname(__FILE__)."/../../core/Modules/DataContext/MySql_V1/DataContextConfigurationHandler.php");
-            $configFile = dirname(__FILE__)."/../../core/Modules/DataContext/MySql_V1/Configuration.xml";
-            $config = new \Swiftriver\Core\Modules\DataContext\MySql_V1\DataContextConfigurationHandler($configFile);
+            include_once(dirname(__FILE__)."/../../core/Modules/DataContext/MySql_V2/DataContextConfigurationHandler.php");
+            $configFile = dirname(__FILE__)."/../../core/Modules/DataContext/MySql_V2/Configuration.xml";
+            $config = new \Swiftriver\Core\Modules\DataContext\MySql_V2\DataContextConfigurationHandler($configFile);
             $xml = $config->xml;
             $xml->properties->property[0]["value"] = $host;
             $xml->properties->property[1]["value"] = $username;
@@ -141,6 +141,11 @@ class DBSetup implements IInstallStep {
                                   "it didn't work.";
                 return false;
             }
+
+            $sqlFile = dirname(__FILE__)."/../../core/Modules/DataContext/MySql_V2/upgrade.sql";
+            $sql = file_get_contents($sqlFile);
+            $db = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+            $db->exec($sql);
         }
         catch(\Exception $e)
         {
