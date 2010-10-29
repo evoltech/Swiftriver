@@ -23,7 +23,8 @@ $steps = array(
     new ReadWriteAccess(),
     new DBSetup(),
     new UserCreation(),
-    new FileRewriting()
+    new FileRewriting(),
+    new AllowOverrideChecks()
 );
 
 //get the current step postion

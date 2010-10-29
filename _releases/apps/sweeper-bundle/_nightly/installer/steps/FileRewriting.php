@@ -100,8 +100,7 @@ class FileRewriting implements IInstallStep
                  ? "<div class='message'>".
                     "<p>Thats great, I managed to carry out all the final bits ".
                     "and pieces that I needed to do to finish off.</p>".
-                    "<p>When you hit the link below, you should be taken to the ".
-                    "sweeper app where you can start adding and curating content</p>".
+                    "<p>Lets move on to the final checks.</p>".
                    "</div>"
                  : "<div class='message'>".
                     "<p>Sorry, there seems to have been a few issues with the final ".
