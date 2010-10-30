@@ -65,7 +65,6 @@ CREATE TABLE IF NOT EXISTS SC_Content_Tags (
 
 -- Create the GetChannelByChannelId stored procedure
 DROP PROCEDURE IF EXISTS SC_GetChannelByChannelIds;
-DELIMITER $$
 CREATE PROCEDURE SC_GetChannelByChannelIds (IN channelIdsAsInArray VARCHAR(48))
     BEGIN
         DECLARE text VARCHAR (256);
@@ -73,12 +72,10 @@ CREATE PROCEDURE SC_GetChannelByChannelIds (IN channelIdsAsInArray VARCHAR(48))
         SET @queryText = text;
         PREPARE query FROM @queryText;
         EXECUTE query;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the SaveChannel stored procedure
 DROP PROCEDURE IF EXISTS SC_SaveChannel;
-DELIMITER $$
 CREATE PROCEDURE SC_SaveChannel (
         IN channelId VARCHAR( 48 ),
         IN channelType VARCHAR( 48 ),
@@ -114,21 +111,17 @@ CREATE PROCEDURE SC_SaveChannel (
                 channelNextRun,
                 channelJson);
         END IF;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the DeleteChannel stored procedure
 DROP PROCEDURE IF EXISTS SC_DeleteChannel;
-DELIMITER $$
 CREATE PROCEDURE SC_DeleteChannel (IN channelId VARCHAR (48))
     BEGIN
         DELETE FROM SC_Channels WHERE id = channelId;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the SelectNextDueChannel stored procedure
 DROP PROCEDURE IF EXISTS SC_SelectNextDueChannel;
-DELIMITER $$
 CREATE PROCEDURE SC_SelectNextDueChannel (IN dueBeforeTime INT)
     BEGIN
         SELECT
@@ -145,20 +138,17 @@ CREATE PROCEDURE SC_SelectNextDueChannel (IN dueBeforeTime INT)
             nextRun ASC
         LIMIT
             1;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the ListAllChannels Procedure
 DROP PROCEDURE IF EXISTS SC_ListAllChannels;
-DELIMITER $$
 CREATE PROCEDURE SC_ListAllChannels ()
     BEGIN
         SELECT
             id, type, subType, active, inProcess, nextRun, json
         FROM
             SC_Channels;
-    END $$
-DELIMITER ;
+    END;
 
 
 -- *****************************************************************************
@@ -167,7 +157,6 @@ DELIMITER ;
 
 -- Create the SaveContent stored procedure
 DROP PROCEDURE IF EXISTS SC_SaveContent;
-DELIMITER $$
 CREATE PROCEDURE SC_SaveContent (
         contentId VARCHAR ( 48 ),
         contentSourceId VARCHAR ( 48 ),
@@ -197,29 +186,24 @@ CREATE PROCEDURE SC_SaveContent (
                 contentDate,
                 contentJson);
         END IF;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the GetContent stored procedure
 DROP PROCEDURE IF EXISTS SC_GetContent;
-DELIMITER $$
 CREATE PROCEDURE SC_GetContent (contentIdsAsInArray VARCHAR (2560))
     BEGIN
         SET @queryText = CONCAT('SELECT c.json as contentjson, s.json as sourcejson FROM SC_Content c JOIN SC_Sources s ON c.sourceId = s.id WHERE c.id in ', contentIdsAsInArray);
         PREPARE query FROM @queryText;
         EXECUTE query;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the DeleteContent stored procedure
 DROP PROCEDURE IF EXISTS SC_DeleteContent;
-DELIMITER $$
 CREATE PROCEDURE SC_DeleteContent (IN contentIdToDelete VARCHAR (48))
     BEGIN
         DELETE FROM SC_Content_Tags WHERE contentId = contentIdToDelete;
         DELETE FROM SC_Content WHERE id = contentIdToDelete;
-    END $$
-DELIMITER ;
+    END;
 
 -- *****************************************************************************
 -- Source Related Stored Procedures
@@ -227,7 +211,6 @@ DELIMITER ;
 
 -- Create the SaveSource Stored procedure
 DROP PROCEDURE IF EXISTS SC_SaveSource;
-DELIMITER $$
 CREATE PROCEDURE SC_SaveSource (
         IN sourceId VARCHAR ( 48 ),
         IN sourceChannelId VARCHAR ( 48 ),
@@ -263,8 +246,7 @@ CREATE PROCEDURE SC_SaveSource (
                 sourceSubType,
                 sourceJson);
         END IF;
-    END $$
-DELIMITER ;
+    END;
 
 -- *****************************************************************************
 -- Tag Related Stored Procedures
@@ -272,7 +254,6 @@ DELIMITER ;
 
 -- Create the AddTag stored procedure
 DROP PROCEDURE IF EXISTS SC_AddTag;
-DELIMITER $$
 CREATE PROCEDURE SC_AddTag (
         IN tagContentId VARCHAR ( 48 ),
         IN tagTagId VARCHAR ( 48 ),
@@ -297,12 +278,10 @@ CREATE PROCEDURE SC_AddTag (
                 tagContentId,
                 tagTagId);
         END IF;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create GetTags Stored Procedure
 DROP PROCEDURE IF EXISTS SC_SelectTags;
-DELIMITER $$
 CREATE PROCEDURE SC_SelectTags ( IN contentTagId VARCHAR ( 48 ) )
     BEGIN
         SELECT
@@ -312,24 +291,20 @@ CREATE PROCEDURE SC_SelectTags ( IN contentTagId VARCHAR ( 48 ) )
                 ON t.id = ct.tagId
         WHERE
             ct.contentId = contentTagId;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the Remove All Tags Procedure
 DROP PROCEDURE IF EXISTS SC_RemoveAllTags;
-DELIMITER $$
 CREATE PROCEDURE SC_RemoveAllTags ( IN contentTagId VARCHAR ( 48 ) )
     BEGIN
         DELETE FROM
             SC_Content_Tags
         WHERE
             contentId = contentTagId;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the Select Source stored procedure
 DROP PROCEDURE IF EXISTS SC_GetSource;
-DELIMITER $$
 CREATE PROCEDURE SC_GetSource ( IN sourceId VARCHAR ( 48 ) )
     BEGIN
         SELECT
@@ -338,17 +313,14 @@ CREATE PROCEDURE SC_GetSource ( IN sourceId VARCHAR ( 48 ) )
             SC_Sources
         WHERE
             id = sourceId;
-    END $$
-DELIMITER ;
+    END;
 
 -- Create the Select All Source stored procedure
 DROP PROCEDURE IF EXISTS SC_SelectAllSources;
-DELIMITER $$
 CREATE PROCEDURE SC_SelectAllSources ()
     BEGIN
         SELECT
             json
         FROM
             SC_Sources;
-    END $$
-DELIMITER ;
+    END;
