@@ -129,7 +129,7 @@ function SubmitForm(id) {
             var subType = $(formId + " input[name=subType]").val();
             var updatePeriod = $(formId + " input[name=updatePeriod]").val();
             var name = $(formId + " input[name=name]").val();
-            var trusted = $(formId + " input[name=trusted]").val() == "on" ? true : false;
+            var trusted = $(formId + " input[name=trusted]").is(':checked');
             var json =
                 '{"type":"'+type+'",'+
                  '"subType":"'+subType+'",'+
