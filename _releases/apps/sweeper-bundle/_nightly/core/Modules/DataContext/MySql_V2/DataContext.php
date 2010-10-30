@@ -125,6 +125,17 @@ class DataContext implements
 
             $result = $statement->execute(array(":ids" => $idsArray));
 
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetChannelsById [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $statement->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetChannelsById [$errorMessage]", \PEAR_LOG_ERR);
+            }
+
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetChannelsById [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
             if(isset($result) && $result != null && $result !== 0)
@@ -212,7 +223,18 @@ class DataContext implements
                     "nextRun" => $channel->nextrun,
                     "json" => \json_encode($channel));
 
-                $statement->execute($parameters);
+                $result = $statement->execute($parameters);
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveChannels [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $statement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveChannels [$errorMessage]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveChannels [END: Executing PDO statement for channel]", \PEAR_LOG_DEBUG);
             }
@@ -274,7 +296,19 @@ class DataContext implements
             {
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [START: Executing PDO statement for channel]", \PEAR_LOG_DEBUG);
 
-                $statement->execute(array("id" => $id));
+                $result = $statement->execute(array("id" => $id));
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $statement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [$errorMessage]", \PEAR_LOG_ERR);
+                }
+
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::RemoveChannels [END: Executing PDO statement for channel]", \PEAR_LOG_DEBUG);
             }
@@ -334,6 +368,17 @@ class DataContext implements
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Executing PDO statment]", \PEAR_LOG_DEBUG);
 
             $result = $statement->execute(array("time" => $time));
+
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $statement->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [$errorMessage]", \PEAR_LOG_ERR);
+            }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Executing PDO statment]", \PEAR_LOG_DEBUG);
 
@@ -400,6 +445,17 @@ class DataContext implements
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [START: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
             $result = $statement->execute();
+
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $statement->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [$errorMessage]", \PEAR_LOG_ERR);
+            }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllChannels [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
@@ -504,7 +560,18 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving content source]", \PEAR_LOG_DEBUG);
 
-                $sourceStatement->execute($sourceParams);
+                $result = $sourceStatement->execute($sourceParams);
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $sourceStatement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [$errorMessage]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving content source]", \PEAR_LOG_DEBUG);
 
@@ -517,7 +584,18 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving content]", \PEAR_LOG_DEBUG);
 
-                $contentStatement->execute($contentParams);
+                $result = $contentStatement->execute($contentParams);
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $contentStatement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [$errorMessage]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving content]", \PEAR_LOG_DEBUG);
 
@@ -537,7 +615,18 @@ class DataContext implements
 
                         $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [START: Saving Tag]", \PEAR_LOG_DEBUG);
 
-                        $tagStatement->execute($tagParams);
+                        $result = $tagStatement->execute($tagParams);
+
+                        if($result === false)
+                        {
+                            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                            $errorInfo = $tagStatement->errorInfo();
+
+                            $errorMessage = $errorInfo[2];
+
+                            $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [$errorMessage]", \PEAR_LOG_ERR);
+                        }
 
                         $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SaveContent [END: Saving Tag]", \PEAR_LOG_DEBUG);
                     }
@@ -617,6 +706,17 @@ class DataContext implements
 
             $result = $getContentStatement->execute(array(":ids" => $idsArray));
 
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $getContentStatement->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [$errorMessage]", \PEAR_LOG_ERR);
+            }
+
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
             if(isset($result) && $result != null && $result !== 0)
@@ -655,14 +755,23 @@ class DataContext implements
 
                 $result = $getTagsStatement->execute(array("id" => $item->id));
 
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $getTagsStatement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContent [$errorMessage]", \PEAR_LOG_ERR);
+                }
+
                 if(isset($result) && $result != null && $result !== 0)
                 {
                     $item->tags = array();
 
                     foreach($getTagsStatement->fetchAll() as $row)
-                    {
                         $item->tags[] = new \Swiftriver\Core\ObjectModel\Tag($row["text"], $row["type"]);
-                    }
                 }
 
                 $db = null;
@@ -753,7 +862,18 @@ class DataContext implements
 
             $countStatement = $db->prepare($countSql);
 
-            $countStatement->execute();
+            $result = $countStatement->execute();
+
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContentList [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $countStatement->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetContentList [$errorMessage]", \PEAR_LOG_ERR);
+            }
 
             $totalCount = (int) $countStatement->fetchColumn();
 
@@ -880,7 +1000,20 @@ class DataContext implements
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [START: Looping through content]", \PEAR_LOG_DEBUG);
 
             foreach ($content as $item)
-                $deleteContentStatement->execute(array("id" => $item->id));
+            {
+                $result = $deleteContentStatement->execute(array("id" => $item->id));
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $deleteContentStatement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [$errorMessage]", \PEAR_LOG_ERR);
+                }
+            }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::DeleteContent [END: Looping through content]", \PEAR_LOG_DEBUG);
         }
@@ -942,7 +1075,18 @@ class DataContext implements
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [START: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
-                $getSourceStatement->execute(array("id" => $id));
+                $result = $getSourceStatement->execute(array("id" => $id));
+
+                if($result === false)
+                {
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                    $errorInfo = $getSourceStatement->errorInfo();
+
+                    $errorMessage = $errorInfo[2];
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [$errorMessage]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::GetSourcesById [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
@@ -996,7 +1140,18 @@ class DataContext implements
 
             $selectAllSourcesStatment = $db->prepare($selectAllSourcesSql);
 
-            $selectAllSourcesStatment->execute();
+            $result = $selectAllSourcesStatment->execute();
+
+            if($result === false)
+            {
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [An Exception was thrown by the PDO framwork]", \PEAR_LOG_ERR);
+
+                $errorInfo = $selectAllSourcesStatment->errorInfo();
+
+                $errorMessage = $errorInfo[2];
+
+                $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [$errorMessage]", \PEAR_LOG_ERR);
+            }
 
             $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::ListAllSources [END: Executing PDO statement]", \PEAR_LOG_DEBUG);
 
