@@ -12,7 +12,7 @@
  * get_youtube_thumbnail_height() - This returns the thumbnail height.
  * get_youtube_title() - This returns the alternate title of the movie.
  * get_youtube_author() - This returns the author name of the movie (no email, no, uri).
- * get_categories() - This is extended to get the tags from the special media namespace and explode them accordingly. */
+ * get_categories() - This is extended to get the tags from the special media namespace and explode them accordingly.
  */
  
 if (!defined('SIMPLEPIE_NAMESPACE_YOUTUBE'))

@@ -9,7 +9,7 @@ interface IParser{
      * Given a set of parameters, this method should
      * fetch content from a channel and parse each
      * content into the Swiftriver object model :
-     * Content Item. The $lastsucess datetime is passed
+     * Content Item. The $lastSuccess datetime is passed
      * to the function to ensure that content that has
      * already been parsed is not duplicated.
      *

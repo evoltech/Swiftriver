@@ -105,8 +105,15 @@ class ContentFactory
             {
                 $long = $gis->longitude;
                 $lat = $gis->latitude;
-                if($long != null && is_float($long) && $lat != null && is_float($lat))
-                    $content->gisData[] = new \Swiftriver\Core\ObjectModel\GisData($long, $lat);
+                $name = $gis->name;
+                
+                if($long == null || !\is_int($long) || !\is_float($long))
+                    continue;
+
+                if($lat == null || !\is_int($lat) || !\is_float($lat))
+                    continue;
+
+                $content->gisData[] = new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name);
             }
         }
 

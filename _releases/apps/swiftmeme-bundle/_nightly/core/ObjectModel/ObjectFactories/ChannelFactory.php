@@ -38,10 +38,11 @@ class ChannelFactory
         $channel->updatePeriod =     isset($object->updatePeriod) ? $object->updatePeriod : 30;
         $channel->nextrun =          isset($object->nextrun) ? $object->nextrun : strtotime("+ ".$channel->updatePeriod." minutes");
         $channel->active =           isset($object->active) ? $object->active : true;
-        $channel->lastSucess =       isset($object->lastSucess) ? $object->lastSucess : null;
+        $channel->lastSuccess =      isset($object->lastSuccess) ? $object->lastSuccess : null;
         $channel->inprocess =        isset($object->inprocess) ? $object->inprocess : false;
         $channel->timesrun =         isset($object->timesrun) ? $object->timesrun : 0;
         $channel->deleted =          isset($object->deleted) ? $object->deleted : false;
+        $channel->trusted =          isset($object->trusted) ? $object->trusted : false;
         $channel->parameters =       array();
         
         //If te parameters collection is set move tem to the channel

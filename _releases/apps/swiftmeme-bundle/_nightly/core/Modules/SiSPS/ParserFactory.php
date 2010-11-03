@@ -1,13 +1,13 @@
 <?php
 /**
- * ParserFactory is responciable for returning 
+ * ParserFactory is responsible for returning 
  * an instance of an object that implements the
  * IParser interface.
  */
 namespace Swiftriver\Core\Modules\SiSPS;
 class ParserFactory{
     /**
-     * Expects a string reprosenting the class
+     * Expects a string representing the class
      * name of an object that implements the
      * SiSPS\IParser interface. The param $type
      * must not include the word 'Parser'. For
@@ -23,7 +23,7 @@ class ParserFactory{
         $logger->log("Core::Modules::SiSPS::ParserFactory::GetParser [Method invoked]", \PEAR_LOG_DEBUG);
 
         //Append the word Parser to the type
-        $type = $type."Parser";
+        $type = \str_replace(" ", "", $type) . "Parser";
 
         //If the class is not defined, return null
         $type = "\\Swiftriver\\Core\\Modules\\SiSPS\\Parsers\\".$type;

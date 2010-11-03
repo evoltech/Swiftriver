@@ -76,7 +76,7 @@ class Channel
      *
      * @var time
      */
-    public $lastSucess;
+    public $lastSuccess;
 
     /**
      * A boolean indicating if the Channel is
@@ -106,5 +106,12 @@ class Channel
      * @var bool
      */
     public $deleted = true;
+
+    /**
+     * Value indicating that sources from this channel
+     * should recieve top veracity scores on creation
+     * @var bool
+     */
+    public $trusted = false;
 }
 ?>

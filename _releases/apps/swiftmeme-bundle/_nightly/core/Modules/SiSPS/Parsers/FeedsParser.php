@@ -1,12 +1,14 @@
 <?php
 namespace Swiftriver\Core\Modules\SiSPS\Parsers;
-class FeedsParser implements IParser {
+class FeedsParser implements IParser
+{
     /**
      * Implementation of IParser::GetAndParse
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @param datetime $lassucess
      */
-    public function GetAndParse($channel) {
+    public function GetAndParse($channel)
+    {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
@@ -30,9 +32,9 @@ class FeedsParser implements IParser {
         $simplePiePath = $config->ModulesDirectory."/SimplePie/simplepie.inc";
         include_once($simplePiePath);
 
-		//Include the Simple Pie YouTube Framework
-		$simpleTubePiePath = $config->ModulesDirectory."/SimplePie/simpletube.inc";
-		include_once($simpleTubePath);
+        //Include the Simple Pie YouTube Framework
+        $simpleTubePiePath = $config->ModulesDirectory."/SimplePie/simpletube.inc";
+        include_once($simpleTubePiePath);
 
         $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
@@ -71,18 +73,19 @@ class FeedsParser implements IParser {
             $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
         }
 
-        $lastsucess = $channel->lastSucess;
+        $lastSuccess = $channel->lastSuccess;
 
         //Loop through the Feed Items
-        foreach($feeditems as $feedItem) {
+        foreach($feeditems as $feedItem)
+        {
 	
             //Extract the date of the content
             $contentdate =  strtotime($feedItem->get_date());
-            if(isset($lastsucess) && is_numeric($lastsucess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $lastsucess) {
+            if(isset($lastSuccess) && is_numeric($lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $lastSuccess) {
                     $textContentDate = date("c", $contentdate);
-                    $textLastSucess = date("c", $lastsucess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
+                    $textlastSuccess = date("c", $lastSuccess);
+                    $logger->log("Core::Modules::SiSPS::Parsers::FeedsParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
@@ -92,7 +95,7 @@ class FeedsParser implements IParser {
             //Get source data
             $source_name = $feedItem->get_author()->name;
             $source_name = ($source_name == null || $source_name == "") ? $feedUrl : $source_name . " @ " . $feedUrl;
-            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name);
+            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
             $source->name = $source_name;
             $source->email = $feedItem->get_author()->email;
             $source->parent = $channel->id;
@@ -136,7 +139,8 @@ class FeedsParser implements IParser {
      *
      * @return string[]
      */
-    public function ListSubTypes() {
+    public function ListSubTypes()
+    {
         return array(
             "Blogs",
             "News Feeds",
@@ -150,7 +154,8 @@ class FeedsParser implements IParser {
      *
      * @return string type of sources parsed
      */
-    public function ReturnType() {
+    public function ReturnType()
+    {
         return "Feeds";
     }
 
@@ -164,7 +169,8 @@ class FeedsParser implements IParser {
      *
      * @return array()
      */
-    public function ReturnRequiredParameters(){
+    public function ReturnRequiredParameters()
+    {
         $return = array();
         foreach($this->ListSubTypes() as $subType){
             $return[$subType] = array(

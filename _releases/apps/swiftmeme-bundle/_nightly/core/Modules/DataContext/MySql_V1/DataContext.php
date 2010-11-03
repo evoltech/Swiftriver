@@ -1,6 +1,12 @@
 <?php
 namespace Swiftriver\Core\Modules\DataContext\MySql_V1;
-class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataContext {
+class DataContext implements
+     \Swiftriver\Core\DAL\DataContextInterfaces\IAPIKeyDataContext,
+     \Swiftriver\Core\DAL\DataContextInterfaces\IChannelDataContext,
+     \Swiftriver\Core\DAL\DataContextInterfaces\IContentDataContext,
+     \Swiftriver\Core\DAL\DataContextInterfaces\ISourceDataContext,
+     \Swiftriver\Core\DAL\DataContextInterfaces\ITrustLogDataContext
+{
     /**
      * Checks that the given API Key is registed for this
      * Core install

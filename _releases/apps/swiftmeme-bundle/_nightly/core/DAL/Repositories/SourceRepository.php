@@ -38,7 +38,7 @@ class SourceRepository
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::DAL::Repositories::SourceRepository::GetSourcesById [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        $sources = $dc::GetSourcesById($id);
+        $sources = $dc::GetSourcesById($ids);
         $logger->log("Core::DAL::Repositories::SourceRepository::GetSourcesById [Method Finished]", \PEAR_LOG_DEBUG);
         return $sources;
     }

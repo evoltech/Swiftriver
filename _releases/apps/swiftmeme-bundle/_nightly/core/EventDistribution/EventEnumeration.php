@@ -8,5 +8,6 @@ namespace Swiftriver\Core\EventDistribution;
 class EventEnumeration
 {
     public static $MarkContentAsAccurate = "MarkContentAsAccurate";
+    public static $UpdateContentTagging = "UpdateContentTagging";
 }
 ?>
