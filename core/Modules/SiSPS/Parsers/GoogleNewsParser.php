@@ -77,7 +77,7 @@ class GoogleNewsParser implements IParser
         $feed->init();
 
         //Strip HTML
-        $feed->strip_htmltags(array('span', 'font', 'style', 'table', 'td', 'tr'));
+        $feed->strip_htmltags(array('span', 'font', 'style', 'table', 'td', 'tr', 'div', 'p', 'br', 'a'));
 
         //Create the Content array
         $contentItems = array();
