@@ -123,6 +123,20 @@ function DeleteChannel(id) {
     });
 }
 
+function DeleteIdentifiedSourcesChannel(id) {
+    $.getJSON(baseurl + "api/channels/deletechannel/"+id, function(data){
+        $("div#is_" + id).remove();
+    });
+}
+
+function DeleteTermsToMonitorChannel(id) {
+    $.getJSON(baseurl + "api/channels/deletechannel/"+id, function(data){
+        $.get(baseurl + "api/termstomonitor/get/false", function(widgetdata) {
+            $("div#termstomonitorcontent").html(widgetdata);
+        });
+    });
+}
+
 function SubmitForm(id) {
     var formId = "#form_" + id;
     $(formId).validate({

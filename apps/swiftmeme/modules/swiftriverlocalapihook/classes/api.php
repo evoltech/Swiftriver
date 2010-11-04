@@ -25,5 +25,10 @@ class API {
     {
         return new EventHandlers_API("swiftriver_dev");
     }
+
+    public static function tag_api()
+    {
+        return new Tags_API("swiftriver_dev");
+    }
 }
 ?>

@@ -50,7 +50,7 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-'base_url' => '/influentials/web/', 
+'base_url' => '/web/', 
 ));
 
 /**
@@ -103,6 +103,52 @@ Route::set('api-sources', 'api/channels(/<action>(/<id>))')
             'controller' => 'channels',
             'action' => 'listallavailable',
         ));
+
+// These are routes introduced for influencials for the widgets
+
+Route::set('api-activesources', 'api/activesources/get')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'activesources',
+            'action' => 'getsources',
+        ));
+
+Route::set('api-filterview', 'api/filterviews/get')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'filterview',
+            'action' => 'getfilters',
+        ));
+
+Route::set('api-identifiedsources', 'api/identifiedsources/get')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'identifiedsources',
+            'action' => 'getsources',
+        ));
+
+Route::set('api-maps', 'api/maps/get/<widgetid>')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'maps',
+            'action' => 'getmap',
+        ));
+
+Route::set('api-termstomonitor', 'api/termstomonitor/get')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'termstomonitor',
+            'action' => 'getterms',
+        ));
+
+Route::set('api-trendingkeywords', 'api/trendingkeywords/get')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'trendingkeywords',
+            'action' => 'getkeywords',
+        ));
+
+// SwiftRiver other routes
 
 Route::set('parts-content', "parts/addchannel/<type>/<subtype>")
         ->defaults(array(

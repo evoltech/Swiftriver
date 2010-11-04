@@ -20,7 +20,10 @@
         <?php echo(Html::script("media/js/shadowbox.js")); ?>
         <?php echo(Html::script("media/js/site/framework.js")); ?>
         <?php echo(Html::script("media/js/site/functions.js")); ?>
+        <?php echo(Html::script("media/js/site/leftbar.js")); ?>
+        <?php echo(Html::script("media/js/site/rightbar.js")); ?>
         <?php echo(Html::script("media/js/css_browser_selector.js")); ?>
+        <?php echo(Html::script("media/js/protovis/protovis-r3.2.js")); ?>
 
         <?php echo(Html::style("media/css/plugins/jquery.ui.css")); ?>
         <?php echo(Html::style("media/css/plugins/jquery.treeview.css")); ?>
@@ -75,23 +78,23 @@
 
             <!-- we need to edit this part to include left and right bars -->
 
-            <table class="content_table">
-                <tr>
-                    <td class="content_left">
-                        <?php echo($content_left); ?>
-                    </td>
-                    <td class="main_content">
-                        <div id="body">
-                            <div id="content">
-                                <?php echo($content); ?>
-                            </div>
+            <div class="content-div">
+                <div id="c-content-left-div" class="content-left-div">
+                    <?php echo($content_left); ?>
+                </div>
+
+                <div id="c-main-content-div" class="main-content-div">
+                    <div id="body">
+                        <div id="content">
+                            <?php echo($content); ?>
                         </div>
-                    </td>
-                    <td class="content_right">
-                        <?php echo($content_right); ?>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+
+                <div id="c-content-right-div" class="content-right-div">
+                    <?php echo($content_right); ?>
+                </div>
+            </div>
 
             <!-- end of section to modify for influentials-->
 
