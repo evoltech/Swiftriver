@@ -702,7 +702,7 @@ display: none !important;
 }
 
 #content .tag-list {
-	width: 760px !important;
+	width: 500px !important;
 	list-style-type: none !important;
 }
 
@@ -1344,8 +1344,21 @@ button::-moz-focus-inner {
 .widget-box {
     background-color: #F0F0F0 !important;
     color: black;
-    padding: 5px !important;
+    padding: 10px !important;
     width: 80% !important;
+    position: relative;
+}
+
+.filter-view-widget-item-right {
+    position: absolute;
+    left: 125px;
+    top: 10px;
+    width: 100px;
+}
+.filter-view-widget-item-left {
+    left: 0px;
+    top: 0px;
+    width: 100px;
 }
 
 div#map-widget {
@@ -1360,6 +1373,7 @@ div#active-sources-widget {
 div#filter-view-widget {
     font-size: x-small !important;
     padding-left: 10% !important;
+    text-align: left;
 }
 div#terms-monitor-widget {
     font-size: x-small !important;

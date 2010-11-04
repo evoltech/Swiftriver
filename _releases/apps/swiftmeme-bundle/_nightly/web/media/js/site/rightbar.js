@@ -6,9 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-function FilterViewWidget(baseUrl, widgetID) {
+function FilterViewWidget(baseUrl, widgetID, state, minVeracity, maxVeracity, type, subType,
+                          source, pageSize, pageStart, orderBy) {
     this.RenderView = function() {
-        $.get(baseUrl + "api/filterviews/get",
+        $.get(baseUrl + "api/filterview/get/" + state + "/" + minVeracity + "/" + maxVeracity + "/" + type + "/" + subType +
+                "/" + source + "/" + pageSize + "/" + pageStart + "/" + orderBy + "/",
             function(filterViewTemplate) {
                 $(widgetID).html(filterViewTemplate);
             }
@@ -18,7 +20,7 @@ function FilterViewWidget(baseUrl, widgetID) {
 
 function TermsToMonitorWidget(baseUrl, widgetID) {
     this.RenderView = function() {
-        $.get(baseUrl + "api/termstomonitor/get",
+        $.get(baseUrl + "api/termstomonitor/get/true",
             function(termsToMonitorTemplate) {
                 $(widgetID).html(termsToMonitorTemplate);
             }
@@ -28,7 +30,7 @@ function TermsToMonitorWidget(baseUrl, widgetID) {
 
 function IdentifiedSourcesWidget(baseUrl, widgetID) {
     this.RenderView = function() {
-        $.get(baseUrl + "api/identifiedsources/get",
+        $.get(baseUrl + "api/identifiedsources/get/true",
             function(identitiedSourcesTemplate) {
                 $(widgetID).html(identitiedSourcesTemplate);
             }
