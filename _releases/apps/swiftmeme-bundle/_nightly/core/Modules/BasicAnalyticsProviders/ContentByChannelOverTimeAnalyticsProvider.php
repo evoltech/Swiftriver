@@ -98,8 +98,7 @@ class ContentByChannelOverTimeAnalyticsProvider
                 $entry = array(
                     "dayOfTheYear" => $this->DayOfYear2Date($row["dayoftheyear"]),
                     "numberOfContentItems" => $row["numberofcontentitems"],
-                    "channelId" => $row["channelId"],
-                    "channelJson" => $row["channelJson"]);
+                    "channelId" => $row["channelId"]);
 
                 $request->Result[] = $entry;
             }
