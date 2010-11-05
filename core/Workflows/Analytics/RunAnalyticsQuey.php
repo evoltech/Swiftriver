@@ -55,7 +55,7 @@ class RunAnalyticsQuery extends AnalyticsWorkflowBase
 
             $response = $analyticsEngine->RunAnalyticsRequest($request);
 
-            $return = \json_encode($response);
+            $return = \json_encode($response->Result);
         }
         catch(\Exception $e)
         {

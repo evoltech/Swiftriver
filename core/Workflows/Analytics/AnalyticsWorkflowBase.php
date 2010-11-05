@@ -31,12 +31,14 @@ class AnalyticsWorkflowBase extends \Swiftriver\Core\Workflows\WorkflowBase
         if(!isset($json) || $json == null)
             throw new \InvalidArgumentException ("The json supplied was null");
 
-        $object = \json_decode($json);
+        $array = \json_decode($json, true);
 
-        if($object == null)
+        if($array == null)
             throw new \InvalidArgumentException ("The json did not decode correctly");
 
-        return $object;
+        return (\key_exists("Parameters", $array) && \is_array($array["Parameters"]))
+            ? $array["Parameters"]
+            : array();
     }
 }
 ?>
