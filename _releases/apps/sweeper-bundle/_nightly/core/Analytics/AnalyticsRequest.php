@@ -24,6 +24,15 @@ class AnalyticsRequest
     public $Parameters;
 
     /**
+     * The type of the current data context, this can
+     * be used by the IAnalyticsProvider to instanciate
+     * a new data store connection.
+     *
+     * @var string
+     */
+    public $DataContextType;
+
+    /**
      * The result of the Analytics request.
      * 
      * @var object
