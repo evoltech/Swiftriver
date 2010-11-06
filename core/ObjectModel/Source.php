@@ -17,7 +17,7 @@ class Source
      * first created
      * @var int
      */
-    public $date
+    public $date;
 
     /**
      * The trust score for this source
