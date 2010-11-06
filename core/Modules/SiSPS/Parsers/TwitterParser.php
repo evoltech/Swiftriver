@@ -128,10 +128,10 @@ class TwitterParser implements IParser {
         //Set the caching directory
         $feed->set_cache_location($cacheDirectory);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
-
         //Twitter url combined with the account name passed to this feed.
         $TwitterUrl = "http://search.twitter.com/search.atom?q=".urlencode($SearchKeyword);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Setting the feed url to $TwitterUrl]", \PEAR_LOG_DEBUG);
 
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($TwitterUrl);
@@ -192,14 +192,14 @@ class TwitterParser implements IParser {
      * @param \Swiftriver\Core\ObjectModel\Source $source 
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    private function GetForTwitterAccount($source) {
+    private function GetForTwitterAccount($channel) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
         //Extract the required variables
-        $TwitterAccount = $source->parameters["TwitterAccount"];
+        $TwitterAccount = $channel->parameters["TwitterAccount"];
         if(!isset($TwitterAccount) || ($TwitterAccount == "")) {
             $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [the parapeter 'TwitterAccount' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Method finished]", \PEAR_LOG_DEBUG);
@@ -227,15 +227,17 @@ class TwitterParser implements IParser {
         //Set the caching directory
         $feed->set_cache_location($cacheDirectory);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
-
         //Twitter url combined with the account name passed to this feed.
         $TwitterUrl = "http://twitter.com/statuses/user_timeline/".$TwitterAccount.".rss";
 
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($TwitterUrl);
 
+        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Setting the feed url to $TwitterUrl]", \PEAR_LOG_DEBUG);
+
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Initilising the feed]", \PEAR_LOG_DEBUG);
+
+		$feed->enable_cache(false);
 
         //Run the SimplePie
         $feed->init();
@@ -254,11 +256,11 @@ class TwitterParser implements IParser {
         //Loop throught the Feed Items
         foreach($tweets as $tweet) {
             //Extract the date of the content
-            $contentdate = strtotime($tweet->get_date());
-            if(isset($source->lastSuccess) && is_numeric($source->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $source->lastSuccess) {
+            $contentdate = strtotime($tweet->get_date('c'));
+            if(isset($channel->lastSuccess) && is_numeric($channel->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $channel->lastSuccess) {
                     $textContentDate = date("c", $contentdate);
-                    $textlastSuccess = date("c", $source->lastSuccess);
+                    $textlastSuccess = date("c", $channel->lastSuccess);
                     $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
@@ -266,7 +268,8 @@ class TwitterParser implements IParser {
 
             $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterAccount [Adding feed item]", \PEAR_LOG_DEBUG);
 
-            $item = $this->ParseTweetFromATOMItem($tweet, $source);
+			//Extract all the relevant feedItem info
+            $item = $this->ParseTweetFromATOMItem($tweet, $channel);
 
             //Add the item to the Content array
             $contentItems[] = $item;
@@ -375,6 +378,32 @@ class TwitterParser implements IParser {
         $source->parent = $channel->id;
         $source->type = $channel->type;
         $source->subType = $channel->subType;
+
+        //Add location data
+        //Long and lat
+        $location = $tweet->get_item_tags("http://www.georss.org/georss", "point");
+
+        $long = 0;
+        $lat = 0;
+        $name = "";
+
+        if(is_array($location)) {
+            $lat_lon_array = split(" ", $location[0]["data"]);
+            
+            $long = $lat_lon_array[1];
+            $lat = $lat_lon_array[0];
+        }
+
+        //Name
+        $location_name = $tweet->get_item_tags("http://api.twitter.com", "place");
+
+        if(is_array($location_name)) {
+            if(isset($location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"])){
+                $name = $location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"];
+            }
+        }
+
+        $source->gisData = array(new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name));
         
         //Create a new Content item
         $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
