@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS SC_Channels (
 CREATE TABLE IF NOT EXISTS SC_Sources (
     id VARCHAR( 48 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
     channelId VARCHAR( 48 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+    date INT NOT NULL ,
     score INT NULL ,
     name VARCHAR( 256 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
     type  VARCHAR( 48 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
@@ -214,6 +215,7 @@ DROP PROCEDURE IF EXISTS SC_SaveSource;
 CREATE PROCEDURE SC_SaveSource (
         IN sourceId VARCHAR ( 48 ),
         IN sourceChannelId VARCHAR ( 48 ),
+        IN sourceDate INT,
         IN sourceScore INT,
         IN sourceName VARCHAR ( 256 ),
         IN sourceType VARCHAR ( 48 ),
@@ -227,6 +229,7 @@ CREATE PROCEDURE SC_SaveSource (
                 SC_Sources
             SET
                 channelId = sourceChannelId,
+                date = sourceDate,
                 score = sourceScore,
                 name = sourceName,
                 type = sourceType,
@@ -240,6 +243,7 @@ CREATE PROCEDURE SC_SaveSource (
             VALUES (
                 sourceId,
                 sourceChannelId,
+                sourceData,
                 sourceScore,
                 sourceName,
                 sourceType,
