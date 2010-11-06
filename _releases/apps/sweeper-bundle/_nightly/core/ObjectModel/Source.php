@@ -13,6 +13,13 @@ class Source
     public $id;
 
     /**
+     * The time() value when the source was
+     * first created
+     * @var int
+     */
+    public $date;
+
+    /**
      * The trust score for this source
      * @var int
      */

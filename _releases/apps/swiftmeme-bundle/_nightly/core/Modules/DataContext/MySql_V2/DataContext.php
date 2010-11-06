@@ -517,7 +517,7 @@ class DataContext implements
 
         $saveContentSql = "CALL SC_SaveContent ( :id, :sourceId, :state, :date, :json )";
 
-        $saveSourceSql = "CALL SC_SaveSource ( :id, :channelId, :score, :name, :type, :subType, :json )";
+        $saveSourceSql = "CALL SC_SaveSource ( :id, :channelId, :date, :score, :name, :type, :subType, :json )";
 
         $saveTagSql = "CALL SC_AddTag ( :contentId, :tagId, :tagType, :tagText )";
 
@@ -552,6 +552,7 @@ class DataContext implements
                 $sourceParams = array (
                     "id" => $source->id,
                     "channelId" => $source->parent,
+                    "date" => $source->date,
                     "score" => $source->score,
                     "name" => $source->name,
                     "type" => $source->type,
