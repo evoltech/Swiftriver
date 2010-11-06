@@ -26,6 +26,8 @@ class SourceFactory
         {
             if($trusted)
                 $source->score = 100;
+
+            $source->date = \time();
         }
         else
         {
@@ -57,6 +59,7 @@ class SourceFactory
         //set the basic properties
         $source->id =               isset($object->id) ? $object->id : md5(uniqid(rand(), true));
         $source->score =            isset($object->score) ? $object->score : null;
+        $source->date =             isset($object->date) ? $object->date : \time();
         $source->name =             isset($object->name) ? $object->name : null;
         $source->type =             isset($object->type) ? $object->type : null;
         $source->subType =          isset($object->subType) ? $object->subType : null;
