@@ -50,7 +50,7 @@
 
                 // Add parameters
 
-                json += '{"TwitterAccount:":"'+termtosubmit+'"},';
+                json += '{"TwitterAccount":"'+termtosubmit+'"},';
 
                 json = json.substring(0, json.length - 1) + '}';
 

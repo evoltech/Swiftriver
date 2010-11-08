@@ -50,7 +50,8 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-'base_url' => '/web/', 
+ //'base_url' => '/influentials/web/',
+ 'base_url' => '/web/',
 ));
 
 /**
@@ -90,6 +91,15 @@ Route::set('api-contentselection-get', 'api/contentselection/get/<state>/<minVer
             'action' => 'get',
         ));
 
+// Adding a new route for selection of content by tags
+
+Route::set('api-contentselection-get-tags', 'api/contentselection/get/<state>/<minVeracity>/<maxVeracity>/<type>/<subType>/<source>/<pageSize>/<pageStart>/<orderBy>/<tags>')
+        ->defaults(array(
+            'directory' => 'api',
+            'controller' => 'contentselection',
+            'action' => 'getbytags',
+        ));
+
 Route::set('api-contentcuration', 'api/contentcuration/<action>(/<id>)')
         ->defaults(array(
             'directory' => 'api',
@@ -113,28 +123,28 @@ Route::set('api-activesources', 'api/activesources/get')
             'action' => 'getsources',
         ));
 
-Route::set('api-filterview', 'api/filterviews/get')
+Route::set('api-filterview', 'api/filterview/get/<state>/<minVeracity>/<maxVeracity>/<type>/<subType>/<source>/<pageSize>/<pageStart>/<orderBy>')
         ->defaults(array(
             'directory' => 'api',
             'controller' => 'filterview',
             'action' => 'getfilters',
         ));
 
-Route::set('api-identifiedsources', 'api/identifiedsources/get')
+Route::set('api-identifiedsources', 'api/identifiedsources/get/<withcontrols>')
         ->defaults(array(
             'directory' => 'api',
             'controller' => 'identifiedsources',
             'action' => 'getsources',
         ));
 
-Route::set('api-maps', 'api/maps/get/<widgetid>')
+Route::set('api-maps', 'api/maps/get')
         ->defaults(array(
             'directory' => 'api',
             'controller' => 'maps',
             'action' => 'getmap',
         ));
 
-Route::set('api-termstomonitor', 'api/termstomonitor/get')
+Route::set('api-termstomonitor', 'api/termstomonitor/get/<withcontrols>')
         ->defaults(array(
             'directory' => 'api',
             'controller' => 'termstomonitor',
@@ -146,6 +156,13 @@ Route::set('api-trendingkeywords', 'api/trendingkeywords/get')
             'directory' => 'api',
             'controller' => 'trendingkeywords',
             'action' => 'getkeywords',
+        ));
+
+Route::set('api-getcommontags', "api/tags/common/get")
+        ->defaults(array(
+            "directory" => "api",
+            "controller" => "tags",
+            "action" => "getcommontags",
         ));
 
 // SwiftRiver other routes
@@ -170,7 +187,6 @@ Route::set('config', "config/<controller>(/<action>)")
             "controller" => "themes",
             "action" => "index"
         ));
-
 
 Route::set('default', '(<controller>(/<action>(/<state>)))')
 	->defaults(array(

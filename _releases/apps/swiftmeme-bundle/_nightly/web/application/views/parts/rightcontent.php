@@ -1,10 +1,6 @@
 <script type="text/javascript" language="javascript">
     // This script fills in the 3 divs
     $(document).ready(function() {
-        // Fill in the filter view widget
-        mapWidget = new MapViewWidget(nav_baseUrl, "div#map-widget");
-        mapWidget.RenderView();
-
         // Fill in the terms monitor widget
         termsToMonitorWidget = new TermsToMonitorWidget(nav_baseUrl, "div#terms-monitor-widget");
         termsToMonitorWidget.RenderView();
@@ -12,6 +8,9 @@
         // Fill in the identified sources widget
         identifiedSourcesWidget = new IdentifiedSourcesWidget(nav_baseUrl, "div#identified-sources-widget");
         identifiedSourcesWidget.RenderView();
+
+        // Map view widget content
+        $("div#map-widget").html('<iframe src="<?php echo(url::base()); ?>api/maps/get" width="80%" height="150px"/>');
     });
 </script>
 
