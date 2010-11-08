@@ -243,7 +243,7 @@ CREATE PROCEDURE SC_SaveSource (
             VALUES (
                 sourceId,
                 sourceChannelId,
-                sourceData,
+                sourceDate,
                 sourceScore,
                 sourceName,
                 sourceType,
