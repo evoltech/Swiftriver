@@ -28,7 +28,7 @@ class SourceDataContextTests extends \PHPUnit_Framework_TestCase
     {
         $db = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
 
-        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 100, 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
 
         $sources = Modules\DataContext\MySql_V2\DataContext::GetSourcesById(array("testId1"));
 
@@ -57,9 +57,9 @@ class SourceDataContextTests extends \PHPUnit_Framework_TestCase
     {
         $db = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
 
-        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 100, 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
 
-        $db->exec("INSERT INTO SC_Sources VALUES ('testId2', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId2\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId2', 'testParentId', 100, 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId2\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
 
         $sources = Modules\DataContext\MySql_V2\DataContext::GetSourcesById(array("testId1", "testId2"));
 
@@ -104,9 +104,9 @@ class SourceDataContextTests extends \PHPUnit_Framework_TestCase
     {
         $db = Modules\DataContext\MySql_V2\DataContext::PDOConnection();
 
-        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId1', 'testParentId', 100, 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId1\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
         
-        $db->exec("INSERT INTO SC_Sources VALUES ('testId2', 'testParentId', 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId2\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
+        $db->exec("INSERT INTO SC_Sources VALUES ('testId2', 'testParentId', 100, 10, 'testName', 'testType', 'testSubType', '{\"id\":\"testId2\",\"score\":10,\"name\":\"testName\",\"parent\":\"testParentId\",\"email\":null,\"link\":\"http:\/\/twitter.com\/datninja12\",\"type\":\"testType\",\"subType\":\"testSubType\"}')");
         
         $sources = Modules\DataContext\MySql_V2\DataContext::ListAllSources();
 
