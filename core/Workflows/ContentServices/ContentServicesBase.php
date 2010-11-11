@@ -105,6 +105,39 @@ class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
         return $id;
     }
 
+    public function ParseJSONToNewContentState($json)
+    {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [START: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null)
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [END: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [START: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        //Extract the required field state
+        $newState = $object->newState;
+
+        //Check that the state is set and is a string
+        if(!$newState || !isset($newState) || $newState == null || !is_string($newState))
+            throw new \InvalidArgumentException("The JSON supplied did not containt the required string field 'newState'.");
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [END: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToNewContentState [Method finished]", \PEAR_LOG_DEBUG);
+
+        //return the new state
+        return $newState;
+    }
+
     public function ParseJSONToMinVeracity($json)
     {
         $logger = \Swiftriver\Core\Setup::GetLogger();
