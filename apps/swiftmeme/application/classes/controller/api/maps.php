@@ -4,12 +4,11 @@ class Controller_Api_Maps extends Controller
 {
     public $widgetid = '';
 
-    public function action_getmap($widgetid)
+    public function action_getmap()
     {
         $map = new View("parts/mapwidget");
 
         // Render the graph
-        $this->$widgetid = $widgetid;
         $this->request->response = $map;
     }
 }
