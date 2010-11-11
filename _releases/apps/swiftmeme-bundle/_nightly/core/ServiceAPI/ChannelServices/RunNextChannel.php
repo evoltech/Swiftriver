@@ -1,5 +1,4 @@
 <?php
-namespace Swiftriver\Core\ServiceAPI\ChannelServices;
 header('Content-type: application/json');
 //Check for the existance of the unique Swift instance Key
 if(!isset($_POST["key"])) {
