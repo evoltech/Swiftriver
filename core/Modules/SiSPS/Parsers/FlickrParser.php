@@ -14,7 +14,7 @@ class FlickrParser implements IParser
 
         $logger->log("Core::Modules::SiSPS::Parsers::FlickrParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
-        if($channel->subType == "Tag Search")
+        if($channel->subType == "Tag Search" || $channel->subType == "Tag Search with Location")
         {
             $rawTags = $channel->parameters["tags"];
 
@@ -29,7 +29,9 @@ class FlickrParser implements IParser
 
             $tags = \explode(" ", $rawTags);
 
-            $url = "http://api.flickr.com/services/feeds/photos_public.gne?tags=";
+            $url = ($channel->subType == "Tag Search")
+                ? "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags="
+                : "http://www.flickr.com/services/feeds/geo?format=rss2&tags=";
 
             foreach($tags as $tag)
                 $url .= "$tag,";
@@ -209,6 +211,12 @@ class FlickrParser implements IParser
     {
         return array(
             "Tag Search" => array(
+                new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                        "tags",
+                        "string",
+                        "A list of tags seporated by spaces - note that only photos with 'all' the tags will be returned")),
+            "Follow a User"  => array(
+            "Tag Search with Location" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "tags",
                         "string",
