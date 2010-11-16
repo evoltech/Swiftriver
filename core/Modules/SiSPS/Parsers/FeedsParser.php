@@ -143,8 +143,7 @@ class FeedsParser implements IParser
     {
         return array(
             "Blogs",
-            "News Feeds",
-            "You Tube"
+            "News Feeds"
         );
     }
 
