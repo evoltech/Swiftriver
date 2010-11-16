@@ -148,8 +148,25 @@ class FlickrParser implements IParser
             $contentLink = $feedItem->get_permalink();
             $date = $feedItem->get_date();
 
+
+            $rawLocation = $feedItem->get_item_tags("http://www.georss.org/georss", "point");
+            $long = 0;
+            $lat = 0;
+            $name = "";
+
+            if(is_array($rawLocation))
+            {
+                $lat_lon_array = split(" ", $rawLocation[0]["data"]);
+                $long = $lat_lon_array[1];
+                $lat = $lat_lon_array[0];
+                $location  = new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name);
+            }
+
             //Create a new Content item
             $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
+
+            if(isset($location))
+                $item->gisData = array($location);
 
             //Fill the Content Item
             $item->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
@@ -182,6 +199,7 @@ class FlickrParser implements IParser
     {
         return array(
             "Tag Search",
+            "Tag Search with Location",
             "Follow a User"
         );
     }
@@ -225,7 +243,7 @@ class FlickrParser implements IParser
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "userid",
                         "string",
-                        "The Flickr user ID you want to follow")));
+                        "The Flickr user ID you want to follow"))));
     }
 }
 ?>

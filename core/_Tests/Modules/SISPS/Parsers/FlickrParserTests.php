@@ -25,5 +25,20 @@ class FlickrParserTest extends \PHPUnit_Framework_TestCase
         $results = $parser->GetAndParse($channel);
     }
 
+    public function testWithLocation()
+    {
+        $parser = new Modules\SiSPS\Parsers\FlickrParser();
+
+        $channel = new ObjectModel\Channel();
+
+        $channel->type = "Flickr";
+
+        $channel->subType = "Tag Search with Location";
+
+        $channel->parameters = array ("tags" => "london");
+
+        $results = $parser->GetAndParse($channel);
+    }
+
 }
 ?>
