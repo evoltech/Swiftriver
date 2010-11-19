@@ -162,6 +162,7 @@ class RunNextChannel extends ChannelServicesBase
         {
             $channel->inprocess = false;
             $channel->lastSuccess = time();
+            $channel->nextrun = \strtotime("+1 minute");
             $channelRepository->SaveChannels(array($channel));
         }
         catch (\Exception $e)

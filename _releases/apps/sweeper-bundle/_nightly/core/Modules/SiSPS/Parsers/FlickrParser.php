@@ -14,7 +14,7 @@ class FlickrParser implements IParser
 
         $logger->log("Core::Modules::SiSPS::Parsers::FlickrParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
-        if($channel->subType == "Tag Search")
+        if($channel->subType == "Tag Search" || $channel->subType == "Tag Search with Location")
         {
             $rawTags = $channel->parameters["tags"];
 
@@ -29,7 +29,9 @@ class FlickrParser implements IParser
 
             $tags = \explode(" ", $rawTags);
 
-            $url = "http://api.flickr.com/services/feeds/photos_public.gne?tags=";
+            $url = ($channel->subType == "Tag Search")
+                ? "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags="
+                : "http://www.flickr.com/services/feeds/geo?format=rss2&tags=";
 
             foreach($tags as $tag)
                 $url .= "$tag,";
@@ -132,6 +134,8 @@ class FlickrParser implements IParser
 
             //Get source data
             $source_name = $feedItem->get_author()->name;
+            if(!isset($source_name) || $source_name == null || $source_name == "")
+                $source_name = "unknown";
             $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
             $source->name = $source_name;
             $source->email = $feedItem->get_author()->email;
@@ -146,8 +150,25 @@ class FlickrParser implements IParser
             $contentLink = $feedItem->get_permalink();
             $date = $feedItem->get_date();
 
+
+            $rawLocation = $feedItem->get_item_tags("http://www.georss.org/georss", "point");
+            $long = 0;
+            $lat = 0;
+            $name = "";
+
+            if(is_array($rawLocation))
+            {
+                $lat_lon_array = split(" ", $rawLocation[0]["data"]);
+                $long = $lat_lon_array[1];
+                $lat = $lat_lon_array[0];
+                $location  = new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name);
+            }
+
             //Create a new Content item
             $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
+
+            if(isset($location))
+                $item->gisData = array($location);
 
             //Fill the Content Item
             $item->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
@@ -180,6 +201,7 @@ class FlickrParser implements IParser
     {
         return array(
             "Tag Search",
+            "Tag Search with Location",
             "Follow a User"
         );
     }
@@ -209,6 +231,11 @@ class FlickrParser implements IParser
     {
         return array(
             "Tag Search" => array(
+                new \Swiftriver\Core\ObjectModel\ConfigurationElement(
+                        "tags",
+                        "string",
+                        "A list of tags seporated by spaces - note that only photos with 'all' the tags will be returned")),
+            "Tag Search with Location" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "tags",
                         "string",

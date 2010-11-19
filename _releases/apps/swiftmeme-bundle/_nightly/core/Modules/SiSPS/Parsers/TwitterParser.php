@@ -392,19 +392,20 @@ class TwitterParser implements IParser {
             
             $long = $lat_lon_array[1];
             $lat = $lat_lon_array[0];
-        }
-
-        //Name
-        $location_name = $tweet->get_item_tags("http://api.twitter.com", "place");
-
-        if(is_array($location_name)) {
-            if(isset($location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"])){
-                $name = $location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"];
-            }
-        }
-
-        $source->gisData = array(new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name));
         
+            //Name
+            $location_name = $tweet->get_item_tags("http://api.twitter.com", "place");
+
+            if(is_array($location_name)) {
+                if(isset($location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"])){
+                    $name = $location_name[0]["child"]["http://api.twitter.com"]["full_name"][0]["data"];
+                }
+            }
+
+            $source->gisData = array(new \Swiftriver\Core\ObjectModel\GisData($long, $lat, $name));
+
+        }
+
         //Create a new Content item
         $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
 
