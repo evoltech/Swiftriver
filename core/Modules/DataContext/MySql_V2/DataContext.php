@@ -395,6 +395,14 @@ class DataContext implements
                     $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannelFromJSON($json);
 
                     $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Constructing Channel Object from json]", \PEAR_LOG_DEBUG);
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [START: Marking channel as in process]", \PEAR_LOG_DEBUG);
+
+                    $channel->inprocess = true;
+
+                    self::SaveChannels(array($channel));
+
+                    $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Marking channel as in process]", \PEAR_LOG_DEBUG);
                 }
 
                 $logger->log("Core::Modules::DataContext::MySQL_V2::DataContext::SelectNextDueChannel [END: Looping over results]", \PEAR_LOG_DEBUG);
