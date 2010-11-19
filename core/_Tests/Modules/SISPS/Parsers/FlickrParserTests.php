@@ -35,7 +35,7 @@ class FlickrParserTest extends \PHPUnit_Framework_TestCase
 
         $channel->subType = "Tag Search with Location";
 
-        $channel->parameters = array ("tags" => "london");
+        $channel->parameters = array ("tags" => "turnred");
 
         $results = $parser->GetAndParse($channel);
     }
