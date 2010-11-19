@@ -14,7 +14,7 @@ class TwitterParserTest extends \PHPUnit_Framework_TestCase {
         $source->subType = "Search";
         $source->lastSuccess = time() - 1000;
         $source->parameters = array(
-            "SearchKeyword" => "bp"
+            "SearchKeyword" => "#bp"
         );
         $parser = new Modules\SiSPS\Parsers\TwitterParser();
         $content = $parser->GetAndParse($source);
