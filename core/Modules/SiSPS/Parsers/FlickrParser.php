@@ -134,6 +134,8 @@ class FlickrParser implements IParser
 
             //Get source data
             $source_name = $feedItem->get_author()->name;
+            if(!isset($source_name) || $source_name == null || $source_name == "")
+                $source_name = "unknown";
             $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
             $source->name = $source_name;
             $source->email = $feedItem->get_author()->email;
@@ -233,7 +235,6 @@ class FlickrParser implements IParser
                         "tags",
                         "string",
                         "A list of tags seporated by spaces - note that only photos with 'all' the tags will be returned")),
-            "Follow a User"  => array(
             "Tag Search with Location" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "tags",
@@ -243,7 +244,7 @@ class FlickrParser implements IParser
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "userid",
                         "string",
-                        "The Flickr user ID you want to follow"))));
+                        "The Flickr user ID you want to follow")));
     }
 }
 ?>
