@@ -27,7 +27,7 @@ else {
     }
 
     //If all the key is ok, then run the workflow
-    $json = $workflow->RunWorkflow($_POST["json"], $_POST["key"]);
+    $json = $workflow->RunQuery($_POST["json"], $_POST["key"]);
 
     //Return the JSON result
     echo $json;
