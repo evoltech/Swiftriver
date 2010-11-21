@@ -42,8 +42,19 @@ class SwiftriverSourceParsingService {
 
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [START: parser->GetAndParse]", \PEAR_LOG_DEBUG);
 
-        //Get and parse all avaliable content items from the parser
-        $contentItems = $parser->GetAndParse($source);
+        try
+        {
+            //Get and parse all avaliable content items from the parser
+            $contentItems = $parser->GetAndParse($source);
+        }
+        catch(\Exception $e)
+        {
+            $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [$e]", \PEAR_LOG_ERR);
+
+            $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method finished]", \PEAR_LOG_DEBUG);
+
+            return array();
+        }
 
         $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [END: parser->GetAndParse]", \PEAR_LOG_DEBUG);
 
