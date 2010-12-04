@@ -175,7 +175,7 @@ class DBSetup implements IInstallStep {
 
         $return .= "<form class='database' action='" . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] . "' method='post'>".
                     "<div class='form-row'>" .
-                        "<label>Database server (normally this is loclahost):</label>".
+                        "<label>Database server (normally this is localhost):</label>".
                         "<input type='text' name='host' value='" . $_POST["host"] . "' />".
                     "</div>".
                     "<div class='form-row'>" .
