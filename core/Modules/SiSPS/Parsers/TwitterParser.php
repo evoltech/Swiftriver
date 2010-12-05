@@ -44,13 +44,13 @@ class TwitterParser implements IParser {
                         "The keyword(s) to search for"
                 )
             ),
-            "Follow User" => array(
+            /*"Follow User" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "TwitterAccount",
                         "string",
                         "The account name of the Twitter user"
                 )
-            )
+            )*/
         );
     }
 
@@ -109,55 +109,30 @@ class TwitterParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
-
-        //Include the Simple Pie Framework to get and parse feeds
-        $config = \Swiftriver\Core\Setup::Configuration();
-        include_once $config->ModulesDirectory."/SimplePie/simplepie.inc";
-
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
-
-        //Construct a new SimplePie Parsaer
-        $feed = new \SimplePie();
-
-        //Get the cach directory
-        $cacheDirectory = $config->CachingDirectory;
-
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Setting the caching directory to $cacheDirectory]", \PEAR_LOG_DEBUG);
-
-        //Set the caching directory
-        $feed->set_cache_location($cacheDirectory);
-
         //Twitter url combined with the account name passed to this feed.
-        $TwitterUrl = "http://search.twitter.com/search.atom?q=".urlencode($SearchKeyword);
-
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Setting the feed url to $TwitterUrl]", \PEAR_LOG_DEBUG);
-
-        //Pass the feed URL to the SImplePie object
-        $feed->set_feed_url($TwitterUrl);
-
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Initilising the feed]", \PEAR_LOG_DEBUG);
-
-        $feed->enable_cache(false);
-        
-        //Run the SimplePie
-        $feed->init();
+        $TwitterUrl = "http://search.twitter.com/search.json?q=".urlencode($SearchKeyword);
 
         //Create the Content array
         $contentItems = array();
 
+        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [START: Calling the twitter api]", \PEAR_LOG_DEBUG);
+
+        $json = \file_get_contents($TwitterUrl);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [END: Calling the twitter API]", \PEAR_LOG_DEBUG);
+
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [START: Parsing feed items]", \PEAR_LOG_DEBUG);
 
-        $tweets = $feed->get_items();
+        $tweets = \json_decode($json);
 
-        if(!$tweets || $tweets == null || !is_array($tweets) || count($tweets) < 1) {
+        if(!$tweets || $tweets == null) {
             $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
         }
 
         //Loop throught the Feed Items
-        foreach($tweets as $tweet) {
+        foreach($tweets->results as $tweet) {
             //Extract the date of the content
-            $contentdate = strtotime($tweet->get_date('c'));
+            $contentdate = strtotime($tweet->created_at);
             if(isset($channel->lastSuccess) && is_numeric($channel->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
                 if($contentdate < $channel->lastSuccess) {
                     $textContentDate = date("c", $contentdate);
@@ -170,7 +145,7 @@ class TwitterParser implements IParser {
             $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::GetForTwitterSearch [Adding feed item]", \PEAR_LOG_DEBUG);
 
             //Extract all the relevant feedItem info
-            $item = $this->ParseTweetFromATOMItem($tweet, $channel);
+            $item = $this->ParseTweetFromJSON($tweet, $channel);
 
             //Add the item to the Content array
             $contentItems[] = $item;
@@ -288,71 +263,50 @@ class TwitterParser implements IParser {
      * to content items.
      *
      * @param string json $data
-     * @param \Swiftriver\Core\ObjectModel\Source $source
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    private function ParseTweetsFromJSON($data, $source){
+    private function ParseTweetFromJSON($tweet, $channel){
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [Method invoked]", \PEAR_LOG_DEBUG);
 
-        $tweets = json_decode($data, false);
 
-        if(!$tweets || $tweets == null || !is_array($tweets) || count($tweets) < 1) {
-            $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
-            return array();
-        }
+        $source_name = $tweet->from_user;
+        $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromIdentifier($source_name, $channel->trusted);
+        $source->name = $source_name;
+        $source->link = "http://twitter.com/" . $tweet->from_user;
+        $source->parent = $channel->id;
+        $source->type = $channel->type;
+        $source->subType = $channel->subType;
+        $source->applicationIds["twitter"] = $tweet->from_user_id;
+        $source->applicationProfileImages["twitter"] = $tweet->profile_image_url;
 
-        if (array_key_exists('results', $tweets)) {
-            $tweets = $tweets->{'results'};
-        }
+        //Create a new Content item
+        $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [START: Looping through tweets]", \PEAR_LOG_DEBUG);
+        //Fill the Content Item
+        $item->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
+                null, //here we set null as we dont know the language yet
+                $tweet->text,
+                array($tweet->text));
+        $item->link = $tweet->source;
+        $item->date = strtotime($tweet->created_at);
 
-        $content = array();
+        if($tweet->geo != null && $tweet->geo->type == "Point" && \is_array($tweet->geo->coordinates))
+            $item->gisData[] = new \Swiftriver\Core\ObjectModel\GisData (
+                    $tweet->geo->coordinates[0],
+                    $tweet->geo->coordinates[1],
+                    "");
 
-        foreach($tweets as $tweet)
-        {
-            //Extract the date of the content
-            $contentdate = strtotime($tweet->{'created_at'});
-            if(isset($source->lastSuccess) && is_numeric($source->lastSuccess) && isset($contentdate) && is_numeric($contentdate)) {
-                if($contentdate < $source->lastSuccess) {
-                    $textContentDate = date("c", $contentdate);
-                    $textlastSuccess = date("c", $source->lastSuccess);
-                    $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [Skipped feed item as date $textContentDate less than last sucessful run ($textlastSuccess)]", \PEAR_LOG_DEBUG);
-                    continue;
-                }
-            }
+        //Sanitize the tweet text into a DIF collection
+        $sanitizedTweetDiffCollection = $this->ParseTweetToSanitizedTweetDiffCollection($item);
 
-            $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [START: Adding feed item]", \PEAR_LOG_DEBUG);
+        //Add the dif collection to the item
+        $item->difs = array($sanitizedTweetDiffCollection);
 
-            //Setup the variables to be used in the content item.
-            $title = $tweet->{'text'};
-            $contentLink = $tweet->{'source'};
-            $date = $tweet->{'created_at'};
-            $tweet_user_id = $tweet->{'from_user_id'};
-            $tweet_id = $tweet->{'id'};
-            $langcode = $tweet->{'iso_language_code'};
+        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [Method finished]", \PEAR_LOG_DEBUG);
 
-            //Create a new Content item
-            $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
-
-            //Fill the Content Item
-            $item->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
-                    $langcode,
-                    $title,
-                    array());
-            $item->link = $contentLink;
-            $item->date = strtotime($date);
-
-            //Add the item to the Content array
-            $content[] = $item;
-
-            $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [END: Adding feed item]", \PEAR_LOG_DEBUG);
-        }
-
-        $logger->log("Core::Modules::SiSPS::Parsers::TwitterParser::ParseTweetsFromJSON [END: Looping through tweets]", \PEAR_LOG_DEBUG);
-
-        return $content;
+        return $item;
     }
 
     /**
@@ -430,12 +384,12 @@ class TwitterParser implements IParser {
     }
 
     /**
-     * @param \SimplePie_Item $tweet
+     * @param \Swiftriver\Core\ObjectModel\Content $item
      * @return \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection
      */
-    private function ParseTweetToSanitizedTweetDiffCollection($tweet) {
+    private function ParseTweetToSanitizedTweetDiffCollection($item) {
         //Get the original text
-        $tweetText = $tweet->get_title();
+        $tweetText = $item->text[0]->title;
 
         //Break the text down into words
         $tweetTextParts = explode(" ", $tweetText);
