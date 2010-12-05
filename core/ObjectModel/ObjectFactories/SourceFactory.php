@@ -91,6 +91,16 @@ class SourceFactory
             }
         }
 
+        //sort out the profile images
+        if($object->applicationProfileImages != null)
+            foreach($object->applicationProfileImages as $key => $value)
+                $source->applicationProfileImages[$key] = $value;
+
+        //sort out the application ids
+        if($object->applicationIds != null)
+            foreach($object->applicationIds as $key => $value)
+                $source->applicationIds[$key] = $value;
+
         //return the source
         return $source;
     }
