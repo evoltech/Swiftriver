@@ -44,13 +44,13 @@ class TwitterParser implements IParser {
                         "The keyword(s) to search for"
                 )
             ),
-            /*"Follow User" => array(
+            "Follow User" => array(
                 new \Swiftriver\Core\ObjectModel\ConfigurationElement(
                         "TwitterAccount",
                         "string",
                         "The account name of the Twitter user"
                 )
-            )*/
+            )
         );
     }
 
@@ -294,8 +294,8 @@ class TwitterParser implements IParser {
 
         if($tweet->geo != null && $tweet->geo->type == "Point" && \is_array($tweet->geo->coordinates))
             $item->gisData[] = new \Swiftriver\Core\ObjectModel\GisData (
-                    $tweet->geo->coordinates[0],
                     $tweet->geo->coordinates[1],
+                    $tweet->geo->coordinates[0],
                     "");
 
         //Sanitize the tweet text into a DIF collection
