@@ -194,6 +194,7 @@ DROP PROCEDURE IF EXISTS SC_GetContent;
 CREATE PROCEDURE SC_GetContent (contentIdsAsInArray VARCHAR (2560))
     BEGIN
         SET @queryText = CONCAT('SELECT c.json as contentjson, s.json as sourcejson FROM SC_Content c JOIN SC_Sources s ON c.sourceId = s.id WHERE c.id in ', contentIdsAsInArray);
+        SET @queryText = CONCAT(@queryText, ' order by c.date desc');
         PREPARE query FROM @queryText;
         EXECUTE query;
     END;
