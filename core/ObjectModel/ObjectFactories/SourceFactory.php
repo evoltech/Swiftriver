@@ -90,8 +90,7 @@ class SourceFactory
                 }
             }
         }
-
-        //sort out the profile images
+try {        //sort out the profile images
         if($object->applicationProfileImages != null)
             foreach($object->applicationProfileImages as $key => $value)
                 $source->applicationProfileImages[$key] = $value;
@@ -100,7 +99,10 @@ class SourceFactory
         if($object->applicationIds != null)
             foreach($object->applicationIds as $key => $value)
                 $source->applicationIds[$key] = $value;
+}catch(\Exception $e)
+{
 
+}
         //return the source
         return $source;
     }
