@@ -102,5 +102,20 @@ class SourceFacoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $s->score);
     }
 
+    public function testWithProfileImage()
+    {
+        $json = '{"id":"cfdc9af457caa390bb874b75d98d2a50","date":1290587445,"score":null,"name":"alettieri","email":null,"link":"http:\/\/twitter.com\/alettieri","parent":"7113fda82360580d3bae45b22115fc49","type":"Twitter","subType":"Search","gisData":[],"applicationIds":{"twitter":309775},"applicationProfileImages":{"twitter":"http:\/\/a2.twimg.com\/profile_images\/630747310\/headshot_normal.jpg"}}';
+
+        $source = ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($json);
+
+        $this->AssertEquals(1, \count($source->applicationProfileImages));
+
+        $this->AssertEquals("http://a2.twimg.com/profile_images/630747310/headshot_normal.jpg", $source->applicationProfileImages["twitter"]);
+
+        $this->AssertEquals(1, \count($source->applicationIds));
+
+        $this->AssertEquals("309775", $source->applicationIds["twitter"]);
+    }
+
 }
 ?>
