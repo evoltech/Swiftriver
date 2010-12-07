@@ -90,7 +90,19 @@ class SourceFactory
                 }
             }
         }
+try {        //sort out the profile images
+        if($object->applicationProfileImages != null)
+            foreach($object->applicationProfileImages as $key => $value)
+                $source->applicationProfileImages[$key] = $value;
 
+        //sort out the application ids
+        if($object->applicationIds != null)
+            foreach($object->applicationIds as $key => $value)
+                $source->applicationIds[$key] = $value;
+}catch(\Exception $e)
+{
+
+}
         //return the source
         return $source;
     }

@@ -282,5 +282,23 @@ class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase
 
         return $return;
     }
+
+    public function ParseJSONToGIS($json)
+    {
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null)
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+
+        $gis = array();
+
+        foreach($object->gis as $entry)
+            $gis[] = new \Swiftriver\Core\ObjectModel\GisData($entry->longitude, $entry->latitude, $entry->name);
+
+        return $gis;
+
+    }
 }
 ?>

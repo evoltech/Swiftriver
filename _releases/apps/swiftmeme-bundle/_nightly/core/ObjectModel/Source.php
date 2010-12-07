@@ -44,6 +44,18 @@ class Source
     public $link;
 
     /**
+     * application ids
+     * @var string[]
+     */
+    public $applicationIds = array();
+
+    /**
+     * application profile images
+     * @var string[]
+     */
+    public $applicationProfileImages = array();
+
+    /**
      * The ID of the parent channel object
      * @var string
      */

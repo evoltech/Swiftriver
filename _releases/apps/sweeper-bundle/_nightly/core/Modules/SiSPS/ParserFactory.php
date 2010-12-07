@@ -28,7 +28,7 @@ class ParserFactory{
         //If the class is not defined, return null
         $type = "\\Swiftriver\\Core\\Modules\\SiSPS\\Parsers\\".$type;
         if(!class_exists($type)) {
-            $logger->log("Core::Modules::SiSPS::ParserFactory::GetParser [Class $type not found. Returning null]", \PEAR_LOG_ERR);
+            $logger->log("Core::Modules::SiSPS::ParserFactory::GetParser [Class $type not found. Returning null]", \PEAR_LOG_DEBUG);
             $logger->log("Core::Modules::SiSPS::ParserFactory::GetParser [Method finished]", \PEAR_LOG_DEBUG);
             return null;
         }

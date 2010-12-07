@@ -103,8 +103,8 @@ class ContentFactory
         {
             foreach($gisData as $gis)
             {
-                $long = $gis->longitude;
-                $lat = $gis->latitude;
+                $long = 0 + $gis->longitude;
+                $lat = 0 + $gis->latitude;
                 $name = $gis->name;
                 
                 if($long == null || (!\is_int($long) && !\is_float($long)))
