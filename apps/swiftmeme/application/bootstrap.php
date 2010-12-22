@@ -50,8 +50,8 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
- //'base_url' => '/influentials/web/',
- 'base_url' => '/web/',
+'base_url' => '/swiftmeme/web/', 
+'base_url' => '/swiftmeme/web/', 
 ));
 
 /**
@@ -71,6 +71,7 @@ Kohana::modules(array(
         'swiftriverapihook' => MODPATH.'swiftriverlocalapihook',
         'riverid' => MODPATH.'riverid',
         'swiftrivertheming' => MODPATH.'swiftrivertheming',
+        'analytics' => MODPATH.'analytics',
         // 'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'database'   => MODPATH.'database',   // Database access
