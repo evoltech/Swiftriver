@@ -58,9 +58,9 @@
 				<ul>
 					<li class="version" >v0.1 Apala</li>
 					<li class="link" ><a href="http://swift.ushahidi.com" title="overview" >About SwiftRiver</a></li>
-					<li class="link" ><a href="http://swift.ushahidi.com/doc/" title="notes on use, features and api" >Documentation</a></li>
+					<li class="link" ><a href="http://wiki.ushahidi.com/doku.php?id=intro&s[]=swiftriver#installation" title="notes on use, features and api" >Documentation</a></li>
 					<li class="link" ><a href="http://github.com/appfrica/silcc/" title="developers" >Developers</a></li>
-					<li class="link" ><a href="http://swift.ushahidi.com/doc/doku.php?id=faq" title="frequently asked questions" >FAQ</a></li>
+					<li class="link" ><a href="http://wiki.ushahidi.com/doku.php?id=swift_faq" title="frequently asked questions" >FAQ</a></li>
 					<li class="link" ><a href="http://swift.ushahidi.com/goodies/" title="goodies" >Goodies</a></li>
 				</ul>
 			</p>
